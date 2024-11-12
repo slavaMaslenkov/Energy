@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "DataAccess.Postgres": {
+      "commandName": "Project"
+    },
+    "Container (Dockerfile)": {
+      "commandName": "Docker"
+    }
+  }
+}
