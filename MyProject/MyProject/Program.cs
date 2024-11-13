@@ -1,3 +1,6 @@
+using DataAccess.Postgres;
+using Microsoft.EntityFrameworkCore;
+
 namespace MyProject
 {
     public class Program
@@ -8,6 +11,13 @@ namespace MyProject
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
+            var configuration = builder.Configuration;
+
+            builder.Services.AddDbContext<DataContext>(
+                options =>
+                {
+                    options.UseNpgsql(configuration.GetConnectionString(nameof(DataContext)));
+                });
 
             var app = builder.Build();
 

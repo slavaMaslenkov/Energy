@@ -3,9 +3,12 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.11.35327.3
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyProject", "MyProject\MyProject.csproj", "{ED850254-A6CE-4AF6-88AB-7F875FB0DF62}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyProject", "MyProject\MyProject.csproj", "{ED850254-A6CE-4AF6-88AB-7F875FB0DF62}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataAccess.Postgres", "DataAccess.Postgres\DataAccess.Postgres.csproj", "{4A55575D-A68F-49F1-8C71-FF820BD49B44}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataAccess.Postgres", "DataAccess.Postgres\DataAccess.Postgres.csproj", "{4A55575D-A68F-49F1-8C71-FF820BD49B44}"
+	ProjectSection(ProjectDependencies) = postProject
+		{ED850254-A6CE-4AF6-88AB-7F875FB0DF62} = {ED850254-A6CE-4AF6-88AB-7F875FB0DF62}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

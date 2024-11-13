@@ -10,13 +10,14 @@ namespace DataAccess.Postgres.Entity
     {
         public Guid Id { get; set; }
 
-        public string ParameterID { get; set; }
+        public Guid ParametersID { get; set; }
 
-        public string SampleID { get; set; }
+        public Guid SampleID { get; set; }
 
         public float Value { get; set; }
 
-        public ParametersEntity Parameter { get; set; }
+        public ParametersEntity Parameters { get; set; }
+
         public SampleEntity Sample { get; set; }
     }
 }

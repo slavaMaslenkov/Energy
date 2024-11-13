@@ -12,7 +12,9 @@ namespace DataAccess.Postgres.Entity
 
         public DateTime DateCreated { get; set; } = DateTime.Now;
 
+        public string Name { get; set; } = string.Empty;
 
+        public Guid EquipmentID { get; set; }
 
         public EquipmentEntity Equipment { get; set; }
 
