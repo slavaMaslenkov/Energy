@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace DataAccess.Postgres.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20241113082132_initial")]
+    [Migration("20241114094844_initial")]
     partial class initial
     {
         /// <inheritdoc />
@@ -28,7 +28,6 @@ namespace DataAccess.Postgres.Migrations
             modelBuilder.Entity("DataAccess.Postgres.Entity.EquipmentEntity", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<string>("Description")
@@ -55,7 +54,6 @@ namespace DataAccess.Postgres.Migrations
             modelBuilder.Entity("DataAccess.Postgres.Entity.ParametersEntity", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<string>("Measure")
@@ -74,7 +72,6 @@ namespace DataAccess.Postgres.Migrations
             modelBuilder.Entity("DataAccess.Postgres.Entity.SampleEntity", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<DateTime>("DateCreated")
@@ -82,6 +79,10 @@ namespace DataAccess.Postgres.Migrations
 
                     b.Property<Guid>("EquipmentID")
                         .HasColumnType("uuid");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
@@ -93,7 +94,6 @@ namespace DataAccess.Postgres.Migrations
             modelBuilder.Entity("DataAccess.Postgres.Entity.UnityEntity", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<Guid>("ParametersID")

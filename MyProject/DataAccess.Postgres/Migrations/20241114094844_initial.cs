@@ -45,6 +45,7 @@ namespace DataAccess.Postgres.Migrations
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     DateCreated = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    Name = table.Column<string>(type: "text", nullable: false),
                     EquipmentID = table.Column<Guid>(type: "uuid", nullable: false)
                 },
                 constraints: table =>

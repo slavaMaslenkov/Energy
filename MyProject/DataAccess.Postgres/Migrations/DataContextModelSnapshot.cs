@@ -25,7 +25,6 @@ namespace DataAccess.Postgres.Migrations
             modelBuilder.Entity("DataAccess.Postgres.Entity.EquipmentEntity", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<string>("Description")
@@ -52,7 +51,6 @@ namespace DataAccess.Postgres.Migrations
             modelBuilder.Entity("DataAccess.Postgres.Entity.ParametersEntity", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<string>("Measure")
@@ -71,7 +69,6 @@ namespace DataAccess.Postgres.Migrations
             modelBuilder.Entity("DataAccess.Postgres.Entity.SampleEntity", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<DateTime>("DateCreated")
@@ -94,7 +91,6 @@ namespace DataAccess.Postgres.Migrations
             modelBuilder.Entity("DataAccess.Postgres.Entity.UnityEntity", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<Guid>("ParametersID")

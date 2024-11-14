@@ -3,44 +3,26 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DataAccess.Postgres.Repositories
 {
-    public class EquipmentRepository
+    internal class EquipmentRepository(DataContext dbContext) : IEquipmentRepository
     {
-        private readonly DataContext _dbContext;
-
-        public EquipmentRepository(DataContext dbContext)
-        {
-            _dbContext = dbContext;
-        }
-
-
         ///AsNoTracking вытягивает данные без отслеживания         
 
         /// Метод получает все устройства из БД./>.
         /// </summary>
         /// <returns>Лист устройств./>.</returns>
         /// <summary>
-        public async Task<List<EquipmentEntity>> Get()
+        public async Task<IEnumerable<EquipmentEntity>> GetAllAsync()
         {
-            return await _dbContext.Equipment
-                .AsNoTracking()
-                .ToListAsync();
+            return await dbContext.Equipment.ToListAsync();
         }
 
         /// Метод добавляет экзмепляр класса EquipmentEntity в БД./>.
         /// <summary>
-        public async Task Add(Guid id, string name, string type, string description, string owner)
+        public async Task<EquipmentEntity> Create(EquipmentEntity equipmentEntity)
         {
-            var equipmentEntity = new EquipmentEntity
-            {
-                Id = id,
-                Name = name,
-                Type = type,
-                Description = description,
-                Owner = owner                
-            };
-
-            await _dbContext.AddAsync(equipmentEntity);
-            await _dbContext.SaveChangesAsync();
+            await dbContext.Equipment.AddAsync(equipmentEntity);
+            await dbContext.SaveChangesAsync();
+            return equipmentEntity;
         }
     }
 }

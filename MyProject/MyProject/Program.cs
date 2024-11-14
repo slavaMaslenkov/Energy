@@ -1,5 +1,6 @@
 using DataAccess.Postgres;
 using Microsoft.EntityFrameworkCore;
+using MyProject.Models;
 
 namespace MyProject
 {
@@ -11,13 +12,11 @@ namespace MyProject
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
-            var configuration = builder.Configuration;
+            builder.Services.AddDataAccess();
 
-            builder.Services.AddDbContext<DataContext>(
-                options =>
-                {
-                    options.UseNpgsql(configuration.GetConnectionString(nameof(DataContext)));
-                });
+            // Добавление зависимостей из Models
+            builder.Services.AddScoped<IEquipmentService, EquipmentService>();
+
 
             var app = builder.Build();
 
