@@ -59,8 +59,6 @@ namespace MyProject.Controllers
         }
 
         // POST: EquipmentEntities/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(EquipmentEntity equipmentEntity)
@@ -74,7 +72,7 @@ namespace MyProject.Controllers
                     {
                         equipmentEntity.Id = Guid.NewGuid();
                     }
-
+                    Console.WriteLine("All right!");
                     await _equipmentService.Create(equipmentEntity);
                     return RedirectToAction(nameof(Index));
                 }

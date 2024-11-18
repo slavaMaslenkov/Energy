@@ -16,6 +16,6 @@ namespace DataAccess.Postgres.Entity
 
         public string Measure { get; set; } = string.Empty;
 
-        public ICollection<UnityEntity> Unity { get; set; }
+        public ICollection<UnityEntity>? Unity { get; set; }
     }
 }

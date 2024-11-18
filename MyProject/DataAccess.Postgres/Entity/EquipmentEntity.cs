@@ -20,6 +20,6 @@ namespace DataAccess.Postgres.Entity
 
         public string Owner { get; set; } = string.Empty;
 
-        public ICollection<SampleEntity> Sample { get; set; }
+        public ICollection<SampleEntity>? Sample { get; set; }
     }
 }
