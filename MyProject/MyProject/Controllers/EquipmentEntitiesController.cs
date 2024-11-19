@@ -72,7 +72,6 @@ namespace MyProject.Controllers
                     {
                         equipmentEntity.Id = Guid.NewGuid();
                     }
-                    Console.WriteLine("All right!");
                     await _equipmentService.Create(equipmentEntity);
                     return RedirectToAction(nameof(Index));
                 }
@@ -83,6 +82,17 @@ namespace MyProject.Controllers
                 }
             }
             return View(equipmentEntity);
+        }
+
+        public async Task<IActionResult> MainPage()
+        {
+            // Получение списка устройств из базы данных
+            var devices = await _equipmentService.GetDeviceNamesAsync();
+            Console.WriteLine("Привет ");
+            // Передача списка в ViewBag
+            ViewBag.Devices = devices;
+
+            return View();
         }
 
         /*// GET: EquipmentEntities/Edit/5
@@ -134,7 +144,7 @@ namespace MyProject.Controllers
                 return RedirectToAction(nameof(Index));
             }
             return View(equipmentEntity);
-        }
+        }*/
 
         // GET: EquipmentEntities/Delete/5
         public async Task<IActionResult> Delete(Guid? id)
@@ -143,15 +153,7 @@ namespace MyProject.Controllers
             {
                 return NotFound();
             }
-
-            var equipmentEntity = await _context.Equipment
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (equipmentEntity == null)
-            {
-                return NotFound();
-            }
-
-            return View(equipmentEntity);
+            return View(await _equipmentService.Delete(id));
         }
 
         // POST: EquipmentEntities/Delete/5
@@ -159,16 +161,10 @@ namespace MyProject.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            var equipmentEntity = await _context.Equipment.FindAsync(id);
-            if (equipmentEntity != null)
-            {
-                _context.Equipment.Remove(equipmentEntity);
-            }
-
-            await _context.SaveChangesAsync();
+            await _equipmentService.DeleteConfirmed(id);
             return RedirectToAction(nameof(Index));
         }
-
+        /*
         private bool EquipmentEntityExists(Guid id)
         {
             return _context.Equipment.Any(e => e.Id == id);

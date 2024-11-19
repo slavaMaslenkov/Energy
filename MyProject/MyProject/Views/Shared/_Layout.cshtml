@@ -7,6 +7,22 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/MyProject.styles.css" asp-append-version="true" />
+    <style>
+        .sidebar {
+            background-color: #007BFF; /* Синий фон */
+            color: white; /* Белый текст */
+            padding: 10px;
+            height: 100vh; /* Полная высота окна */
+            overflow-y: auto; /* Прокрутка, если список длинный */
+        }
+        .sidebar a {
+            color: white;
+            text-decoration: none;
+        }
+        .sidebar a:hover {
+            text-decoration: underline;
+        }
+    </style>
 </head>
 <body>
     <header>
@@ -26,10 +42,30 @@
             </div>
         </nav>
     </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Левый блок (синяя боковая панель) -->
+            <aside class="col-md-3 sidebar">
+                <h5>Устройства</h5>
+                @if (ViewBag.Devices != null && ((List<string>)ViewBag.Devices).Any())
+                {
+                    <ul>
+                        @foreach (var device in ViewBag.Devices as List<string>)
+                        {
+                            <li><a asp-controller="Device" asp-action="Details" asp-route-id="@device">@device</a></li>
+                        }
+                    </ul>
+                }
+                else
+                {
+                    <p>Нет доступных устройств.</p>
+                }
+            </aside>
+            <!-- Основной контент -->
+            <main role="main" class="col-md-9 pb-3">
+                @RenderBody()
+            </main>
+        </div>
     </div>
 
     <footer class="border-top footer text-muted">

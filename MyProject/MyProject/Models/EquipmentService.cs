@@ -14,5 +14,20 @@ namespace MyProject.Models
         {
             return await equipmentRepository.GetAllAsync();
         }
+
+        public async Task<EquipmentEntity> Delete(Guid? id)
+        {
+            return await equipmentRepository.Delete(id);
+        }
+
+        public async Task DeleteConfirmed(Guid? id)
+        {
+            await equipmentRepository.DeleteConfirmed(id);
+        }
+
+        public async Task<List<string>> GetDeviceNamesAsync()
+        {
+            return await equipmentRepository.GetDeviceNamesAsync();
+        }
     }
 }

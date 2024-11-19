@@ -16,7 +16,7 @@ namespace MyProject
 
             // Добавление зависимостей из Models
             builder.Services.AddScoped<IEquipmentService, EquipmentService>();
-
+            builder.Services.AddScoped<IParametersService, ParametersService>();
 
             var app = builder.Build();
 

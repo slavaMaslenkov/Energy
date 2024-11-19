@@ -11,7 +11,7 @@ namespace DataAccess.Postgres.Entity
     {
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public Guid Id { get; set; }
-
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public DateTime DateCreated { get; set; } = DateTime.Now;
 
         public string Name { get; set; } = string.Empty;
