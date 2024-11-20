@@ -14,6 +14,7 @@ namespace DataAccess.Postgres
         public DbSet<UnityEntity> Unity { get; set; }
 
         public DbSet<SampleEntity> Sample { get; set; }
+
         public DbSet<EquipmentEntity> Equipment { get; set; }
 
 

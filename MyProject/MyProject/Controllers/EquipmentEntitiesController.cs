@@ -23,7 +23,12 @@ namespace MyProject.Controllers
 
         private readonly IEquipmentService _equipmentService;
 
-        public EquipmentEntitiesController(IEquipmentService equipmentService) : base(equipmentService) { }
+        public EquipmentEntitiesController(IEquipmentService equipmentService, 
+            IParametersService parametersService, ISampleService sampleService) 
+            : base(equipmentService, parametersService, sampleService) 
+        {
+            _equipmentService = equipmentService;
+        }
 
         // GET: EquipmentEntities
         public async Task<IActionResult> Index()
@@ -62,34 +67,10 @@ namespace MyProject.Controllers
         {
             if (ModelState.IsValid)
             {
-                try
-                {
-                    // Генерация Guid, если он не задан
-                    if (equipmentEntity.Id == Guid.Empty)
-                    {
-                        equipmentEntity.Id = Guid.NewGuid();
-                    }
-                    await _equipmentService.Create(equipmentEntity);
-                    return RedirectToAction(nameof(Index));
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine($"Ошибка: {ex}"); // Вывод полной информации об ошибке
-                    ModelState.AddModelError("", $"Ошибка при сохранении данных: {ex.Message}");
-                }
+                 await _equipmentService.Create(equipmentEntity);
+                 return RedirectToAction(nameof(Index));
             }
             return View(equipmentEntity);
-        }
-
-        public async Task<IActionResult> MainPage()
-        {
-            // Получение списка устройств из базы данных
-            var devices = await _equipmentService.GetDeviceNamesAsync();
-            Console.WriteLine("Привет ");
-            // Передача списка в ViewBag
-            ViewBag.Devices = devices;
-
-            return View();
         }
 
         /*// GET: EquipmentEntities/Edit/5

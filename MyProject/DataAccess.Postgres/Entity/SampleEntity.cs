@@ -9,17 +9,17 @@ namespace DataAccess.Postgres.Entity
 {
     public class SampleEntity
     {
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public Guid Id { get; set; }
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public DateTime DateCreated { get; set; } = DateTime.Now;
+        public DateTime DateCreated { get; set; } = DateTime.Now.ToUniversalTime();
 
         public string Name { get; set; } = string.Empty;
 
         public Guid EquipmentID { get; set; }
 
-        public EquipmentEntity Equipment { get; set; }
+        public EquipmentEntity? Equipment { get; set; }
 
-        public ICollection<UnityEntity> Unity { get; set; }
+        public ICollection<UnityEntity>? Unity { get; set; }
     }
 }

@@ -1,0 +1,35 @@
+﻿@model DataAccess.Postgres.Entity.SampleEntity
+
+@{
+    ViewData["Title"] = "Create Sample";
+}
+
+<h2>Create Sample</h2>
+
+<form asp-action="Create" method="post">
+    <div class="form-group">
+        <label asp-for="Name" class="control-label"></label>
+        <input asp-for="Name" class="form-control" />
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="EquipmentID" class="control-label">Equipment</label>
+        @Html.DropDownListFor(
+                 model => model.EquipmentID,
+                 (SelectList)ViewBag.EquipmentList,
+                 "Select Equipment",  
+                 new { @class = "form-control" }
+                 )
+        <span asp-validation-for="EquipmentID" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <button type="submit" class="btn btn-primary">Create</button>
+        <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+    </div>
+</form>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

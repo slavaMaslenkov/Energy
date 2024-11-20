@@ -6,9 +6,9 @@ namespace MyProject.Controllers
 {
     public class HomeController : BaseController
     {
-        private readonly IEquipmentService _equipmentService;
-
-        public HomeController(IEquipmentService equipmentService) : base(equipmentService) { }
+        public HomeController(IEquipmentService equipmentService, 
+            IParametersService parametersService, ISampleService sampleService) 
+            : base(equipmentService, parametersService, sampleService) { }
 
         public IActionResult MainPage()
         {

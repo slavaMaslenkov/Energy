@@ -10,7 +10,12 @@ namespace MyProject.Controllers
 
         private readonly IParametersService _parametersService;
 
-        public ParametersEntitiesController(IParametersService parametersService) : base(parametersService) { }
+        public ParametersEntitiesController(IEquipmentService equipmentService, 
+            IParametersService parametersService, ISampleService sampleService) 
+            : base(equipmentService, parametersService, sampleService) 
+        {
+            _parametersService = parametersService;
+        }
 
         // GET: ParametersEntities
         public async Task<IActionResult> Index()
@@ -18,7 +23,7 @@ namespace MyProject.Controllers
             return View(await _parametersService.GetAllAsync());
         }
 
-        // GET: ParametersEntitiesController/Create
+        // GET: ParametersEntities/Create
         public IActionResult Create()
         {
             return View();

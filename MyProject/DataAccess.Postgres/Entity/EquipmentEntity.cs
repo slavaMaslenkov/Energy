@@ -9,7 +9,7 @@ namespace DataAccess.Postgres.Entity
 {
     public class EquipmentEntity
     {
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public Guid Id { get; set; }
 
         public string Name { get; set; } = string.Empty;

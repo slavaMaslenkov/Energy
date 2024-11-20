@@ -9,7 +9,7 @@ namespace DataAccess.Postgres.Entity
 {
     public class UnityEntity
     {
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public Guid Id { get; set; }
         public Guid ParametersID { get; set; }
 
@@ -17,7 +17,7 @@ namespace DataAccess.Postgres.Entity
 
         public float Value { get; set; }
 
-        public SampleEntity Parameters { get; set; }
+        public ParametersEntity Parameters { get; set; }
 
         public SampleEntity Sample { get; set; }
     }

@@ -1,5 +1,6 @@
 ﻿using DataAccess.Postgres.Entity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using MyProject.Models;
 
 namespace MyProject.Controllers
@@ -7,23 +8,34 @@ namespace MyProject.Controllers
     public class SampleEntitiesController : BaseController
     {
 
-        private readonly IParametersService _sampleService;
+        private readonly ISampleService _sampleService;
 
-        public SampleEntitiesController(ISampleService sampleService) : base(sampleService) { }
+        private readonly IEquipmentService _equipmentService;
 
-        // GET: ParametersEntities
+        public SampleEntitiesController(IEquipmentService equipmentService, 
+            IParametersService parametersService, ISampleService sampleService) 
+            : base(equipmentService, parametersService, sampleService)
+        {
+            _sampleService = sampleService;
+            _equipmentService = equipmentService;
+        }
+
+        // GET: SampleEntities
         public async Task<IActionResult> Index()
         {
             return View(await _sampleService.GetAllAsync());
         }
 
-        // GET: ParametersEntitiesController/Create
-        public IActionResult Create()
+        // GET: SampleEntitiesController/Create
+        public async Task<IActionResult> Create()
         {
+            var equipmentList = await _equipmentService.GetAllAsync();
+            // Загрузка списка оборудования
+            ViewBag.EquipmentList = new SelectList(equipmentList, "Id", "Name");
             return View();
         }
 
-        // POST: ParametersEntities/Create
+        // POST: SampleEntities/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(SampleEntity sampleEntity)
@@ -33,6 +45,10 @@ namespace MyProject.Controllers
                 await _sampleService.Create(sampleEntity);
                 return RedirectToAction(nameof(Index));
             }
+
+            // Повторная загрузка списка оборудования при ошибке валидации
+            var equipmentList = await _equipmentService.GetAllAsync();
+            ViewBag.EquipmentList = new SelectList(equipmentList, "Id", "Name");
             return View(sampleEntity);
         }
     }

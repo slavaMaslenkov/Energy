@@ -12,18 +12,11 @@ namespace MyProject.Controllers
 
         private readonly ISampleService _sampleService;
 
-        public BaseController(IEquipmentService equipmentService)
+        public BaseController(IEquipmentService equipmentService,
+            IParametersService parametersService, ISampleService sampleService)
         {
             _equipmentService = equipmentService;
-        }
-
-        public BaseController(IParametersService parametersService)
-        {
             _parametersService = parametersService;
-        }
-
-        public BaseController(ISampleService sampleService)
-        {
             _sampleService = sampleService;
         }
 
