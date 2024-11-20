@@ -21,7 +21,7 @@ namespace DataAccess.Postgres.Repositories
             return await dbContext.Parameters.ToListAsync();
         }
 
-        /// Метод добавляет экзмепляр класса ParametersEntity в БД./>.
+        /// Метод добавляет экзмепляр класса SampleEntity в БД./>.
         /// <summary>
         public async Task<ParametersEntity> Create(ParametersEntity parametersEntity)
         {

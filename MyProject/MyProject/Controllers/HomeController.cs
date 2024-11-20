@@ -4,21 +4,14 @@ using System.Diagnostics;
 
 namespace MyProject.Controllers
 {
-    public class HomeController : Controller
+    public class HomeController : BaseController
     {
         private readonly IEquipmentService _equipmentService;
 
-        public HomeController(IEquipmentService equipmentService)
+        public HomeController(IEquipmentService equipmentService) : base(equipmentService) { }
+
+        public IActionResult MainPage()
         {
-            _equipmentService = equipmentService;
-        }
-        public async Task<IActionResult> MainPage()
-        {
-            // Получение списка устройств из базы данных
-            var devices = await _equipmentService.GetDeviceNamesAsync();
-            Console.WriteLine("Привет ");
-            // Передача списка в ViewBag
-            ViewBag.Devices = devices;
             return View();
         }
     }

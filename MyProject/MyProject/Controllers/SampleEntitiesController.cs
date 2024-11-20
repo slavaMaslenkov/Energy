@@ -1,21 +1,20 @@
 ﻿using DataAccess.Postgres.Entity;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MyProject.Models;
 
 namespace MyProject.Controllers
 {
-    public class ParametersEntitiesController : BaseController
+    public class SampleEntitiesController : BaseController
     {
 
-        private readonly IParametersService _parametersService;
+        private readonly IParametersService _sampleService;
 
-        public ParametersEntitiesController(IParametersService parametersService) : base(parametersService) { }
+        public SampleEntitiesController(ISampleService sampleService) : base(sampleService) { }
 
         // GET: ParametersEntities
         public async Task<IActionResult> Index()
         {
-            return View(await _parametersService.GetAllAsync());
+            return View(await _sampleService.GetAllAsync());
         }
 
         // GET: ParametersEntitiesController/Create
@@ -27,14 +26,14 @@ namespace MyProject.Controllers
         // POST: ParametersEntities/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(ParametersEntity parametersEntity)
+        public async Task<IActionResult> Create(SampleEntity sampleEntity)
         {
             if (ModelState.IsValid)
             {
-                await _parametersService.Create(parametersEntity);
+                await _sampleService.Create(sampleEntity);
                 return RedirectToAction(nameof(Index));
             }
-            return View(parametersEntity);
+            return View(sampleEntity);
         }
     }
 }

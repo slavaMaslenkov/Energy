@@ -9,9 +9,9 @@ using System.Threading.Tasks;
 
 namespace DataAccess.Postgres.Configurations
 {
-    public class ParametersConfiguration : IEntityTypeConfiguration<ParametersEntity>
+    public class ParametersConfiguration : IEntityTypeConfiguration<SampleEntity>
     {
-        public void Configure(EntityTypeBuilder<ParametersEntity> builder)
+        public void Configure(EntityTypeBuilder<SampleEntity> builder)
         {
             builder.HasKey(p => p.Id);
 

@@ -12,7 +12,7 @@ using System.Xml.Linq;
 
 namespace MyProject.Controllers
 {
-    public class EquipmentEntitiesController : Controller
+    public class EquipmentEntitiesController : BaseController
     {
         /*private readonly DataContext _context;
 
@@ -23,10 +23,7 @@ namespace MyProject.Controllers
 
         private readonly IEquipmentService _equipmentService;
 
-        public EquipmentEntitiesController(IEquipmentService equipmentService)
-        {
-            _equipmentService = equipmentService;
-        }
+        public EquipmentEntitiesController(IEquipmentService equipmentService) : base(equipmentService) { }
 
         // GET: EquipmentEntities
         public async Task<IActionResult> Index()
