@@ -3,15 +3,26 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DataAccess.Postgres.Repositories
 {
-    public class UnityRepository
+    internal class UnityRepository (DataContext dbContext) : IUnityRepository
     {
-        private readonly DataContext _dbContext;
 
-        public UnityRepository(DataContext dbContext)
+        /// Метод получает все виды параметров из БД./>.
+        /// </summary>
+        /// <returns>Лист шаблонов устройства./>.</returns>
+        /// <summary>
+        public async Task<IEnumerable<UnityEntity>> GetAllAsync()
         {
-            _dbContext = dbContext;
+            return await dbContext.Unity.ToListAsync();
         }
 
+        /// Метод добавляет экзмепляр класса SampleEntity в БД./>.
+        /// <summary>
+        public async Task<UnityEntity> Create(UnityEntity unityEntity)
+        {
+            await dbContext.Unity.AddAsync(unityEntity);
+            await dbContext.SaveChangesAsync();
+            return unityEntity;
+        }
 
         /// Метод получает параметры определенного шаблона устройства./>.
         /// </summary>
@@ -19,10 +30,10 @@ namespace DataAccess.Postgres.Repositories
         /// <summary>
         public async Task<List<UnityEntity>> GetByFilter(string name)
         {
-            var query = _dbContext.Unity.AsNoTracking();
+            var query = dbContext.Unity.AsNoTracking();
             if (!string.IsNullOrEmpty(name))
             {
-                query = _dbContext.Unity
+                query = dbContext.Unity
                     .Include(s => s.Sample)
                     .Where(s => s.Sample.Name == name);                    ;
             }

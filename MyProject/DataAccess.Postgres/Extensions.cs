@@ -18,6 +18,7 @@ namespace DataAccess.Postgres
             serviceCollection.AddScoped<IEquipmentRepository, EquipmentRepository>();
             serviceCollection.AddScoped<IParametersRepository, ParametersRepository>();
             serviceCollection.AddScoped<ISampleRepository, SampleRepository>();
+            serviceCollection.AddScoped<IUnityRepository, UnityRepository>();
             serviceCollection.AddDbContext<DataContext>(
             options =>
             {

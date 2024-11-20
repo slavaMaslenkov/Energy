@@ -18,6 +18,7 @@ namespace MyProject
             builder.Services.AddScoped<IEquipmentService, EquipmentService>();
             builder.Services.AddScoped<IParametersService, ParametersService>();
             builder.Services.AddScoped<ISampleService, SampleService>();
+            builder.Services.AddScoped<IUnityService, UnityService>();
 
             var app = builder.Build();
 

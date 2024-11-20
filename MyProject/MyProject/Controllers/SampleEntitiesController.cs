@@ -13,8 +13,8 @@ namespace MyProject.Controllers
         private readonly IEquipmentService _equipmentService;
 
         public SampleEntitiesController(IEquipmentService equipmentService, 
-            IParametersService parametersService, ISampleService sampleService) 
-            : base(equipmentService, parametersService, sampleService)
+            IParametersService parametersService, ISampleService sampleService, IUnityService unityService) 
+            : base(equipmentService, parametersService, sampleService, unityService)
         {
             _sampleService = sampleService;
             _equipmentService = equipmentService;
