@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace DataAccess.Postgres.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20241114094844_initial")]
+    [Migration("20241121133649_initial")]
     partial class initial
     {
         /// <inheritdoc />
@@ -28,6 +28,7 @@ namespace DataAccess.Postgres.Migrations
             modelBuilder.Entity("DataAccess.Postgres.Entity.EquipmentEntity", b =>
                 {
                     b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<string>("Description")
@@ -51,9 +52,10 @@ namespace DataAccess.Postgres.Migrations
                     b.ToTable("Equipment");
                 });
 
-            modelBuilder.Entity("DataAccess.Postgres.Entity.SampleEntity", b =>
+            modelBuilder.Entity("DataAccess.Postgres.Entity.ParametersEntity", b =>
                 {
                     b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<string>("Measure")
@@ -72,9 +74,11 @@ namespace DataAccess.Postgres.Migrations
             modelBuilder.Entity("DataAccess.Postgres.Entity.SampleEntity", b =>
                 {
                     b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<DateTime>("DateCreated")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<Guid>("EquipmentID")
@@ -94,6 +98,7 @@ namespace DataAccess.Postgres.Migrations
             modelBuilder.Entity("DataAccess.Postgres.Entity.UnityEntity", b =>
                 {
                     b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<Guid>("ParametersID")
@@ -127,7 +132,7 @@ namespace DataAccess.Postgres.Migrations
 
             modelBuilder.Entity("DataAccess.Postgres.Entity.UnityEntity", b =>
                 {
-                    b.HasOne("DataAccess.Postgres.Entity.SampleEntity", "Parameters")
+                    b.HasOne("DataAccess.Postgres.Entity.ParametersEntity", "Parameters")
                         .WithMany("Unity")
                         .HasForeignKey("ParametersID")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -149,7 +154,7 @@ namespace DataAccess.Postgres.Migrations
                     b.Navigation("Sample");
                 });
 
-            modelBuilder.Entity("DataAccess.Postgres.Entity.SampleEntity", b =>
+            modelBuilder.Entity("DataAccess.Postgres.Entity.ParametersEntity", b =>
                 {
                     b.Navigation("Unity");
                 });

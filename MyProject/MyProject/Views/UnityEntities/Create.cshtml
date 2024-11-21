@@ -20,7 +20,7 @@
     <div class="form-group">
         <label asp-for="ParametersID" class="control-label">Parameters</label>
         @Html.DropDownListFor(
-                 model => model.Parameters,
+                 model => model.ParametersID,
                  (SelectList)ViewBag.ParametersList,
                  "Select Parameter",
                  new { @class = "form-control" }
