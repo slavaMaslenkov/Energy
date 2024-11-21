@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using DataAccess.Postgres.Entity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using MyProject.Models;
 
@@ -24,10 +25,16 @@ namespace MyProject.Controllers
         // GET: UnityEntities
         public async Task<IActionResult> Index()
         {
+            var parametersList = await _parametersService.GetAllAsync();
+            var sampleList = await _sampleService.GetAllAsync();
+            // Загрузка списка параметров
+            ViewBag.ParametersList = new SelectList(parametersList, "Id", "Name");
+            // Загрузка списка шаблонов
+            ViewBag.SampleList = new SelectList(sampleList, "Id", "Name");
             return View(await _unityService.GetAllAsync());
         }
 
-        // GET: UnityEntitiesController/Create
+        // GET: UnityEntities/Create
         public async Task<IActionResult> Create()
         {
             var parametersList = await _parametersService.GetAllAsync();
@@ -37,6 +44,26 @@ namespace MyProject.Controllers
             // Загрузка списка шаблонов
             ViewBag.SampleList = new SelectList(sampleList, "Id", "Name");
             return View();
+        }
+
+        // POST: UnityEntities/Create
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create(UnityEntity unityEntity)
+        {
+            if (ModelState.IsValid)
+            {
+                await _unityService.Create(unityEntity);
+                return RedirectToAction(nameof(Index));
+            }
+
+            // Повторная загрузка списка оборудования при ошибке валидации
+            var parametersList = await _parametersService.GetAllAsync();
+            var sampleList = await _sampleService.GetAllAsync();
+            ViewBag.ParametersList = new SelectList(parametersList, "Id", "Name");
+            // Загрузка списка шаблонов
+            ViewBag.SampleList = new SelectList(sampleList, "Id", "Name");
+            return View(unityEntity);
         }
 
     }

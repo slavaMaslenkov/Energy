@@ -1,0 +1,45 @@
+﻿@model DataAccess.Postgres.Entity.UnityEntity
+
+@{
+    ViewData["Title"] = "Create Unity";
+}
+
+<h2>Create Sample</h2>
+
+<form asp-action="Create" method="post">
+    <div class="form-group">
+        <label asp-for="SampleID" class="control-label">Sample</label>
+        @Html.DropDownListFor(
+                 model => model.SampleID,
+                 (SelectList)ViewBag.SampleList,
+                 "Select Sample",
+                 new { @class = "form-control" }
+                 )
+        <span asp-validation-for="SampleID" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="ParametersID" class="control-label">Parameters</label>
+        @Html.DropDownListFor(
+                 model => model.Parameters,
+                 (SelectList)ViewBag.ParametersList,
+                 "Select Parameter",
+                 new { @class = "form-control" }
+                 )
+        <span asp-validation-for="ParametersID" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Value" class="control-label"></label>
+        <input asp-for="Value" class="form-control" />
+        <span asp-validation-for="Value" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <button type="submit" class="btn btn-primary">Create</button>
+        <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+    </div>
+</form>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

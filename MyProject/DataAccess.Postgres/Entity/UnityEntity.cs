@@ -17,8 +17,8 @@ namespace DataAccess.Postgres.Entity
 
         public float Value { get; set; }
 
-        public ParametersEntity Parameters { get; set; }
+        public ParametersEntity? Parameters { get; set; }
 
-        public SampleEntity Sample { get; set; }
+        public SampleEntity? Sample { get; set; }
     }
 }
