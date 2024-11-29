@@ -9,10 +9,35 @@ namespace DataAccess.Postgres.Repositories
 {
     public interface IEquipmentRepository
     {
+        /// <summary>
+        /// Метод создания экземпляра EquipmentEntity.
+        /// </summary>
         Task<EquipmentEntity> Create(EquipmentEntity equipmentEntity);
+
+        /// <summary>
+        /// Метод получения списка всех созданных EquipmentEntity.
+        /// </summary>
         Task<IEnumerable<EquipmentEntity>> GetAllAsync();
+
+        /// <summary>
+        /// Метод удаления экземпляра EquipmentEntity.
+        /// </summary>
         Task<EquipmentEntity> Delete(Guid? id);
+
+        /// <summary>
+        /// Метод подтверждения удаления экземпляра EquipmentEntity.
+        /// </summary>
         Task DeleteConfirmed(Guid? id);
+
+        /// <summary>
+        /// Метод получения названий экземпляров EquipmentEntity.
+        /// </summary>
         Task<List<string>> GetDeviceNamesAsync();
+
+        /// <summary>
+        /// Метод получения названий экземпляров EquipmentEntity,
+        /// у которых есть экземпляр UnityEntity.
+        /// </summary>
+        Task<List<string>> GetAvailableDeviceNamesAsync();
     }
 }

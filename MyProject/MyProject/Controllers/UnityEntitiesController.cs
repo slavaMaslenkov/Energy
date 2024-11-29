@@ -66,5 +66,23 @@ namespace MyProject.Controllers
             return View(unityEntity);
         }
 
+        public async Task<IActionResult> DeviceUnity(string deviceName)
+        {
+            if (string.IsNullOrEmpty(deviceName))
+            {
+                return NotFound();
+            }
+
+            var unityData = await _unityService.GetByFilter(deviceName);
+
+            if (!unityData.Any())
+            {
+                return NotFound();
+            }
+
+            ViewBag.DeviceName = deviceName;
+            return View("Index", unityData);
+        }
+
     }
 }

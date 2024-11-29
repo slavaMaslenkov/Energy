@@ -52,7 +52,11 @@
                     <ul>
                         @foreach (var device in ViewBag.Devices as List<string>)
                         {
-                            <li><a asp-controller="Device" asp-action="Details" asp-route-id="@device">@device</a></li>
+                            <li class="@(device == ViewBag.ActiveDevice ? "active" : "")">
+                                <a asp-controller="UnityEntities" asp-action="DeviceUnity" asp-route-deviceName="@device">
+                                    @device
+                                </a>
+                            </li>
                         }
                     </ul>
                 }

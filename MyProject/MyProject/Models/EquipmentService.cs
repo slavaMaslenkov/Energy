@@ -29,5 +29,10 @@ namespace MyProject.Models
         {
             return await equipmentRepository.GetDeviceNamesAsync();
         }
+
+        public async Task<List<string>> GetAvailableDeviceNamesAsync()
+        {
+            return await equipmentRepository.GetAvailableDeviceNamesAsync();
+        }
     }
 }

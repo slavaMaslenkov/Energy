@@ -30,7 +30,7 @@ namespace MyProject.Controllers
             base.OnActionExecuting(dbContext);
 
             // Загружаем устройства и добавляем их в ViewBag
-            var devices = _equipmentService.GetDeviceNamesAsync().Result;
+            var devices = _equipmentService.GetAvailableDeviceNamesAsync().Result;
             ViewBag.Devices = devices ?? new List<string>();
         }
     }

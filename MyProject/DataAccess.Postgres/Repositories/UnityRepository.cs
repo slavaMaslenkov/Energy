@@ -30,14 +30,18 @@ namespace DataAccess.Postgres.Repositories
         /// <summary>
         public async Task<List<UnityEntity>> GetByFilter(string name)
         {
-            var query = dbContext.Unity.AsNoTracking();
-            if (!string.IsNullOrEmpty(name))
+            if (string.IsNullOrEmpty(name))
             {
-                query = dbContext.Unity
-                    .Include(s => s.Sample)
-                    .Where(s => s.Sample.Name == name);                    ;
+                return new List<UnityEntity>();
             }
 
+            var query = dbContext.Unity
+                          .AsNoTracking()
+                          .Include(u => u.Sample) // Включаем данные из Sample
+                          .ThenInclude(s => s.Equipment) // Включаем данные из Equipment
+                          .Where(u => u.Sample != null &&
+                               u.Sample.Equipment != null &&
+                               u.Sample.Equipment.Name == name);
             return await query.ToListAsync();
         }
     }

@@ -20,3 +20,14 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+.sidebar .active {
+    background-color: #0056b3; /* Темно-синий фон */
+    font-weight: bold; /* Жирный текст */
+    border-radius: 5px; /* Закругленные края */
+    padding: 5px; /* Внутренний отступ */
+}
+
+.sidebar .active a {
+    color: white; /* Цвет текста */
+}
