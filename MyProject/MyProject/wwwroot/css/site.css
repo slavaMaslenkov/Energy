@@ -21,13 +21,22 @@ body {
   margin-bottom: 60px;
 }
 
-.sidebar .active {
-    background-color: #0056b3; /* Темно-синий фон */
-    font-weight: bold; /* Жирный текст */
-    border-radius: 5px; /* Закругленные края */
-    padding: 5px; /* Внутренний отступ */
+/* Стили для боковой панели */
+.sidebar {
+    background-color: #007BFF; /* Синий фон */
+    color: white; /* Белый текст */
+    padding: 10px;
+    height: 100vh; /* Полная высота окна */
+    overflow-y: auto; /* Прокрутка, если список длинный */
 }
 
-.sidebar .active a {
-    color: white; /* Цвет текста */
+.sidebar a {
+    color: white;
+    text-decoration: none;
 }
+
+.sidebar a:hover {
+    text-decoration: underline;
+}
+
+/* Стили для кнопки "Добавить устройство" */

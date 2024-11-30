@@ -5,7 +5,7 @@ namespace DataAccess.Postgres.Repositories
 {
     internal class UnityRepository (DataContext dbContext) : IUnityRepository
     {
-
+        /// </summary>
         /// Метод получает все виды параметров из БД./>.
         /// </summary>
         /// <returns>Лист шаблонов устройства./>.</returns>
@@ -15,6 +15,7 @@ namespace DataAccess.Postgres.Repositories
             return await dbContext.Unity.ToListAsync();
         }
 
+        /// </summary>
         /// Метод добавляет экзмепляр класса SampleEntity в БД./>.
         /// <summary>
         public async Task<UnityEntity> Create(UnityEntity unityEntity)
@@ -24,6 +25,7 @@ namespace DataAccess.Postgres.Repositories
             return unityEntity;
         }
 
+        /// </summary>
         /// Метод получает параметры определенного шаблона устройства./>.
         /// </summary>
         /// <returns>Возвращает таблицу Unity по опрделенному шаблону./>.</returns>
@@ -39,6 +41,7 @@ namespace DataAccess.Postgres.Repositories
                           .AsNoTracking()
                           .Include(u => u.Sample) // Включаем данные из Sample
                           .ThenInclude(s => s.Equipment) // Включаем данные из Equipment
+                          .Include(u => u.Parameters)
                           .Where(u => u.Sample != null &&
                                u.Sample.Equipment != null &&
                                u.Sample.Equipment.Name == name);
