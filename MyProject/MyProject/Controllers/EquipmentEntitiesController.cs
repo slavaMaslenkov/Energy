@@ -1,14 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using DataAccess.Postgres;
+﻿using Microsoft.AspNetCore.Mvc;
 using DataAccess.Postgres.Entity;
 using MyProject.Models;
-using System.Xml.Linq;
+using Microsoft.EntityFrameworkCore;
 
 namespace MyProject.Controllers
 {
@@ -30,24 +23,6 @@ namespace MyProject.Controllers
             return View(await _equipmentService.GetAllAsync());
         }
 
-        /*// GET: EquipmentEntities/Details/5
-        public async Task<IActionResult> Details(Guid? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var equipmentEntity = await _context.Equipment
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (equipmentEntity == null)
-            {
-                return NotFound();
-            }
-
-            return View(equipmentEntity);
-        }*/
-
         // GET: EquipmentEntities/Create
         public IActionResult Create()
         {
@@ -67,25 +42,17 @@ namespace MyProject.Controllers
             return View(equipmentEntity);
         }
 
-        /*// GET: EquipmentEntities/Edit/5
+        // GET: EquipmentEntities/Edit/5
         public async Task<IActionResult> Edit(Guid? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
-
-            var equipmentEntity = await _context.Equipment.FindAsync(id);
-            if (equipmentEntity == null)
-            {
-                return NotFound();
-            }
-            return View(equipmentEntity);
+            return View(await _equipmentService.Edit(id));
         }
 
         // POST: EquipmentEntities/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(Guid id, [Bind("Id,Name,Type,Description,Owner")] EquipmentEntity equipmentEntity)
@@ -99,12 +66,11 @@ namespace MyProject.Controllers
             {
                 try
                 {
-                    _context.Update(equipmentEntity);
-                    await _context.SaveChangesAsync();
+                    await _equipmentService.EditPost(equipmentEntity);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!EquipmentEntityExists(equipmentEntity.Id))
+                    if (!_equipmentService.EquipmentEntityExists(equipmentEntity.Id))
                     {
                         return NotFound();
                     }
@@ -116,7 +82,7 @@ namespace MyProject.Controllers
                 return RedirectToAction(nameof(Index));
             }
             return View(equipmentEntity);
-        }*/
+        }
 
         // GET: EquipmentEntities/Delete/5
         public async Task<IActionResult> Delete(Guid? id)
@@ -127,7 +93,7 @@ namespace MyProject.Controllers
             }
             return View(await _equipmentService.Delete(id));
         }
-
+        
         // POST: EquipmentEntities/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
@@ -136,10 +102,27 @@ namespace MyProject.Controllers
             await _equipmentService.DeleteConfirmed(id);
             return RedirectToAction(nameof(Index));
         }
-        /*
-        private bool EquipmentEntityExists(Guid id)
+
+        [HttpPost]
+        public async Task<IActionResult> DeleteSelected(string ids)
         {
-            return _context.Equipment.Any(e => e.Id == id);
-        }*/
+            if (string.IsNullOrEmpty(ids))
+            {
+                return RedirectToAction(nameof(Index));
+            }
+
+            var idList = ids.Split(',').Select(Guid.Parse).ToList();
+
+            foreach (var id in idList)
+            {
+                var equipmentEntity = await _equipmentService.Edit(id);
+                if (equipmentEntity != null)
+                {
+                    await _equipmentService.DeleteConfirmed(id); // Удалить каждое устройство по ID
+                }
+            }
+
+            return RedirectToAction(nameof(Index)); // Перенаправление на главную страницу
+        }
     }
 }

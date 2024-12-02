@@ -39,5 +39,20 @@ namespace DataAccess.Postgres.Repositories
         /// у которых есть экземпляр UnityEntity.
         /// </summary>
         Task<List<string>> GetAvailableDeviceNamesAsync();
+
+        /// <summary>
+        /// Метод получения возможности редактирования экземпляра EquipmentEntity.
+        /// </summary>
+        Task<EquipmentEntity> Edit(Guid? id);
+
+        /// <summary>
+        /// Метод получения возможности редактирования экземпляра EquipmentEntity.
+        /// </summary>
+        Task EditPost(EquipmentEntity equipmentEntity);
+
+        /// <summary>
+        /// Метод проверки наличия экземпляра EquipmentEntity.
+        /// </summary>
+        bool EquipmentEntityExists(Guid id);
     }
 }

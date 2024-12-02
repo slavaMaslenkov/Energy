@@ -20,6 +20,9 @@
                             <a class="nav-link" asp-area="" asp-controller="Home" asp-action="MainPage">Таблицы</a>
                         </li>
                         <li class="nav-item">
+                            <a class="nav-link" asp-area="" asp-controller="EquipmentEntities" asp-action="Index">Устройства</a>
+                        </li>
+                        <li class="nav-item">
                             <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Privacy">Настройка</a>
                         </li>
                     </ul>
@@ -31,15 +34,16 @@
         <div class="row">
             <!-- Левый блок (синяя боковая панель) -->
             <aside class="col-md-3 sidebar">
-                <h5>Устройства</h5>
+                <h5>Перечень</h5>
                 @if (ViewBag.Devices != null && ((List<string>)ViewBag.Devices).Any())
                 {
-                    <ul>
+                    <ul style="list-style-type: none;">
                         @foreach (var device in ViewBag.Devices as List<string>)
                         {
-                            <li class="@(device == ViewBag.ActiveDevice ? "active" : "")">
-                                <a asp-controller="UnityEntities" asp-action="DeviceUnity" asp-route-deviceName="@device">
-                                    @device
+                            <li class="@(device == ViewBag.ActiveDevice ? "active" : "")" style=" margin-bottom: 10px;">
+                                <a asp-controller="UnityEntities" asp-action="DeviceUnity" asp-route-deviceName="@device"
+                                   style="text-decoration: none;">
+                                    <i class="bi bi-table me-3" style="cursor: pointer;"></i>@device                                    
                                 </a>
                             </li>
                         }
@@ -49,9 +53,10 @@
                 {
                     <p>Нет доступных устройств.</p>
                 }
-                <button type="button" class="btn btn-secondary">
-                    <i class="bi bi-plus-square"></i> Добавить
-                </button>
+                <a class="btn btn-secondary d-inline-flex align-items-center text-dark" asp-area="" asp-controller="UnityEntities" asp-action="Create"
+                    style="text-decoration: none;">
+                    <i class="bi bi-plus-square me-2"></i> Добавить
+                </a>
             </aside>
             <!-- Основной контент -->
             <main role="main" class="col-md-9 pb-3">

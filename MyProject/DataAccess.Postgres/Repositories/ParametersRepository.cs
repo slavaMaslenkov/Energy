@@ -18,7 +18,10 @@ namespace DataAccess.Postgres.Repositories
         /// <summary>
         public async Task<IEnumerable<ParametersEntity>> GetAllAsync()
         {
-            return await dbContext.Parameters.ToListAsync();
+            return await dbContext.Parameters
+                .AsNoTracking()
+                .OrderBy(e => e.Name)
+                .ToListAsync();
         }
 
         /// Метод добавляет экзмепляр класса SampleEntity в БД./>.

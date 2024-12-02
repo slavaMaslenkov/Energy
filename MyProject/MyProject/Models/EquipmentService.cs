@@ -34,5 +34,19 @@ namespace MyProject.Models
         {
             return await equipmentRepository.GetAvailableDeviceNamesAsync();
         }
+        public async Task<EquipmentEntity> Edit(Guid? id)
+        {
+            return await equipmentRepository.Edit(id);
+        }
+
+        public async Task EditPost(EquipmentEntity equipmentEntity)
+        {
+            await equipmentRepository.EditPost(equipmentEntity);
+        }
+
+        public bool EquipmentEntityExists(Guid id)
+        {
+            return equipmentRepository.EquipmentEntityExists(id);
+        }
     }
 }

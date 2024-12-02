@@ -13,7 +13,10 @@ namespace DataAccess.Postgres.Repositories
         /// <summary>
         public async Task<IEnumerable<EquipmentEntity>> GetAllAsync()
         {
-            return await dbContext.Equipment.AsNoTracking().ToListAsync();
+            return await dbContext.Equipment
+                .AsNoTracking()
+                .OrderBy(e => e.Name)
+                .ToListAsync();
         }
 
         /// <summary>
@@ -75,6 +78,31 @@ namespace DataAccess.Postgres.Repositories
                  .Select(e => e.Name)
                  .ToListAsync();
             return devices;
+        }
+
+        /// <summary>
+        /// Метод получения возможности редактирования.
+        /// <summary>
+        public async Task<EquipmentEntity> Edit(Guid? id)
+        {
+            var equipmentEntity = await dbContext.Equipment.FindAsync(id);
+            return equipmentEntity;
+        }
+
+        /// <summary>
+        /// Метод редактирования экземпляра EquipmentEntity.
+        /// <summary>
+        public async Task EditPost(EquipmentEntity equipmentEntity)
+        {
+            dbContext.Update(equipmentEntity);
+            await dbContext.SaveChangesAsync();
+        }
+        /// <summary>
+        /// Метод проверки наличия экземпляра.
+        /// <summary>
+        public bool EquipmentEntityExists(Guid id)
+        {
+            return dbContext.Equipment.Any(e => e.Id == id);
         }
     }
 }

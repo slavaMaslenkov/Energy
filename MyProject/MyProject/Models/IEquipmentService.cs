@@ -11,5 +11,11 @@ namespace MyProject.Models
         Task<List<string>> GetDeviceNamesAsync();
 
         Task<List<string>> GetAvailableDeviceNamesAsync();
+
+        Task<EquipmentEntity> Edit(Guid? id);
+
+        Task EditPost(EquipmentEntity equipmentEntity);
+
+        bool EquipmentEntityExists(Guid id);
     }
 }
