@@ -1,6 +1,7 @@
 ﻿using DataAccess.Postgres.Entity;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using MyProject.Models;
 
 namespace MyProject.Controllers
@@ -40,6 +41,89 @@ namespace MyProject.Controllers
                 return RedirectToAction(nameof(Index));
             }
             return View(parametersEntity);
+        }
+
+        // GET: ParametersEntities/Delete/5
+        public async Task<IActionResult> Delete(Guid? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            return View(await _parametersService.Delete(id));
+        }
+
+        // POST: ParametersEntities/Delete/5
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(Guid id)
+        {
+            await _parametersService.DeleteConfirmed(id);
+            return RedirectToAction(nameof(Index));
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> DeleteSelected(string ids)
+        {
+            if (string.IsNullOrEmpty(ids))
+            {
+                return RedirectToAction(nameof(Index));
+            }
+
+            var idList = ids.Split(',').Select(Guid.Parse).ToList();
+
+            foreach (var id in idList)
+            {
+                var parametersEntity = await _parametersService.Edit(id);
+                if (parametersEntity != null)
+                {
+                    await _parametersService.DeleteConfirmed(id); // Удалить каждое устройство по ID
+                }
+            }
+
+            return RedirectToAction(nameof(Index)); // Перенаправление на главную страницу
+        }
+
+        // GET: ParametersEntities/Edit/5
+        public async Task<IActionResult> Edit(Guid? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            return View(await _parametersService.Edit(id));
+        }
+
+        // POST: ParametersEntities/Edit/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(Guid id, [Bind("Id,Name,Measure")] ParametersEntity parametersEntities)
+        {
+            if (id != parametersEntities.Id)
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    await _parametersService.EditPost(parametersEntities);
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!_parametersService.ParametersEntityExists(parametersEntities.Id))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+                return RedirectToAction(nameof(Index));
+            }
+            return View(parametersEntities);
         }
     }
 }

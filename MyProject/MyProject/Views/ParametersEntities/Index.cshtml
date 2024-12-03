@@ -1,17 +1,29 @@
 ﻿@model IEnumerable<DataAccess.Postgres.Entity.ParametersEntity>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Параметры";
 }
 
-<h1>Index</h1>
-
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+<h1 class="d-flex justify-content-between align-items-center">
+    Параметы
+    <div>
+        <a class="btn btn-secondary d-inline-flex align-items-center text-dark me-2"
+           asp-action="Create" style="text-decoration: none;">
+            <i class="bi bi-plus-square me-2"></i> Добавить
+        </a>
+        <a id="delete-selected"
+           class="btn btn-info d-inline-flex align-items-center text-dark"
+           style="text-decoration: none;">
+            <i class="bi bi-trash me-2"></i> Удалить
+        </a>
+    </div>
+</h1>
 <table class="table">
     <thead>
         <tr>
+            <th>
+                <input type="checkbox" id="select-all" /> <!-- Чекбокс для выбора всех -->
+            </th>
             <th>
                 @Html.DisplayNameFor(model => model.Name)
             </th>
@@ -26,16 +38,123 @@
         {
             <tr>
                 <td>
+                    <input type="checkbox" class="select-item" value="@item.Id" /> <!-- Чекбокс для каждого устройства -->
+                </td>
+                <td>
                     @Html.DisplayFor(modelItem => item.Name)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Measure)
                 </td>
                 <td>
-                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                    <a class="text-dark" asp-controller="ParametersEntities" asp-action="Edit" style="text-decoration: none;">
+                        <i class="bi bi-pen me-2" style="cursor: pointer;"></i>
+                    </a>
+                    <i class="bi bi-trash me-2 text-dark"
+                       style="cursor: pointer;"
+                       data-bs-toggle="modal"
+                       data-bs-target="#deleteModal"
+                       data-device-name="@item.Name"
+                       data-delete-url="@Url.Action("Delete", "ParametersEntities", new { id = item.Id })">
+                    </i>
                 </td>
             </tr>
         }
     </tbody>
 </table>
+<!-- Модальное окно для массового удаления -->
+<div class="modal fade" id="massDeleteModal" tabindex="-1" aria-labelledby="massDeleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="massDeleteModalLabel">Подтверждение удаления</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+            </div>
+            <div class="modal-body">
+                Вы уверены, что хотите удалить <span id="deviceCount"></span> выбранных параметра?
+            </div>
+            <div class="modal-footer">
+                <form id="deleteSelectedForm" method="post">
+                    <button type="submit" class="btn btn-danger">Удалить</button>
+                </form>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Модальное окно для одиночного удаления -->
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteModalLabel">Подтверждение удаления</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+            </div>
+            <div class="modal-body">
+                Вы уверены, что хотите удалить параметр <span id="deviceName"></span>?
+            </div>
+            <div class="modal-footer">
+                <form id="deleteForm" method="post">
+                    <button type="submit" class="btn btn-danger">Удалить</button>
+                </form>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Скрипт настройки модального окна -->
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const selectAllCheckbox = document.getElementById('select-all');
+        const deleteSelectedButton = document.getElementById('delete-selected');
+        const massDeleteModal = document.getElementById('massDeleteModal');
+        const deviceCountElement = document.getElementById('deviceCount');
+        const deleteSelectedForm = document.getElementById('deleteSelectedForm');
+
+        // Отметить все чекбоксы при выборе "выбрать все"
+        selectAllCheckbox.addEventListener('change', function () {
+            const checkboxes = document.querySelectorAll('.select-item');
+            checkboxes.forEach(function (checkbox) {
+                checkbox.checked = selectAllCheckbox.checked;
+            });
+        });
+
+        // Обработка кнопки "Удалить"
+        deleteSelectedButton.addEventListener('click', function () {
+            const selectedIds = [];
+            const checkboxes = document.querySelectorAll('.select-item:checked');
+            checkboxes.forEach(function (checkbox) {
+                selectedIds.push(checkbox.value);
+            });
+
+            if (selectedIds.length > 0) {
+                // Показать модальное окно с количеством выбранных устройств
+                deviceCountElement.textContent = selectedIds.length;
+                deleteSelectedForm.action = '@Url.Action("DeleteSelected", "ParametersEntities")?ids=' + selectedIds.join(',');
+
+                // Показать модальное окно
+                var modal = new bootstrap.Modal(massDeleteModal);
+                modal.show();
+            } else {
+                alert("Не выбрано ни одного параметра.");
+            }
+        });
+    });
+    document.addEventListener('DOMContentLoaded', function () {
+        const deleteModal = document.getElementById('deleteModal');
+        deleteModal.addEventListener('show.bs.modal', function (event) {
+            const button = event.relatedTarget; // Кнопка, которая вызвала модальное окно
+            const deviceName = button.getAttribute('data-device-name');
+            const deleteUrl = button.getAttribute('data-delete-url');
+
+            // Установить имя устройства в модальное окно
+            const modalDeviceName = deleteModal.querySelector('#deviceName');
+            modalDeviceName.textContent = deviceName;
+
+            // Установить URL для формы удаления
+            const deleteForm = deleteModal.querySelector('#deleteForm');
+            deleteForm.action = deleteUrl;
+        });
+    });
+</script>

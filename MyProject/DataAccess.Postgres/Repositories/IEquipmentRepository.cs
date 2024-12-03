@@ -10,49 +10,62 @@ namespace DataAccess.Postgres.Repositories
     public interface IEquipmentRepository
     {
         /// <summary>
-        /// Метод создания экземпляра EquipmentEntity.
-        /// </summary>
+        /// Метод добавляет экзмепляр класса EquipmentEntity в БД./>.
+        /// <summary>
+        /// <param name="equipmentEntity">Имя объекта.</param>
+        /// <returns>Экземпляр класса EquipmentEntity/>.</returns>
         Task<EquipmentEntity> Create(EquipmentEntity equipmentEntity);
 
         /// <summary>
-        /// Метод получения списка всех созданных EquipmentEntity.
+        /// Метод получает все устройства из БД./>.
         /// </summary>
+        /// <returns>Лист EquipmentEntity/>.</returns>
         Task<IEnumerable<EquipmentEntity>> GetAllAsync();
 
         /// <summary>
-        /// Метод удаления экземпляра EquipmentEntity.
-        /// </summary>
+        /// Метод ищет экзмепляр класса EquipmentEntity в БД по id./>.
+        /// <summary>
+        /// <param name="id">Имя объекта.</param>
+        /// <returns>Экземпляр класса EquipmentEntity/>.</returns>
         Task<EquipmentEntity> Delete(Guid? id);
 
         /// <summary>
-        /// Метод подтверждения удаления экземпляра EquipmentEntity.
-        /// </summary>
+        /// Метод удаляет экзмепляр класса EquipmentEntity в БД./>.
+        /// <summary>
+        /// <param name="id">Имя объекта.</param>
         Task DeleteConfirmed(Guid? id);
 
         /// <summary>
-        /// Метод получения названий экземпляров EquipmentEntity.
-        /// </summary>
+        /// Метод получения списка устройств из БД./>.
+        /// <summary>
+        /// <returns>Лист экземпляров класса EquipmentEntity/>.</returns>
         Task<List<string>> GetDeviceNamesAsync();
 
         /// <summary>
         /// Метод получения названий экземпляров EquipmentEntity,
         /// у которых есть экземпляр UnityEntity.
-        /// </summary>
+        /// <summary>
+        /// <returns>Лист экземпляров класса EquipmentEntity/>.</returns>
         Task<List<string>> GetAvailableDeviceNamesAsync();
 
         /// <summary>
-        /// Метод получения возможности редактирования экземпляра EquipmentEntity.
-        /// </summary>
+        /// Метод получения возможности редактирования.
+        /// <summary>
+        /// <param name="id">Имя объекта.</param>
+        /// <returns>Экземпляр класса EquipmentEntity/>.</returns>
         Task<EquipmentEntity> Edit(Guid? id);
 
         /// <summary>
-        /// Метод получения возможности редактирования экземпляра EquipmentEntity.
-        /// </summary>
+        /// Метод редактирования экземпляра EquipmentEntity.
+        /// <summary>
+        /// <param name="equipmentEntity">Имя объекта.</param>
         Task EditPost(EquipmentEntity equipmentEntity);
 
+        // <summary>
+        /// Метод проверки наличия экземпляра.
         /// <summary>
-        /// Метод проверки наличия экземпляра EquipmentEntity.
-        /// </summary>
+        /// <param name="id">Имя объекта.</param>
+        /// <returns>Булевое значение/>.</returns>
         bool EquipmentEntityExists(Guid id);
     }
 }
