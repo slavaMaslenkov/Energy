@@ -5,7 +5,7 @@
 }
 
 <h1 class="d-flex justify-content-between align-items-center">
-    Параметы
+    Параметры
     <div>
         <a class="btn btn-secondary d-inline-flex align-items-center text-dark me-2"
            asp-action="Create" style="text-decoration: none;">
@@ -47,7 +47,7 @@
                     @Html.DisplayFor(modelItem => item.Measure)
                 </td>
                 <td>
-                    <a class="text-dark" asp-controller="ParametersEntities" asp-action="Edit" style="text-decoration: none;">
+                    <a class="text-dark" asp-controller="ParametersEntities" asp-action="Edit" asp-route-id="@item.Id" style="text-decoration: none;">
                         <i class="bi bi-pen me-2" style="cursor: pointer;"></i>
                     </a>
                     <i class="bi bi-trash me-2 text-dark"

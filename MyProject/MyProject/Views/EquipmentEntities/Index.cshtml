@@ -60,7 +60,7 @@
                     @Html.DisplayFor(modelItem => item.Owner)
                 </td>
                 <td>
-                    <a class="text-dark" asp-controller="EquipmentEntities" asp-action="Edit" style="text-decoration: none;">
+                    <a class="text-dark" asp-controller="EquipmentEntities" asp-action="Edit" asp-route-id="@item.Id" style="text-decoration: none;">
                         <i class="bi bi-pen me-2" style="cursor: pointer;"></i>
                     </a>
                     <i class="bi bi-trash me-2 text-dark"

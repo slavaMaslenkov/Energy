@@ -42,7 +42,7 @@ namespace MyProject.Controllers
             return View(equipmentEntity);
         }
 
-        // GET: EquipmentEntities/Edit/5
+        // GET: EquipmentEntities/Edit
         public async Task<IActionResult> Edit(Guid? id)
         {
             if (id == null)
@@ -52,7 +52,7 @@ namespace MyProject.Controllers
             return View(await _equipmentService.Edit(id));
         }
 
-        // POST: EquipmentEntities/Edit/5
+        // POST: EquipmentEntities/Edit
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(Guid id, [Bind("Id,Name,Type,Description,Owner")] EquipmentEntity equipmentEntity)
