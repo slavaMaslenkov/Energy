@@ -22,13 +22,13 @@ namespace MyProject.Models
         /// <summary>
         /// <param name="id">Имя объекта.</param>
         /// <returns>Экземпляр класса EquipmentEntity/>.</returns>
-        Task<EquipmentEntity> Delete(Guid? id);
+        Task<EquipmentEntity> Delete(int? id);
 
         /// <summary>
         /// Метод удаляет экзмепляр класса EquipmentEntity в БД./>.
         /// <summary>
         /// <param name="id">Имя объекта.</param>
-        Task DeleteConfirmed(Guid? id);
+        Task DeleteConfirmed(int? id);
 
         /// <summary>
         /// Метод получения списка устройств из БД./>.
@@ -48,7 +48,7 @@ namespace MyProject.Models
         /// <summary>
         /// <param name="id">Имя объекта.</param>
         /// <returns>Экземпляр класса EquipmentEntity/>.</returns>
-        Task<EquipmentEntity> Edit(Guid? id);
+        Task<EquipmentEntity> Edit(int? id);
 
         /// <summary>
         /// Метод редактирования экземпляра EquipmentEntity.
@@ -61,7 +61,7 @@ namespace MyProject.Models
         /// <summary>
         /// <param name="id">Имя объекта.</param>
         /// <returns>Булевое значение/>.</returns>
-        bool EquipmentEntityExists(Guid id);
+        bool EquipmentEntityExists(int id);
 
 
     }

@@ -10,12 +10,12 @@ namespace DataAccess.Postgres.Entity
     public class UnityEntity
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public Guid Id { get; set; }
-        public Guid ParametersID { get; set; }
+        public int Id { get; set; }
+        public int ParametersID { get; set; }
 
-        public Guid SampleID { get; set; }
+        public int SampleID { get; set; }
 
-        public float Value { get; set; }
+        public string? Value { get; set; }
 
         public ParametersEntity? Parameters { get; set; }
 

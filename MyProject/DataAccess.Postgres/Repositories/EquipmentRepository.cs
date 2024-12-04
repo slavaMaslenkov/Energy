@@ -35,7 +35,7 @@ namespace DataAccess.Postgres.Repositories
         /// <summary>
         /// <param name="id">Имя объекта.</param>
         /// <returns>Экземпляр класса EquipmentEntity/>.</returns>
-        public async Task<EquipmentEntity> Delete(Guid? id)
+        public async Task<EquipmentEntity> Delete(int? id)
         {
             
             var equipmentEntity = await dbContext.Equipment
@@ -47,7 +47,7 @@ namespace DataAccess.Postgres.Repositories
         /// Метод удаляет экзмепляр класса EquipmentEntity в БД./>.
         /// <summary>
         /// <param name="id">Имя объекта.</param>
-        public async Task DeleteConfirmed(Guid? id)
+        public async Task DeleteConfirmed(int? id)
         {
             var equipmentEntity = await dbContext.Equipment.FindAsync(id);
             if (equipmentEntity != null)
@@ -91,7 +91,7 @@ namespace DataAccess.Postgres.Repositories
         /// <summary>
         /// <param name="id">Имя объекта.</param>
         /// <returns>Экземпляр класса EquipmentEntity/>.</returns>
-        public async Task<EquipmentEntity> Edit(Guid? id)
+        public async Task<EquipmentEntity> Edit(int? id)
         {
             var equipmentEntity = await dbContext.Equipment.FindAsync(id);
             return equipmentEntity;
@@ -112,7 +112,7 @@ namespace DataAccess.Postgres.Repositories
         /// <summary>
         /// <param name="id">Имя объекта.</param>
         /// <returns>Булевое значение/>.</returns>
-        public bool EquipmentEntityExists(Guid id)
+        public bool EquipmentEntityExists(int id)
         {
             return dbContext.Equipment.Any(e => e.Id == id);
         }

@@ -40,7 +40,7 @@ namespace DataAccess.Postgres.Repositories
         /// <summary>
         /// <param name="id">Имя объекта.</param>
         /// <returns>Экземпляр класса ParametersEntity/>.</returns>
-        public async Task<ParametersEntity> Delete(Guid? id)
+        public async Task<ParametersEntity> Delete(int? id)
         {
             var parametersEntity = await dbContext.Parameters
                 .FirstOrDefaultAsync(m => m.Id == id);
@@ -51,7 +51,7 @@ namespace DataAccess.Postgres.Repositories
         /// Метод удаляет экзмепляр класса ParametersEntity в БД./>.
         /// <summary>
         /// <param name="id">Имя объекта.</param>
-        public async Task DeleteConfirmed(Guid? id)
+        public async Task DeleteConfirmed(int? id)
         {
             var parametersEntity = await dbContext.Parameters.FindAsync(id);
             if (parametersEntity != null)
@@ -67,7 +67,7 @@ namespace DataAccess.Postgres.Repositories
         /// <summary>
         /// <param name="id">Имя объекта.</param>
         /// <returns>Экземпляр класса ParametersEntity/>.</returns>
-        public async Task<ParametersEntity> Edit(Guid? id)
+        public async Task<ParametersEntity> Edit(int? id)
         {
             var parametersEntity = await dbContext.Parameters.FindAsync(id);
             return parametersEntity;
@@ -88,7 +88,7 @@ namespace DataAccess.Postgres.Repositories
         /// <summary>
         /// <param name="id">Имя объекта.</param>
         /// <returns>Булевое значение/>.</returns>
-        public bool ParametersEntityExists(Guid id)
+        public bool ParametersEntityExists(int id)
         {
             return dbContext.Parameters.Any(e => e.Id == id);
         }

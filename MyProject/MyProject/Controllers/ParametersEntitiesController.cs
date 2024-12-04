@@ -44,7 +44,7 @@ namespace MyProject.Controllers
         }
 
         // GET: ParametersEntities/Delete/5
-        public async Task<IActionResult> Delete(Guid? id)
+        public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
             {
@@ -56,7 +56,7 @@ namespace MyProject.Controllers
         // POST: ParametersEntities/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(Guid id)
+        public async Task<IActionResult> DeleteConfirmed(int id)
         {
             await _parametersService.DeleteConfirmed(id);
             return RedirectToAction(nameof(Index));
@@ -70,7 +70,7 @@ namespace MyProject.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-            var idList = ids.Split(',').Select(Guid.Parse).ToList();
+            var idList = ids.Split(',').Select(int.Parse).ToList();
 
             foreach (var id in idList)
             {
@@ -85,7 +85,7 @@ namespace MyProject.Controllers
         }
 
         // GET: ParametersEntities/Edit/5
-        public async Task<IActionResult> Edit(Guid? id)
+        public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
             {
@@ -97,7 +97,7 @@ namespace MyProject.Controllers
         // POST: ParametersEntities/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("Id,Name,Measure")] ParametersEntity parametersEntities)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Measure")] ParametersEntity parametersEntities)
         {
             if (id != parametersEntities.Id)
             {

@@ -22,20 +22,20 @@ namespace MyProject.Models
         /// <summary>
         /// <param name="id">Имя объекта.</param>
         /// <returns>Экземпляр класса ParametersEntity/>.</returns>
-        Task<ParametersEntity> Delete(Guid? id);
+        Task<ParametersEntity> Delete(int? id);
 
         /// <summary>
         /// Метод удаляет экзмепляр класса ParametersEntity в БД./>.
         /// <summary>
         /// <param name="id">Имя объекта.</param>
-        Task DeleteConfirmed(Guid? id);
+        Task DeleteConfirmed(int? id);
 
         /// <summary>
         /// Метод получения возможности редактирования.
         /// <summary>
         /// <param name="id">Имя объекта.</param>
         /// <returns>Экземпляр класса ParametersEntity/>.</returns>
-        Task<ParametersEntity> Edit(Guid? id);
+        Task<ParametersEntity> Edit(int? id);
 
         /// <summary>
         /// Метод редактирования экземпляра ParametersEntity.
@@ -48,6 +48,6 @@ namespace MyProject.Models
         /// <summary>
         /// <param name="id">Имя объекта.</param>
         /// <returns>Булевое значение/>.</returns>
-        bool ParametersEntityExists(Guid id);
+        bool ParametersEntityExists(int id);
     }
 }

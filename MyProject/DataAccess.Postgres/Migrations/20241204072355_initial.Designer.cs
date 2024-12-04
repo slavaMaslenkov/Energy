@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace DataAccess.Postgres.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20241121133649_initial")]
+    [Migration("20241204072355_initial")]
     partial class initial
     {
         /// <inheritdoc />
@@ -27,9 +27,11 @@ namespace DataAccess.Postgres.Migrations
 
             modelBuilder.Entity("DataAccess.Postgres.Entity.EquipmentEntity", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -54,9 +56,11 @@ namespace DataAccess.Postgres.Migrations
 
             modelBuilder.Entity("DataAccess.Postgres.Entity.ParametersEntity", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Measure")
                         .IsRequired()
@@ -73,16 +77,18 @@ namespace DataAccess.Postgres.Migrations
 
             modelBuilder.Entity("DataAccess.Postgres.Entity.SampleEntity", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("DateCreated")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<Guid>("EquipmentID")
-                        .HasColumnType("uuid");
+                    b.Property<int>("EquipmentID")
+                        .HasColumnType("integer");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -97,18 +103,20 @@ namespace DataAccess.Postgres.Migrations
 
             modelBuilder.Entity("DataAccess.Postgres.Entity.UnityEntity", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
+                        .HasColumnType("integer");
 
-                    b.Property<Guid>("ParametersID")
-                        .HasColumnType("uuid");
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<Guid>("SampleID")
-                        .HasColumnType("uuid");
+                    b.Property<int>("ParametersID")
+                        .HasColumnType("integer");
 
-                    b.Property<float>("Value")
-                        .HasColumnType("real");
+                    b.Property<int>("SampleID")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Value")
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 

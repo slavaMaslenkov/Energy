@@ -1,6 +1,7 @@
 ﻿using DataAccess.Postgres.Entity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using MyProject.Models;
 
 namespace MyProject.Controllers
@@ -82,6 +83,13 @@ namespace MyProject.Controllers
 
             ViewBag.DeviceName = deviceName;
             return View("Index", unityData);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> UpdateValues(Dictionary<int, string> values)
+        {
+            await _unityService.UpdateValues(values);
+            return RedirectToAction(nameof(DeviceUnity));
         }
 
     }

@@ -29,7 +29,7 @@ namespace MyProject.Models
         /// <summary>
         /// <param name="id">Имя объекта.</param>
         /// <returns>Экземпляр класса EquipmentEntity/>.</returns>
-        public async Task<EquipmentEntity> Delete(Guid? id)
+        public async Task<EquipmentEntity> Delete(int? id)
         {
             return await equipmentRepository.Delete(id);
         }
@@ -38,7 +38,7 @@ namespace MyProject.Models
         /// Метод удаляет экзмепляр класса EquipmentEntity в БД./>.
         /// <summary>
         /// <param name="id">Имя объекта.</param>
-        public async Task DeleteConfirmed(Guid? id)
+        public async Task DeleteConfirmed(int? id)
         {
             await equipmentRepository.DeleteConfirmed(id);
         }
@@ -67,7 +67,7 @@ namespace MyProject.Models
         /// <summary>
         /// <param name="id">Имя объекта.</param>
         /// <returns>Экземпляр класса EquipmentEntity/>.</returns>
-        public async Task<EquipmentEntity> Edit(Guid? id)
+        public async Task<EquipmentEntity> Edit(int? id)
         {
             return await equipmentRepository.Edit(id);
         }
@@ -86,7 +86,7 @@ namespace MyProject.Models
         /// <summary>
         /// <param name="id">Имя объекта.</param>
         /// <returns>Булевое значение/>.</returns>
-        public bool EquipmentEntityExists(Guid id)
+        public bool EquipmentEntityExists(int id)
         {
             return equipmentRepository.EquipmentEntityExists(id);
         }

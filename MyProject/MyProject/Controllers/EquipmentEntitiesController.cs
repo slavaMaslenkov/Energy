@@ -43,7 +43,7 @@ namespace MyProject.Controllers
         }
 
         // GET: EquipmentEntities/Edit
-        public async Task<IActionResult> Edit(Guid? id)
+        public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
             {
@@ -55,7 +55,7 @@ namespace MyProject.Controllers
         // POST: EquipmentEntities/Edit
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("Id,Name,Type,Description,Owner")] EquipmentEntity equipmentEntity)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Type,Description,Owner")] EquipmentEntity equipmentEntity)
         {
             if (id != equipmentEntity.Id)
             {
@@ -85,7 +85,7 @@ namespace MyProject.Controllers
         }
 
         // GET: EquipmentEntities/Delete/5
-        public async Task<IActionResult> Delete(Guid? id)
+        public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
             {
@@ -97,7 +97,7 @@ namespace MyProject.Controllers
         // POST: EquipmentEntities/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(Guid id)
+        public async Task<IActionResult> DeleteConfirmed(int id)
         {
             await _equipmentService.DeleteConfirmed(id);
             return RedirectToAction(nameof(Index));
@@ -111,7 +111,7 @@ namespace MyProject.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-            var idList = ids.Split(',').Select(Guid.Parse).ToList();
+            var idList = ids.Split(',').Select(int.Parse).ToList();
 
             foreach (var id in idList)
             {

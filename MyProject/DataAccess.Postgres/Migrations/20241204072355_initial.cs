@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
+using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
@@ -15,7 +16,8 @@ namespace DataAccess.Postgres.Migrations
                 name: "Equipment",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Name = table.Column<string>(type: "text", nullable: false),
                     Type = table.Column<string>(type: "text", nullable: false),
                     Description = table.Column<string>(type: "text", nullable: false),
@@ -30,7 +32,8 @@ namespace DataAccess.Postgres.Migrations
                 name: "Parameters",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Name = table.Column<string>(type: "text", nullable: false),
                     Measure = table.Column<string>(type: "text", nullable: false)
                 },
@@ -43,10 +46,11 @@ namespace DataAccess.Postgres.Migrations
                 name: "Sample",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     DateCreated = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     Name = table.Column<string>(type: "text", nullable: false),
-                    EquipmentID = table.Column<Guid>(type: "uuid", nullable: false)
+                    EquipmentID = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -63,10 +67,11 @@ namespace DataAccess.Postgres.Migrations
                 name: "Unity",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    ParametersID = table.Column<Guid>(type: "uuid", nullable: false),
-                    SampleID = table.Column<Guid>(type: "uuid", nullable: false),
-                    Value = table.Column<float>(type: "real", nullable: false)
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    ParametersID = table.Column<int>(type: "integer", nullable: false),
+                    SampleID = table.Column<int>(type: "integer", nullable: false),
+                    Value = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {

@@ -1,5 +1,6 @@
 ﻿using DataAccess.Postgres.Entity;
 using DataAccess.Postgres.Repositories;
+using Microsoft.EntityFrameworkCore;
 
 namespace MyProject.Models
 {
@@ -18,6 +19,11 @@ namespace MyProject.Models
         public async Task<IEnumerable<UnityEntity>> GetAllAsync()
         {
             return await unityRepository.GetAllAsync();
+        }
+
+        public async Task UpdateValues(Dictionary<int, string> values)
+        {
+            await unityRepository.UpdateValues(values);
         }
     }
 }

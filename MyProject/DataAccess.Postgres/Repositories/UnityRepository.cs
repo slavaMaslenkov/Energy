@@ -12,7 +12,9 @@ namespace DataAccess.Postgres.Repositories
         /// <summary>
         public async Task<IEnumerable<UnityEntity>> GetAllAsync()
         {
-            return await dbContext.Unity.ToListAsync();
+            return await dbContext.Unity
+                .Include(u => u.Parameters)
+                .ToListAsync();
         }
 
         /// </summary>
@@ -46,6 +48,23 @@ namespace DataAccess.Postgres.Repositories
                                u.Sample.Equipment != null &&
                                u.Sample.Equipment.Name == name);
             return await query.ToListAsync();
+        }
+
+        public async Task UpdateValues(Dictionary<int, string> values)
+        {
+            foreach (var kvp in values)
+            {
+                var id = kvp.Key; // ID строки
+                var newValue = kvp.Value; // Новое значение Value
+
+                var entity = await dbContext.Unity.FindAsync(id);
+                if (entity != null)
+                {
+                    entity.Value = newValue;
+                }
+            }
+
+            await dbContext.SaveChangesAsync();
         }
     }
 }

@@ -29,7 +29,7 @@ namespace MyProject.Models
         /// <summary>
         /// <param name="id">Имя объекта.</param>
         /// <returns>Экземпляр класса ParametersEntity/>.</returns>
-        public async Task<ParametersEntity> Delete(Guid? id)
+        public async Task<ParametersEntity> Delete(int? id)
         {
             return await parametersRepository.Delete(id);
         }
@@ -38,7 +38,7 @@ namespace MyProject.Models
         /// Метод удаляет экзмепляр класса ParametersEntity в БД./>.
         /// <summary>
         /// <param name="id">Имя объекта.</param>
-        public async Task DeleteConfirmed(Guid? id)
+        public async Task DeleteConfirmed(int? id)
         {
             await parametersRepository.DeleteConfirmed(id);
         }
@@ -48,7 +48,7 @@ namespace MyProject.Models
         /// <summary>
         /// <param name="id">Имя объекта.</param>
         /// <returns>Экземпляр класса ParametersEntity/>.</returns>
-        public async Task<ParametersEntity> Edit(Guid? id)
+        public async Task<ParametersEntity> Edit(int? id)
         {
             return await parametersRepository.Edit(id);
         }
@@ -67,7 +67,7 @@ namespace MyProject.Models
         /// <summary>
         /// <param name="id">Имя объекта.</param>
         /// <returns>Булевое значение/>.</returns>
-        public bool ParametersEntityExists(Guid id)
+        public bool ParametersEntityExists(int id)
         {
             return parametersRepository.ParametersEntityExists(id);
         }

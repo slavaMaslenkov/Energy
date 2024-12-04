@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
@@ -9,14 +10,14 @@ namespace DataAccess.Postgres.Entity
 {
     public class SampleEntity
     {
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public Guid Id { get; set; }
+        [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int Id { get; set; }
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public DateTime DateCreated { get; set; } = DateTime.Now.ToUniversalTime();
 
         public string Name { get; set; } = string.Empty;
 
-        public Guid EquipmentID { get; set; }
+        public int EquipmentID { get; set; }
 
         public EquipmentEntity? Equipment { get; set; }
 
