@@ -15,6 +15,7 @@ namespace DataAccess.Postgres.Entity
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public DateTime DateCreated { get; set; } = DateTime.Now.ToUniversalTime();
 
+        [Display(Name = "Шаблон")]
         public string Name { get; set; } = string.Empty;
 
         public int EquipmentID { get; set; }

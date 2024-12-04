@@ -13,12 +13,16 @@ namespace DataAccess.Postgres.Entity
         [Key,DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
+        [Display(Name = "Устройство")]
         public string Name { get; set; } = string.Empty;
 
+        [Display(Name = "Тип")]
         public string Type { get; set; } = string.Empty;
 
+        [Display(Name = "Описание")]
         public string Description { get; set; } = string.Empty;
 
+        [Display(Name = "Собственник")]
         public string Owner { get; set; } = string.Empty;
 
         public ICollection<SampleEntity>? Sample { get; set; }

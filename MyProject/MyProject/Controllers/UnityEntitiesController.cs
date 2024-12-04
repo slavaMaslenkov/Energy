@@ -86,10 +86,12 @@ namespace MyProject.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> UpdateValues(Dictionary<int, string> values)
+        public async Task<IActionResult> UpdateValues(Dictionary<int, string> values, string deviceName)
         {
             await _unityService.UpdateValues(values);
-            return RedirectToAction(nameof(DeviceUnity));
+            var unityData = await _unityService.GetByFilter(deviceName);
+            ViewBag.DeviceName = deviceName;
+            return View("Index", unityData);
         }
 
     }

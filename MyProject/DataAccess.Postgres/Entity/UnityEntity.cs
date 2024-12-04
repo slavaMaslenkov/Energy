@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
@@ -15,6 +16,7 @@ namespace DataAccess.Postgres.Entity
 
         public int SampleID { get; set; }
 
+        [Display(Name = "Значение")]
         public string? Value { get; set; }
 
         public ParametersEntity? Parameters { get; set; }

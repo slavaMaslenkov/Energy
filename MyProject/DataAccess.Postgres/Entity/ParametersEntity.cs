@@ -13,8 +13,10 @@ namespace DataAccess.Postgres.Entity
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
+        [Display(Name = "Параметр")]
         public string Name { get; set; } = string.Empty;
 
+        [Display(Name = "Ед.измерения")]
         public string Measure { get; set; } = string.Empty;
 
         public ICollection<UnityEntity>? Unity { get; set; }
