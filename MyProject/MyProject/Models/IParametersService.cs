@@ -18,13 +18,6 @@ namespace MyProject.Models
         Task<IEnumerable<ParametersEntity>> GetAllAsync();
 
         /// <summary>
-        /// Метод ищет экзмепляр класса ParametersEntity в БД по id./>.
-        /// <summary>
-        /// <param name="id">Имя объекта.</param>
-        /// <returns>Экземпляр класса ParametersEntity/>.</returns>
-        Task<ParametersEntity> Delete(int? id);
-
-        /// <summary>
         /// Метод удаляет экзмепляр класса ParametersEntity в БД./>.
         /// <summary>
         /// <param name="id">Имя объекта.</param>
@@ -35,7 +28,7 @@ namespace MyProject.Models
         /// <summary>
         /// <param name="id">Имя объекта.</param>
         /// <returns>Экземпляр класса ParametersEntity/>.</returns>
-        Task<ParametersEntity> Edit(int? id);
+        Task<ParametersEntity> FindById(int? id);
 
         /// <summary>
         /// Метод редактирования экземпляра ParametersEntity.

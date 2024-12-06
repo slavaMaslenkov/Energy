@@ -25,16 +25,6 @@ namespace MyProject.Models
         }
 
         /// <summary>
-        /// Метод ищет экзмепляр класса ParametersEntity в БД по id./>.
-        /// <summary>
-        /// <param name="id">Имя объекта.</param>
-        /// <returns>Экземпляр класса ParametersEntity/>.</returns>
-        public async Task<ParametersEntity> Delete(int? id)
-        {
-            return await parametersRepository.Delete(id);
-        }
-
-        /// <summary>
         /// Метод удаляет экзмепляр класса ParametersEntity в БД./>.
         /// <summary>
         /// <param name="id">Имя объекта.</param>
@@ -48,9 +38,9 @@ namespace MyProject.Models
         /// <summary>
         /// <param name="id">Имя объекта.</param>
         /// <returns>Экземпляр класса ParametersEntity/>.</returns>
-        public async Task<ParametersEntity> Edit(int? id)
+        public async Task<ParametersEntity> FindById(int? id)
         {
-            return await parametersRepository.Edit(id);
+            return await parametersRepository.FindById(id);
         }
 
         /// <summary>

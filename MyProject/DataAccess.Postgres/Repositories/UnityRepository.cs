@@ -5,11 +5,10 @@ namespace DataAccess.Postgres.Repositories
 {
     internal class UnityRepository (DataContext dbContext) : IUnityRepository
     {
-        /// </summary>
-        /// Метод получает все виды параметров из БД./>.
-        /// </summary>
-        /// <returns>Лист шаблонов устройства./>.</returns>
         /// <summary>
+        /// Метод получает спсиок значений параметров конкретного шаблона./>.
+        /// <summary>
+        /// <returns>Лист шаблонов устройства/>.</returns>
         public async Task<IEnumerable<UnityEntity>> GetAllAsync()
         {
             return await dbContext.Unity
@@ -17,13 +16,41 @@ namespace DataAccess.Postgres.Repositories
                 .ToListAsync();
         }
 
-        /// </summary>
-        /// Метод добавляет экзмепляр класса SampleEntity в БД./>.
         /// <summary>
+        /// Метод добавляет экзмепляр класса UnityEntity в БД./>.
+        /// <summary>
+        /// <param name="unityEntity">Имя объекта.</param>
+        /// <returns>Лист шаблонов устройства/>.</returns>
         public async Task<UnityEntity> Create(UnityEntity unityEntity)
         {
             await dbContext.Unity.AddAsync(unityEntity);
             await dbContext.SaveChangesAsync();
+            return unityEntity;
+        }
+
+        /// <summary>
+        /// Метод удаляет экзмепляр класса UnityEntity в БД./>.
+        /// <summary>
+        /// <param name="id">Имя объекта.</param>
+        public async Task DeleteConfirmed(int? id)
+        {
+            var unityEntity = await dbContext.Unity.FindAsync(id);
+            if (unityEntity != null)
+            {
+                dbContext.Unity.Remove(unityEntity);
+            }
+
+            await dbContext.SaveChangesAsync();
+        }
+
+        /// <summary>
+        /// Метод получения возможности редактирования.
+        /// <summary>
+        /// <param name="id">Имя объекта.</param>
+        /// <returns>Экземпляр класса UnityEntity/>.</returns>
+        public async Task<UnityEntity> FindById(int? id)
+        {
+            var unityEntity = await dbContext.Unity.FindAsync(id);
             return unityEntity;
         }
 

@@ -23,13 +23,6 @@ namespace DataAccess.Postgres.Repositories
         Task<IEnumerable<EquipmentEntity>> GetAllAsync();
 
         /// <summary>
-        /// Метод ищет экзмепляр класса EquipmentEntity в БД по id./>.
-        /// <summary>
-        /// <param name="id">Имя объекта.</param>
-        /// <returns>Экземпляр класса EquipmentEntity/>.</returns>
-        Task<EquipmentEntity> Delete(int? id);
-
-        /// <summary>
         /// Метод удаляет экзмепляр класса EquipmentEntity в БД./>.
         /// <summary>
         /// <param name="id">Имя объекта.</param>
@@ -53,7 +46,7 @@ namespace DataAccess.Postgres.Repositories
         /// <summary>
         /// <param name="id">Имя объекта.</param>
         /// <returns>Экземпляр класса EquipmentEntity/>.</returns>
-        Task<EquipmentEntity> Edit(int? id);
+        Task<EquipmentEntity> FindById(int? id);
 
         /// <summary>
         /// Метод редактирования экземпляра EquipmentEntity.

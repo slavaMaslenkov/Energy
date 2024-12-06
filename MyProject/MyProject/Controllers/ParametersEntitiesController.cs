@@ -42,17 +42,7 @@ namespace MyProject.Controllers
             }
             return View(parametersEntity);
         }
-
-        // GET: ParametersEntities/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-            return View(await _parametersService.Delete(id));
-        }
-
+        
         // POST: ParametersEntities/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
@@ -61,7 +51,7 @@ namespace MyProject.Controllers
             await _parametersService.DeleteConfirmed(id);
             return RedirectToAction(nameof(Index));
         }
-
+        
         [HttpPost]
         public async Task<IActionResult> DeleteSelected(string ids)
         {
@@ -74,7 +64,7 @@ namespace MyProject.Controllers
 
             foreach (var id in idList)
             {
-                var parametersEntity = await _parametersService.Edit(id);
+                var parametersEntity = await _parametersService.FindById(id);
                 if (parametersEntity != null)
                 {
                     await _parametersService.DeleteConfirmed(id); // Удалить каждое устройство по ID
@@ -85,13 +75,13 @@ namespace MyProject.Controllers
         }
 
         // GET: ParametersEntities/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> FindById(int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
-            return View(await _parametersService.Edit(id));
+            return View(await _parametersService.FindById(id));
         }
 
         // POST: ParametersEntities/Edit/5

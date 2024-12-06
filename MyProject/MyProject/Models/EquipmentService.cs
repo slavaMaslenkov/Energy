@@ -25,16 +25,6 @@ namespace MyProject.Models
         }
 
         /// <summary>
-        /// Метод ищет экзмепляр класса EquipmentEntity в БД по id./>.
-        /// <summary>
-        /// <param name="id">Имя объекта.</param>
-        /// <returns>Экземпляр класса EquipmentEntity/>.</returns>
-        public async Task<EquipmentEntity> Delete(int? id)
-        {
-            return await equipmentRepository.Delete(id);
-        }
-
-        /// <summary>
         /// Метод удаляет экзмепляр класса EquipmentEntity в БД./>.
         /// <summary>
         /// <param name="id">Имя объекта.</param>
@@ -67,9 +57,9 @@ namespace MyProject.Models
         /// <summary>
         /// <param name="id">Имя объекта.</param>
         /// <returns>Экземпляр класса EquipmentEntity/>.</returns>
-        public async Task<EquipmentEntity> Edit(int? id)
+        public async Task<EquipmentEntity> FindById(int? id)
         {
-            return await equipmentRepository.Edit(id);
+            return await equipmentRepository.FindById(id);
         }
 
         /// <summary>

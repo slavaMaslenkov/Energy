@@ -36,18 +36,6 @@ namespace DataAccess.Postgres.Repositories
         }
 
         /// <summary>
-        /// Метод ищет экзмепляр класса ParametersEntity в БД по id./>.
-        /// <summary>
-        /// <param name="id">Имя объекта.</param>
-        /// <returns>Экземпляр класса ParametersEntity/>.</returns>
-        public async Task<ParametersEntity> Delete(int? id)
-        {
-            var parametersEntity = await dbContext.Parameters
-                .FirstOrDefaultAsync(m => m.Id == id);
-            return parametersEntity;
-        }
-
-        /// <summary>
         /// Метод удаляет экзмепляр класса ParametersEntity в БД./>.
         /// <summary>
         /// <param name="id">Имя объекта.</param>
@@ -67,7 +55,7 @@ namespace DataAccess.Postgres.Repositories
         /// <summary>
         /// <param name="id">Имя объекта.</param>
         /// <returns>Экземпляр класса ParametersEntity/>.</returns>
-        public async Task<ParametersEntity> Edit(int? id)
+        public async Task<ParametersEntity> FindById(int? id)
         {
             var parametersEntity = await dbContext.Parameters.FindAsync(id);
             return parametersEntity;

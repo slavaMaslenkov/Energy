@@ -67,6 +67,37 @@ namespace MyProject.Controllers
             return View(unityEntity);
         }
 
+        // POST: UnityEntities/Delete/5
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int id)
+        {
+            await _unityService.DeleteConfirmed(id);
+            return RedirectToAction(nameof(Index));
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> DeleteSelected(string ids)
+        {
+            if (string.IsNullOrEmpty(ids))
+            {
+                return RedirectToAction(nameof(Index));
+            }
+
+            var idList = ids.Split(',').Select(int.Parse).ToList();
+
+            foreach (var id in idList)
+            {
+                var unityEntity = await _unityService.FindById(id);
+                if (unityEntity != null)
+                {
+                    await _parametersService.DeleteConfirmed(id); // Удалить каждое устройство по ID
+                }
+            }
+
+            return RedirectToAction(nameof(DeviceUnity)); // Перенаправление на главную страницу
+        }
+
         public async Task<IActionResult> DeviceUnity(string deviceName)
         {
             if (string.IsNullOrEmpty(deviceName))

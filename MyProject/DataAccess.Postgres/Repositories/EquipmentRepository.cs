@@ -31,19 +31,6 @@ namespace DataAccess.Postgres.Repositories
         }
 
         /// <summary>
-        /// Метод ищет экзмепляр класса EquipmentEntity в БД по id./>.
-        /// <summary>
-        /// <param name="id">Имя объекта.</param>
-        /// <returns>Экземпляр класса EquipmentEntity/>.</returns>
-        public async Task<EquipmentEntity> Delete(int? id)
-        {
-            
-            var equipmentEntity = await dbContext.Equipment
-                .FirstOrDefaultAsync(m => m.Id == id);
-            return equipmentEntity;
-        }
-
-        /// <summary>
         /// Метод удаляет экзмепляр класса EquipmentEntity в БД./>.
         /// <summary>
         /// <param name="id">Имя объекта.</param>
@@ -91,7 +78,7 @@ namespace DataAccess.Postgres.Repositories
         /// <summary>
         /// <param name="id">Имя объекта.</param>
         /// <returns>Экземпляр класса EquipmentEntity/>.</returns>
-        public async Task<EquipmentEntity> Edit(int? id)
+        public async Task<EquipmentEntity> FindById(int? id)
         {
             var equipmentEntity = await dbContext.Equipment.FindAsync(id);
             return equipmentEntity;

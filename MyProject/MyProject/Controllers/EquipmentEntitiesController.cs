@@ -43,13 +43,13 @@ namespace MyProject.Controllers
         }
 
         // GET: EquipmentEntities/Edit
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> FindById(int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
-            return View(await _equipmentService.Edit(id));
+            return View(await _equipmentService.FindById(id));
         }
 
         // POST: EquipmentEntities/Edit
@@ -83,16 +83,6 @@ namespace MyProject.Controllers
             }
             return View(equipmentEntity);
         }
-
-        // GET: EquipmentEntities/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-            return View(await _equipmentService.Delete(id));
-        }
         
         // POST: EquipmentEntities/Delete/5
         [HttpPost, ActionName("Delete")]
@@ -115,7 +105,7 @@ namespace MyProject.Controllers
 
             foreach (var id in idList)
             {
-                var equipmentEntity = await _equipmentService.Edit(id);
+                var equipmentEntity = await _equipmentService.FindById(id);
                 if (equipmentEntity != null)
                 {
                     await _equipmentService.DeleteConfirmed(id); // Удалить каждое устройство по ID
