@@ -1,5 +1,9 @@
 html {
-  font-size: 14px;
+    font-size: 14px;
+    position: relative;
+    height: 100%;
+    margin: 0; /* Убираем отступы, чтобы элементы не вылезали за пределы */
+    overflow: hidden;
 }
 
 @media (min-width: 768px) {
@@ -12,10 +16,6 @@ html {
   box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
 }
 
-html {
-  position: relative;
-  min-height: 100%;
-}
 
 body {
   margin-bottom: 60px;
@@ -23,11 +23,15 @@ body {
 
 /* Стили для боковой панели */
 .sidebar {
-    background-color: #007BFF; /* Синий фон */
+    background-color: #029acf; /* Синий фон */
     color: white; /* Белый текст */
     padding: 10px;
     height: 100vh; /* Полная высота окна */
     overflow-y: auto; /* Прокрутка, если список длинный */
+    border-right: 2px solid #ffffff;
+    border-bottom: 2px solid #ffffff;
+    position: relative;
+    z-index: 1;
 }
 
 .sidebar a {
@@ -39,4 +43,48 @@ body {
     text-decoration: underline;
 }
 
-/* Стили для кнопки "Добавить устройство" */
+.header-container {
+    position: sticky; /* Сделать его фиксированным */
+    top: 0; /* Закрепить вверху */
+    z-index: 1000; /* Обеспечить, чтобы контейнер был поверх других элементов */
+    padding: 10px 0; /* Отступы сверху и снизу */
+    border-bottom: 2px solid #ddd; /* Легкая граница снизу */
+}
+
+/* Обеспечить прокрутку таблицы */
+.table-container {
+    max-height: 70vh; /* Ограничиваем максимальную высоту таблицы 60% от высоты экрана */
+    overflow-y: auto; /* Включаем вертикальную прокрутку */
+}
+
+/* Дополнительные стили для таблицы */
+.table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+    .table th,
+    .table td {
+        padding: 10px;
+        text-align: center;
+    }
+
+.sticky-header th {
+    position: sticky;
+    top: 0;
+    z-index: 5;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Тень для заголовков */
+}
+
+footer {
+    flex-shrink: 0;
+    margin-top: auto; /* Футер будет привязан к низу */
+    z-index: 2;
+    background-color: #fff;
+}
+
+
+.row {
+    display: flex;
+    flex: 1; /* Контент и боковая панель заполняют доступное пространство */
+}
