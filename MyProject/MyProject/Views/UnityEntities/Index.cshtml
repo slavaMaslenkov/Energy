@@ -9,18 +9,15 @@
         Параметры устройства
         <div>
             <a class="btn btn-secondary d-inline-flex align-items-center text-dark me-2"
-               asp-action="Create" style="text-decoration: none;">
+               asp-action="Create" asp-route-deviceName=@ViewBag.DeviceName style="text-decoration: none;">
                 <i class="bi bi-plus-square me-2"></i> Добавить
             </a>
             <a id="delete-selected"
                class="btn btn-info d-inline-flex align-items-center text-dark"
                style="text-decoration: none;"
-               data-delete-action="@Url.Action("DeleteSelected", "UnityEntities")">
+               data-delete-action="@Url.Action("DeleteSelected", "UnityEntities", new { deviceName = ViewBag.DeviceName })">
                 <i class="bi bi-trash me-2"></i> Удалить
             </a>
-            <button type="submit" class="btn btn-secondary d-inline-flex align-items-center text-dark me-2">
-                <i class="bi bi-save me-2"></i>Сохранить
-            </button>
         </div>
     </h1>
 </div>
@@ -80,7 +77,7 @@
                                data-bs-toggle="modal"
                                data-bs-target="#deleteModal"
                                data-device-name="@item.Id"
-                               data-delete-url="@Url.Action("Delete", "UnityEntities", new { id = item.Id })">
+                               data-delete-url="@Url.Action("Delete", "UnityEntities", new { id = item.Id, deviceName = ViewBag.DeviceName })">
                             </i>
                         </td>
                     </tr>
@@ -88,6 +85,9 @@
             </tbody>
         </table>
     </div>
+    <button type="submit" class="btn btn-secondary d-inline-flex align-items-center text-dark me-2">
+        <i class="bi bi-save me-2"></i>Сохранить
+    </button>
 </form>
 
 @Html.Partial("modals")

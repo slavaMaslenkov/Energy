@@ -4,15 +4,16 @@
     ViewData["Title"] = "Create Unity";
 }
 
-<h2>Create Sample</h2>
+<h2>Добавить параметр в список</h2>
 
 <form asp-action="Create" method="post">
+    <input type="hidden" name="deviceName" value="@ViewBag.DeviceName" />
     <div class="form-group">
         <label asp-for="SampleID" class="control-label">Sample</label>
         @Html.DropDownListFor(
                  model => model.SampleID,
                  (SelectList)ViewBag.SampleList,
-                 "Select Sample",
+                 "Шаблон",
                  new { @class = "form-control" }
                  )
         <span asp-validation-for="SampleID" class="text-danger"></span>
@@ -22,7 +23,7 @@
         @Html.DropDownListFor(
                  model => model.ParametersID,
                  (SelectList)ViewBag.ParametersList,
-                 "Select Parameter",
+                 "Параметр",
                  new { @class = "form-control" }
                  )
         <span asp-validation-for="ParametersID" class="text-danger"></span>

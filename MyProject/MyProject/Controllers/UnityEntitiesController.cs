@@ -36,7 +36,8 @@ namespace MyProject.Controllers
         }
 
         // GET: UnityEntities/Create
-        public async Task<IActionResult> Create()
+        [HttpGet]
+        public async Task<IActionResult> Create(string deviceName)
         {
             var parametersList = await _parametersService.GetAllAsync();
             var sampleList = await _sampleService.GetAllAsync();
@@ -44,18 +45,19 @@ namespace MyProject.Controllers
             ViewBag.ParametersList = new SelectList(parametersList, "Id", "Name");
             // Загрузка списка шаблонов
             ViewBag.SampleList = new SelectList(sampleList, "Id", "Name");
+            ViewBag.DeviceName = deviceName;
             return View();
         }
 
         // POST: UnityEntities/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(UnityEntity unityEntity)
+        public async Task<IActionResult> Create(UnityEntity unityEntity, string deviceName)
         {
             if (ModelState.IsValid)
             {
                 await _unityService.Create(unityEntity);
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(DeviceUnity), new { deviceName });
             }
 
             // Повторная загрузка списка оборудования при ошибке валидации
@@ -64,24 +66,25 @@ namespace MyProject.Controllers
             ViewBag.ParametersList = new SelectList(parametersList, "Id", "Name");
             // Загрузка списка шаблонов
             ViewBag.SampleList = new SelectList(sampleList, "Id", "Name");
+            ViewBag.DeviceName = deviceName;
             return View(unityEntity);
         }
 
         // POST: UnityEntities/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirmed(int id, string deviceName)
         {
             await _unityService.DeleteConfirmed(id);
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(DeviceUnity), new { deviceName });
         }
 
         [HttpPost]
-        public async Task<IActionResult> DeleteSelected(string ids)
+        public async Task<IActionResult> DeleteSelected(string ids, string deviceName)
         {
             if (string.IsNullOrEmpty(ids))
             {
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(DeviceUnity), new { deviceName });
             }
 
             var idList = ids.Split(',').Select(int.Parse).ToList();
@@ -95,14 +98,14 @@ namespace MyProject.Controllers
                 }
             }
 
-            return RedirectToAction(nameof(DeviceUnity)); // Перенаправление на главную страницу
+            return RedirectToAction(nameof(DeviceUnity), new { deviceName }); // Перенаправление на главную страницу
         }
 
         public async Task<IActionResult> DeviceUnity(string deviceName)
         {
             if (string.IsNullOrEmpty(deviceName))
             {
-                return NotFound();
+                return View("Error");
             }
 
             var unityData = await _unityService.GetByFilter(deviceName);
