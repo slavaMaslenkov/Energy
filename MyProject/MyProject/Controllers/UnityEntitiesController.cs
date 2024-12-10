@@ -84,21 +84,33 @@ namespace MyProject.Controllers
         {
             if (string.IsNullOrEmpty(ids))
             {
+                throw new Exception("FFFF");
                 return RedirectToAction(nameof(DeviceUnity), new { deviceName });
             }
 
-            var idList = ids.Split(',').Select(int.Parse).ToList();
-
-            foreach (var id in idList)
+            try
             {
-                var unityEntity = await _unityService.FindById(id);
-                if (unityEntity != null)
-                {
-                    await _parametersService.DeleteConfirmed(id); // Удалить каждое устройство по ID
-                }
-            }
+                // Преобразуем строку с ID в список чисел
+                var idList = ids.Split(',')
+                                .Where(id => int.TryParse(id, out _))
+                                .Select(int.Parse)
+                                .ToList();
 
-            return RedirectToAction(nameof(DeviceUnity), new { deviceName }); // Перенаправление на главную страницу
+                foreach (var id in idList)
+                {
+                    var unityEntity = await _unityService.FindById(id);
+                    if (unityEntity != null)
+                    {
+                        await _unityService.DeleteConfirmed(id); // Удаляем UnityEntity
+                    }
+                }
+
+                return RedirectToAction(nameof(DeviceUnity), new { deviceName });
+            }
+            catch (Exception ex)
+            {
+                return View("Error", new { message = "Ошибка при удалении выбранных элементов." });
+            }
         }
 
         public async Task<IActionResult> DeviceUnity(string deviceName)

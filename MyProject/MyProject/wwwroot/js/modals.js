@@ -24,11 +24,14 @@ document.addEventListener('DOMContentLoaded', function () {
 
         if (selectedIds.length > 0) {
             const deleteAction = deleteSelectedButton.getAttribute('data-delete-action');
-            const deviceName = document.querySelector('input[name="DeviceName"]').value;
-
+            const deviceNameElement = document.querySelector('input[name="DeviceName"]');
+            let deviceName = deviceNameElement ? deviceNameElement.value : null;
             // Обновляем action формы с передачей выбранных ID и DeviceName
-            deleteSelectedForm.action = `${deleteAction}?ids=${selectedIds.join(',')}&deviceName=${encodeURIComponent(deviceName)}`;
-
+            if (deviceName) {
+                deleteSelectedForm.action = `${deleteAction}?ids=${selectedIds.join(',')}&deviceName=${encodeURIComponent(deviceName)}`;
+            } else {
+                deleteSelectedForm.action = `${deleteAction}?ids=${selectedIds.join(',')}`;
+            }
             // Показать модальное окно с количеством выбранных объектов
             deviceCountElement.textContent = selectedIds.length;
 
