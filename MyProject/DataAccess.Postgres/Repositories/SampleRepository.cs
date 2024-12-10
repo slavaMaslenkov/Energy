@@ -29,5 +29,25 @@ namespace DataAccess.Postgres.Repositories
             await dbContext.SaveChangesAsync();
             return sampleEntity;
         }
+
+        /// </summary>
+        /// Метод получает шаблоны определенного устройства./>.
+        /// </summary>
+        /// <param name="name">Имя объекта.</param>
+        /// <returns>Возвращает таблицу Sample по опрделенному шаблону./>.</returns>
+        public async Task<List<SampleEntity>> GetByFilter(string name)
+        {
+            if (string.IsNullOrEmpty(name))
+            {
+                return new List<SampleEntity>();
+            }
+
+            var query = dbContext.Sample
+                          .AsNoTracking()
+                          .Include(s => s.Equipment) // Включаем данные из Sample
+                          .Where(s => s.Equipment.Name == name);
+
+            return await query.ToListAsync();
+        }
     }
 }

@@ -57,8 +57,8 @@ namespace DataAccess.Postgres.Repositories
         /// </summary>
         /// Метод получает параметры определенного шаблона устройства./>.
         /// </summary>
+        /// <param name="name">Имя объекта.</param>
         /// <returns>Возвращает таблицу Unity по опрделенному шаблону./>.</returns>
-        /// <summary>
         public async Task<List<UnityEntity>> GetByFilter(string name)
         {
             if (string.IsNullOrEmpty(name))
@@ -73,7 +73,8 @@ namespace DataAccess.Postgres.Repositories
                           .Include(u => u.Parameters)
                           .Where(u => u.Sample != null &&
                                u.Sample.Equipment != null &&
-                               u.Sample.Equipment.Name == name);
+                               u.Sample.Equipment.Name == name)
+                          .OrderBy(u => u.Parameters.Name); ;
             return await query.ToListAsync();
         }
 

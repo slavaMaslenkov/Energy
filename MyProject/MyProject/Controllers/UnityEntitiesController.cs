@@ -84,7 +84,6 @@ namespace MyProject.Controllers
         {
             if (string.IsNullOrEmpty(ids))
             {
-                throw new Exception("FFFF");
                 return RedirectToAction(nameof(DeviceUnity), new { deviceName });
             }
 
@@ -121,10 +120,15 @@ namespace MyProject.Controllers
             }
 
             var unityData = await _unityService.GetByFilter(deviceName);
+            var sampleData = await _sampleService.GetByFilter(deviceName);
+            if (!sampleData.Any())
+            {
+                return RedirectToAction("Create", "SampleEntities");
+            }
 
             if (!unityData.Any())
             {
-                return NotFound();
+                return RedirectToAction("Create", "UnityEntities");
             }
 
             ViewBag.DeviceName = deviceName;

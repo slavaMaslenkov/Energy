@@ -11,5 +11,12 @@ namespace DataAccess.Postgres.Repositories
     {
         Task<SampleEntity> Create(SampleEntity SampleEntity);
         Task<IEnumerable<SampleEntity>> GetAllAsync();
+
+        /// </summary>
+        /// Метод получает шаблоны определенного устройства./>.
+        /// </summary>
+        /// <param name="name">Имя объекта.</param>
+        /// <returns>Возвращает таблицу Sample по опрделенному шаблону./>.</returns>
+        Task<List<SampleEntity>> GetByFilter(string name);
     }
 }

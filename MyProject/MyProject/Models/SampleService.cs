@@ -14,5 +14,15 @@ namespace MyProject.Models
         {
             return await sampleRepository.GetAllAsync();
         }
+
+        /// </summary>
+        /// Метод получает шаблоны определенного устройства./>.
+        /// </summary>
+        /// <param name="name">Имя объекта.</param>
+        /// <returns>Возвращает таблицу Sample по опрделенному шаблону./>.</returns>
+        public async Task<List<SampleEntity>> GetByFilter(string name)
+        {
+            return await sampleRepository.GetByFilter(name);
+        }
     }
 }
