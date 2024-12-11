@@ -7,11 +7,17 @@ namespace MyProject.Models
         Task<SampleEntity> Create(SampleEntity sampleEntity);
         Task<IEnumerable<SampleEntity>> GetAllAsync();
 
-        /// </summary>
+        /// <summary>
         /// Метод получает шаблоны определенного устройства./>.
-        /// </summary>
+        /// <summary>
         /// <param name="name">Имя объекта.</param>
         /// <returns>Возвращает таблицу Sample по опрделенному шаблону./>.</returns>
         Task<List<SampleEntity>> GetByFilter(string name);
+
+        /// <summary>
+        /// Метод обновления значений в БД./>.
+        /// <summary>
+        /// <param name="values">Словарь.</param>
+        Task UpdateValues(Dictionary<int, bool> values);
     }
 }

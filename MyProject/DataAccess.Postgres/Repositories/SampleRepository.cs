@@ -13,12 +13,14 @@ namespace DataAccess.Postgres.Repositories
         ///AsNoTracking вытягивает данные без отслеживания         
 
         /// Метод получает все виды параметров из БД./>.
-        /// </summary>
+        /// <summary>
         /// <returns>Лист параметров./>.</returns>
         /// <summary>
         public async Task<IEnumerable<SampleEntity>> GetAllAsync()
         {
-            return await dbContext.Sample.ToListAsync();
+            return await dbContext.Sample
+                .Include(s => s.Equipment)
+                .ToListAsync();
         }
 
         /// Метод добавляет экзмепляр класса SampleEntity в БД./>.
@@ -30,9 +32,9 @@ namespace DataAccess.Postgres.Repositories
             return sampleEntity;
         }
 
-        /// </summary>
+        /// <summary>
         /// Метод получает шаблоны определенного устройства./>.
-        /// </summary>
+        /// <summary>
         /// <param name="name">Имя объекта.</param>
         /// <returns>Возвращает таблицу Sample по опрделенному шаблону./>.</returns>
         public async Task<List<SampleEntity>> GetByFilter(string name)
@@ -48,6 +50,23 @@ namespace DataAccess.Postgres.Repositories
                           .Where(s => s.Equipment.Name == name);
 
             return await query.ToListAsync();
+        }
+
+        public async Task UpdateValues(Dictionary<int, bool> values)
+        {
+            foreach (var kvp in values)
+            {
+                var id = kvp.Key; // ID строки
+                var newStatus = kvp.Value; // Новое значение Status
+
+                var entity = await dbContext.Sample.FindAsync(id);
+                if (entity != null)
+                {
+                    entity.Status = newStatus;
+                }
+            }
+
+            await dbContext.SaveChangesAsync();
         }
     }
 }

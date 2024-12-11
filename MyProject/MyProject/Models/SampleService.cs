@@ -15,7 +15,7 @@ namespace MyProject.Models
             return await sampleRepository.GetAllAsync();
         }
 
-        /// </summary>
+        /// <summary>
         /// Метод получает шаблоны определенного устройства./>.
         /// </summary>
         /// <param name="name">Имя объекта.</param>
@@ -23,6 +23,15 @@ namespace MyProject.Models
         public async Task<List<SampleEntity>> GetByFilter(string name)
         {
             return await sampleRepository.GetByFilter(name);
+        }
+
+        /// <summary>
+        /// Метод обновления значений в БД./>.
+        /// <summary>
+        /// <param name="values">Словарь.</param>
+        public async Task UpdateValues(Dictionary<int, bool> values)
+        {
+            await sampleRepository.UpdateValues(values);
         }
     }
 }

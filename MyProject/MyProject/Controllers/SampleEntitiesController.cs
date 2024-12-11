@@ -51,5 +51,14 @@ namespace MyProject.Controllers
             ViewBag.EquipmentList = new SelectList(equipmentList, "Id", "Name");
             return View(sampleEntity);
         }
+
+        [HttpPost]
+        public async Task<IActionResult> UpdateValues(Dictionary<int, bool> values, string deviceName)
+        {
+            await _sampleService.UpdateValues(values);
+            var unityData = await _sampleService.GetByFilter(deviceName);
+            ViewBag.DeviceName = deviceName;
+            return View("Index", unityData);
+        }
     }
 }

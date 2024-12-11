@@ -50,6 +50,7 @@ namespace DataAccess.Postgres.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     DateCreated = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     Name = table.Column<string>(type: "text", nullable: false),
+                    Status = table.Column<bool>(type: "boolean", nullable: false),
                     EquipmentID = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>

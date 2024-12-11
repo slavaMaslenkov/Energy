@@ -18,6 +18,9 @@ namespace DataAccess.Postgres.Entity
         [Display(Name = "Шаблон")]
         public string Name { get; set; } = string.Empty;
 
+        [Display(Name = "Статус")]
+        public bool Status { get; set; } = true;
+
         public int EquipmentID { get; set; }
 
         [Display(Name = "Название")]
