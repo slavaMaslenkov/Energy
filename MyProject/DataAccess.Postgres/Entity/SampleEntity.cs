@@ -20,6 +20,7 @@ namespace DataAccess.Postgres.Entity
 
         public int EquipmentID { get; set; }
 
+        [Display(Name = "Название")]
         public EquipmentEntity? Equipment { get; set; }
 
         public ICollection<UnityEntity>? Unity { get; set; }

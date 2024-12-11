@@ -13,7 +13,7 @@ namespace DataAccess.Postgres.Entity
         [Key,DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
-        [Display(Name = "Устройство")]
+        [Display(Name = "Название")]
         public string Name { get; set; } = string.Empty;
 
         [Display(Name = "Тип")]
