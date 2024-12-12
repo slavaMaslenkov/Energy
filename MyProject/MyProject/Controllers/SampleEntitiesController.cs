@@ -53,12 +53,10 @@ namespace MyProject.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> UpdateValues(Dictionary<int, bool> values, string deviceName)
+        public async Task<IActionResult> UpdateValues(Dictionary<int, bool> values)
         {
             await _sampleService.UpdateValues(values);
-            var unityData = await _sampleService.GetByFilter(deviceName);
-            ViewBag.DeviceName = deviceName;
-            return View("Index", unityData);
+            return View("Index");
         }
     }
 }
