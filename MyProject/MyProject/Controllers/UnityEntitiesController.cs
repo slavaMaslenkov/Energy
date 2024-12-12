@@ -54,11 +54,17 @@ namespace MyProject.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(UnityEntity unityEntity, string deviceName)
         {
+            if (string.IsNullOrEmpty(deviceName))
+            {
+                // Добавьте отладочный лог или выбросьте исключение для проверки
+                throw new ArgumentException("DeviceName is null or empty");
+            }
             if (ModelState.IsValid)
             {
                 await _unityService.Create(unityEntity);
                 return RedirectToAction(nameof(DeviceUnity), new { deviceName });
             }
+
 
             // Повторная загрузка списка оборудования при ошибке валидации
             var parametersList = await _parametersService.GetAllAsync();
@@ -125,10 +131,9 @@ namespace MyProject.Controllers
             {
                 return RedirectToAction("Create", "SampleEntities");
             }
-
             if (!unityData.Any())
             {
-                return RedirectToAction("Create", "UnityEntities");
+                return RedirectToAction("Create", "UnityEntities", new { deviceName });
             }
 
             ViewBag.DeviceName = deviceName;
