@@ -4,7 +4,17 @@ namespace MyProject.Models
 {
     public interface ISampleService
     {
+        /// <summary>
+        /// Метод добавляет экзмепляр класса SampleEntity в БД./>.
+        /// <summary>
+        /// <param name="sampleEntity">Имя шаблона.</param>
+        /// <returns>Экземпляр класса SampleEntity/>.</returns>
         Task<SampleEntity> Create(SampleEntity sampleEntity);
+
+        /// <summary>
+        /// Метод получает все шаблоны из БД./>.
+        /// </summary>
+        /// <returns>Лист SampleEntity/>.</returns>
         Task<IEnumerable<SampleEntity>> GetAllAsync();
 
         /// <summary>
@@ -15,9 +25,15 @@ namespace MyProject.Models
         Task<List<SampleEntity>> GetByFilter(string name);
 
         /// <summary>
-        /// Метод обновления значений в БД./>.
+        /// Метод обновляет статус шаблона./>.
         /// <summary>
-        /// <param name="values">Словарь.</param>
+        /// <param name="values">Словарь объектов.</param>
         Task UpdateValues(Dictionary<int, bool> values);
+
+        /// <summary>
+        /// Метод получает статусы шаблона./>.
+        /// <summary>
+        /// <returns>Возвращает словарь ID:Status./>.</returns>
+        Task<Dictionary<int, bool>> GetStatusesAsync();
     }
 }

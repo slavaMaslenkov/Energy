@@ -53,10 +53,23 @@ namespace MyProject.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> UpdateValues(Dictionary<int, bool> values)
+        public async Task<IActionResult> UpdateValues([FromBody] Dictionary<int, bool> values)
         {
-            await _sampleService.UpdateValues(values);
-            return View("Index");
+            if (values == null || !values.Any())
+                return View("Error");
+
+            // Загружаем текущие статусы и обновляем только измененные
+            var currentStatuses = await _sampleService.GetStatusesAsync();
+            var updatedStatuses = values
+                .Where(kv => currentStatuses[kv.Key] != kv.Value)
+                .ToDictionary(kv => kv.Key, kv => kv.Value);
+
+            if (updatedStatuses.Any())
+            {
+                await _sampleService.UpdateValues(updatedStatuses);
+            }
+
+            return RedirectToAction(nameof(Index));
         }
     }
 }

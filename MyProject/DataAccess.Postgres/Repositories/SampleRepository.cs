@@ -10,12 +10,10 @@ namespace DataAccess.Postgres.Repositories
 {
     internal class SampleRepository (DataContext dbContext) : ISampleRepository
     {
-        ///AsNoTracking вытягивает данные без отслеживания         
-
-        /// Метод получает все виды параметров из БД./>.
         /// <summary>
-        /// <returns>Лист параметров./>.</returns>
-        /// <summary>
+        /// Метод получает все шаблоны из БД./>.
+        /// </summary>
+        /// <returns>Лист SampleEntity/>.</returns>
         public async Task<IEnumerable<SampleEntity>> GetAllAsync()
         {
             return await dbContext.Sample
@@ -23,8 +21,11 @@ namespace DataAccess.Postgres.Repositories
                 .ToListAsync();
         }
 
+        /// <summary>
         /// Метод добавляет экзмепляр класса SampleEntity в БД./>.
         /// <summary>
+        /// <param name="sampleEntity">Имя шаблона.</param>
+        /// <returns>Экземпляр класса SampleEntity/>.</returns>
         public async Task<SampleEntity> Create(SampleEntity sampleEntity)
         {
             await dbContext.Sample.AddAsync(sampleEntity);
@@ -52,21 +53,35 @@ namespace DataAccess.Postgres.Repositories
             return await query.ToListAsync();
         }
 
+        /// <summary>
+        /// Метод обновляет статус шаблона./>.
+        /// <summary>
+        /// <param name="values">Словарь объектов.</param>
         public async Task UpdateValues(Dictionary<int, bool> values)
         {
             foreach (var kvp in values)
             {
-                var id = kvp.Key; // ID строки
-                var newStatus = kvp.Value; // Новое значение Status
-
-                var entity = await dbContext.Sample.FindAsync(id);
+                var entity = await dbContext.Sample.FindAsync(kvp.Key);
                 if (entity != null)
                 {
-                    entity.Status = newStatus;
+                    entity.Status = kvp.Value;
                 }
             }
 
             await dbContext.SaveChangesAsync();
+        }
+
+        /// <summary>
+        /// Метод получает статусы шаблона./>.
+        /// <summary>
+        /// <returns>Возвращает словарь ID:Status./>.</returns>
+        public async Task<Dictionary<int, bool>> GetStatusesAsync()
+        {
+            var entities = await dbContext.Sample
+                .Select(e => new { e.Id, e.Status })
+                .ToListAsync();
+
+            return entities.ToDictionary(e => e.Id, e => e.Status);
         }
     }
 }

@@ -55,6 +55,7 @@ body {
 .table-container {
     max-height: 60vh; /* Ограничиваем максимальную высоту таблицы 60% от высоты экрана */
     overflow-y: auto; /* Включаем вертикальную прокрутку */
+    position: relative;
 }
 
 /* Дополнительные стили для таблицы */
@@ -62,12 +63,6 @@ body {
     width: 100%;
     border-collapse: collapse;
 }
-
-    .table th,
-    .table td {
-        padding: 10px;
-        text-align: center;
-    }
 
 .sticky-header th {
     position: sticky;
@@ -87,4 +82,39 @@ footer {
 .row {
     display: flex;
     flex: 1; /* Контент и боковая панель заполняют доступное пространство */
+}
+
+.table thead.sticky-header th {
+    position: sticky; /* Фиксированное положение заголовков */
+    top: 0; /* Привязка к верхней части контейнера */
+    z-index: 2; /* Убедитесь, что заголовки перекрывают содержимое */
+    background-color: #fcfcfc; /* Цвет фона заголовков */
+    box-shadow: 0 2px 2px -1px rgba(0, 0, 0, 0.1); /* Добавьте тень для визуального эффекта */
+}
+
+.table th, .table td {
+    vertical-align: middle; /* Центрирование текста по вертикали */
+    text-align: center; /* Центрирование текста по горизонтали */
+    align-items: center;
+    padding: 10px; /* Внутренние отступы */
+}
+
+/* Устанавливает фиксированную высоту строк таблицы */
+.uniform-rows tr {
+    height: 51px; /* Фиксированная высота для всех строк */
+    vertical-align: middle; /* Выравнивает содержимое по вертикали */
+}
+
+/* Устанавливает высоту текстового поля внутри ячейки */
+.cell-input {
+    height: 100%; /* Растягивает текстовое поле на всю высоту ячейки */
+    line-height: normal; /* Обеспечивает правильное выравнивание текста */
+}
+
+/* Стили для текстового содержимого ячейки */
+.cell-value {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%; /* Обеспечивает одинаковое поведение с input */
 }

@@ -9,11 +9,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Remove="wwwroot\js\modals.js" />
+    <Content Remove="wwwroot\js\ModalDelete.js" />
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="wwwroot\js\modals.js" />
+    <None Include="wwwroot\js\ModalDelete.js" />
   </ItemGroup>
 
   <ItemGroup>
