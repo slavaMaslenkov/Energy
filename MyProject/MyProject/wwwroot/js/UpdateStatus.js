@@ -1,23 +1,33 @@
 ﻿document.querySelectorAll('.form-check-input-info').forEach(checkbox => {
     checkbox.addEventListener('change', function () {
-        const id = this.getAttribute('data-id'); // Получаем ID шаблона
-        const status = this.checked; // Новый статус
-        const templateName = checkbox?.getAttribute('data-name') || id; // Имя шаблона (опционально)
+        const id = this.getAttribute('data-id');
+        const initialStatus = this.checked;
+        const templateName = this.getAttribute('data-name') || id;
+        let actionConfirmed = false; // Флаг для отслеживания подтверждения
 
-        // Устанавливаем данные в модальное окно
+        // Обновление данных в модальном окне
         document.getElementById('templateName').innerText = templateName;
-        document.getElementById('newStatus').innerText = status ? 'Зафиксирован' : 'В редакции';
+        document.getElementById('newStatus').innerText = initialStatus ? 'Зафиксирован' : 'В редакции';
 
-        // Показываем модальное окно
-        const modal = new bootstrap.Modal(document.getElementById('statusChangeModal'));
+        // Показ модального окна
+        const modalElement = document.getElementById('statusChangeModal');
+        const modal = new bootstrap.Modal(modalElement);
         modal.show();
 
-        // Обработчик подтверждения
-        document.getElementById('confirmStatusChange').onclick = () => {
-            const payload = {};
-            payload[id] = status;
+        // Восстановление состояния переключателя, если пользователь закроет окно
+        modalElement.addEventListener('hidden.bs.modal', () => {
+            if (!actionConfirmed) {
+                this.checked = !initialStatus; // Возвращаем переключатель в исходное состояние только при отмене
+            }
+        });
 
-            // AJAX запрос на сервер
+        // Подтверждение действия
+        document.getElementById('confirmStatusChange').onclick = () => {
+            actionConfirmed = true; // Отмечаем, что действие подтверждено
+            const payload = {};
+            payload[id] = initialStatus;
+
+            // AJAX-запрос
             fetch('/SampleEntities/UpdateValues', {
                 method: 'POST',
                 headers: {
@@ -28,24 +38,20 @@
             })
                 .then(response => {
                     if (response.ok) {
-                        console.log(`Status for ID ${id} updated to ${status}`);
+                        console.log(`Status for ID ${id} updated to ${initialStatus}`);
                     } else {
                         console.error(`Failed to update status for ID ${id}`);
                         alert('Ошибка обновления статуса.');
+                        this.checked = !initialStatus; // Восстанавливаем исходное состояние
                     }
                 })
                 .catch(error => {
                     console.error('Error:', error);
                     alert('Произошла ошибка при отправке данных.');
+                    this.checked = !initialStatus; // Восстанавливаем исходное состояние
                 });
 
-            // Закрытие модального окна
-            modal.hide();
-        };
-
-        // Обработчик отмены
-        document.querySelector('.btn-close').onclick = () => {
-            this.checked = !status; // Отменяем изменение тумблера
+            modal.hide(); // Закрытие модального окна
         };
     });
 });
