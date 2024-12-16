@@ -7,27 +7,62 @@
 <h2>Создать шаблон</h2>
 <hr />
 <div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create" method="post">
-        <div class="form-group">
-            <label asp-for="Name" class="control-label"></label>
-            <input asp-for="Name" class="form-control" />
-            <span asp-validation-for="Name" class="text-danger"></span>
+    <!-- Первая карточка -->
+    <div class="col-md-6">
+        <div class="card border-secondary mb-1">
+            <div class="card-header mb-0">Создать новый шаблон</div>
+            <div class="card-body">
+                 <form asp-action="Create" method="post">
+                     <div class="form-group" style="margin-top: 0;">
+                         <label asp-for="Name" class="control-label"></label>
+                         <input asp-for="Name" class="form-control" />
+                         <span asp-validation-for="Name" class="text-danger"></span>
+                     </div>
+                     <div class="form-group">
+                         <label asp-for="EquipmentID" class="control-label">Устройство</label>
+                         @Html.DropDownListFor(
+                                  model => model.EquipmentID,
+                                  (SelectList)ViewBag.EquipmentList,
+                                  "Выберете устройство",
+                                  new { @class = "form-control" }
+                                  )
+                         <span asp-validation-for="EquipmentID" class="text-danger"></span>
+                     </div>
+                     <div class="form-group mt-2">
+                         <input type="submit" value="Создать" class="btn btn-secondary d-inline-flex align-items-center text-dark" />
+                     </div>
+                 </form>
+            </div>
         </div>
-        <div class="form-group">
-            <label asp-for="EquipmentID" class="control-label">Устройство</label>
-            @Html.DropDownListFor(
-                     model => model.EquipmentID,
-                     (SelectList)ViewBag.EquipmentList,
-                     "Выберете устройство",
-                     new { @class = "form-control" }
-                     )
-            <span asp-validation-for="EquipmentID" class="text-danger"></span>
+    </div>
+
+    <!-- Вторая карточка -->
+    <div class="col-md-6">
+        <div class="card border-secondary mb-1">
+            <div class="card-header mb-0">Создать шаблон на основе другого</div>
+            <div class="card-body">
+                <form asp-action="Create" method="post">
+                    <div class="form-group" style="margin-top: 0;">
+                        <label asp-for="Name" class="control-label"></label>
+                        <input asp-for="Name" class="form-control" />
+                        <span asp-validation-for="Name" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="EquipmentID" class="control-label">На основе</label>
+                        @Html.DropDownListFor(
+                                 model => model.EquipmentID,
+                                 (SelectList)ViewBag.SampleList,
+                                 "Шаблон",
+                                 new { @class = "form-control" }
+                                 )
+                        <span asp-validation-for="EquipmentID" class="text-danger"></span>
+                    </div>
+                    <div class="form-group mt-2">
+                        <input type="submit" value="Создать" class="btn btn-secondary d-inline-flex align-items-center text-dark" />
+                    </div>
+                </form>
+            </div>
         </div>
-        <div class="form-group mt-2">
-            <input type="submit" value="Создать" class="btn btn-secondary d-inline-flex align-items-center text-dark" />
-        </div>
-        </form>
     </div>
 </div>
 

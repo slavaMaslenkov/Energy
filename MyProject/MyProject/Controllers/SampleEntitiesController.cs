@@ -30,8 +30,10 @@ namespace MyProject.Controllers
         public async Task<IActionResult> Create()
         {
             var equipmentList = await _equipmentService.GetAllAsync();
+            var sampleList = await _sampleService.GetAllAsync();
             // Загрузка списка оборудования
             ViewBag.EquipmentList = new SelectList(equipmentList, "Id", "Name");
+            ViewBag.SampleList = new SelectList(sampleList, "Id", "Name");
             return View();
         }
 
@@ -39,6 +41,24 @@ namespace MyProject.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(SampleEntity sampleEntity)
+        {
+            if (ModelState.IsValid)
+            {
+                await _sampleService.Create(sampleEntity);
+                return RedirectToAction(nameof(Index));
+            }
+
+            // Повторная загрузка списка оборудования при ошибке валидации
+            var equipmentList = await _equipmentService.GetAllAsync();
+            var sampleList = await _sampleService.GetAllAsync();
+            ViewBag.EquipmentList = new SelectList(equipmentList, "Id", "Name");
+            ViewBag.SampleList = new SelectList(sampleList, "EquipmentID", "Name");
+            return View(sampleEntity);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreateBasedOn(SampleEntity sampleEntity)
         {
             if (ModelState.IsValid)
             {
