@@ -25,6 +25,15 @@ namespace MyProject.Models
         }
 
         /// <summary>
+        /// Метод получает шаблоны из БД со статусом "В редакции"/>.
+        /// </summary>
+        /// <returns>Лист SampleEntity/>.</returns>
+        public async Task<IEnumerable<SampleEntity>> GetAvailableAsync()
+        {
+            return await sampleRepository.GetAvailableAsync();
+        }
+
+        /// <summary>
         /// Метод получает шаблоны определенного устройства./>.
         /// </summary>
         /// <param name="name">Имя объекта.</param>

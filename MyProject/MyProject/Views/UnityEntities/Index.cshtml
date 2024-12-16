@@ -25,17 +25,17 @@
 <form asp-action="UpdateValues" method="post">
     <input type="hidden" name="DeviceName" value="@ViewBag.DeviceName" />
     <div class="table-container">
-        <table class="table text-center">
+        <table class="table text-center" style="width: 100%; table-layout: fixed;">
             <thead class="sticky-header">
                 <tr>
-                    <th>
+                    <th style="width: 5%;">
                         <input type="checkbox" id="select-all" /> <!-- Чекбокс для выбора всех -->
                     </th>
-                    <th>@Html.DisplayNameFor(model => model.Sample.Name)</th>
-                    <th>@Html.DisplayNameFor(model => model.Parameters.Name)</th>
-                    <th>@Html.DisplayNameFor(model => model.Value)</th>
-                    <th>@Html.DisplayNameFor(model => model.Parameters.Measure)</th>
-                    <th></th>
+                    <th style="width: 20%;">@Html.DisplayNameFor(model => model.Sample.Name)</th>
+                    <th style="width: 20%;">@Html.DisplayNameFor(model => model.Parameters.Name)</th>
+                    <th style="width: 40%;">@Html.DisplayNameFor(model => model.Value)</th>
+                    <th style="width: 5%;">@Html.DisplayNameFor(model => model.Parameters.Measure)</th>
+                    <th style="width: 10%;"></th>
                 </tr>
             </thead>
             <tbody>

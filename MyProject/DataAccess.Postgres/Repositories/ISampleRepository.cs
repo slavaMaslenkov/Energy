@@ -23,6 +23,12 @@ namespace DataAccess.Postgres.Repositories
         Task<IEnumerable<SampleEntity>> GetAllAsync();
 
         /// <summary>
+        /// Метод получает шаблоны из БД со статусом "В редакции"/>.
+        /// </summary>
+        /// <returns>Лист SampleEntity/>.</returns>
+        Task<IEnumerable<SampleEntity>> GetAvailableAsync();
+
+        /// <summary>
         /// Метод получает шаблоны определенного устройства./>.
         /// <summary>
         /// <param name="name">Имя объекта.</param>

@@ -40,7 +40,7 @@ namespace MyProject.Controllers
         public async Task<IActionResult> Create(string deviceName)
         {
             var parametersList = await _parametersService.GetAllAsync();
-            var sampleList = await _sampleService.GetAllAsync();
+            var sampleList = await _sampleService.GetAvailableAsync();
             // Загрузка списка параметров
             ViewBag.ParametersList = new SelectList(parametersList, "Id", "Name");
             // Загрузка списка шаблонов

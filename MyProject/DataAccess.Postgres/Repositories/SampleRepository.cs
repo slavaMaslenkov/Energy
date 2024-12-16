@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace DataAccess.Postgres.Repositories
 {
@@ -18,6 +19,18 @@ namespace DataAccess.Postgres.Repositories
         {
             return await dbContext.Sample
                 .Include(s => s.Equipment)
+                .ToListAsync();
+        }
+
+        /// <summary>
+        /// Метод получает шаблоны из БД со статусом "В редакции"./>.
+        /// </summary>
+        /// <returns>Лист SampleEntity/>.</returns>
+        public async Task<IEnumerable<SampleEntity>> GetAvailableAsync()
+        {
+            return await dbContext.Sample
+                .Include(e => e.Equipment)
+                .Where(s => s.Status == false)
                 .ToListAsync();
         }
 
