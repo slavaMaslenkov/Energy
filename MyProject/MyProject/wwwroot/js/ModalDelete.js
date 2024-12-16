@@ -46,16 +46,20 @@ document.addEventListener('DOMContentLoaded', function () {
     // Настройка модального окна для одиночного удаления
     deleteModal.addEventListener('show.bs.modal', function (event) {
         const button = event.relatedTarget; // Кнопка, которая вызвала модальное окно
-        const deviceName = button.getAttribute('data-device-name');
+        const data = button.getAttribute('data-device-name');
         const deleteUrl = button.getAttribute('data-delete-url');
-        const globalDeviceName = document.querySelector('input[name="DeviceName"]').value;
 
         // Установить имя устройства в модальное окно
-        const modalDeviceName = deleteModal.querySelector('#deviceName');
-        modalDeviceName.textContent = deviceName;
+        const modalDeviceName = deleteModal.querySelector('#data');
+        modalDeviceName.textContent = data;
 
-        // Установить URL для формы удаления с добавлением DeviceName
-        const deleteForm = deleteModal.querySelector('#deleteForm');
-        deleteForm.action = `${deleteUrl}&deviceName=${encodeURIComponent(globalDeviceName)}`;
+        let globalDeviceName = document.querySelector('input[name="DeviceName"]') ? document.querySelector('input[name="DeviceName"]').value : null;
+        if (globalDeviceName) {
+            const deleteForm = deleteModal.querySelector('#deleteForm');
+            deleteForm.action = `${deleteUrl}&deviceName=${encodeURIComponent(globalDeviceName)}`;
+        } else {
+            const deleteForm = deleteModal.querySelector('#deleteForm');
+            deleteForm.action = `${deleteUrl}`;
+        }
     });
 });

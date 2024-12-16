@@ -67,7 +67,7 @@
                                style="cursor: pointer;"
                                data-bs-toggle="modal"
                                data-bs-target="#deleteModal"
-                               data-device-name="@item.Id"
+                               data-device-name="@item.Parameters.Name"
                                data-delete-url="@Url.Action("Delete", "UnityEntities", new { id = item.Id, deviceName = ViewBag.DeviceName })">
                             </i>
                         </td>
@@ -83,4 +83,4 @@
 
 @Html.Partial("ModalDelete")
 
-<script src="~/js/ModalDelete.js"></script>
+<script src="~/js/ModalDelete.js?v=@DateTime.Now.Ticks"></script>
