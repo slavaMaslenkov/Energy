@@ -41,7 +41,7 @@
         <div class="card border-secondary mb-1">
             <div class="card-header mb-0">Создать шаблон на основе другого</div>
             <div class="card-body">
-                <form asp-action="Create" method="post">
+                <form asp-action="CreateBasedOn" method="post">
                     <div class="form-group" style="margin-top: 0;">
                         <label asp-for="Name" class="control-label"></label>
                         <input asp-for="Name" class="form-control" />
@@ -52,7 +52,7 @@
                         @Html.DropDownListFor(
                                  model => model.EquipmentID,
                                  (SelectList)ViewBag.SampleList,
-                                 "Шаблон",
+                                 "Выберете шаблон",
                                  new { @class = "form-control" }
                                  )
                         <span asp-validation-for="EquipmentID" class="text-danger"></span>

@@ -47,6 +47,49 @@ namespace DataAccess.Postgres.Repositories
         }
 
         /// <summary>
+        /// Метод создает список экзмепляров класса UnityEntity на основе 
+        /// другого экземпляра./>.
+        /// <summary>
+        /// <param name="equipmentID">Имя шаблона.</param>
+        /// <returns>Экземпляр класса SampleEntity/>.</returns>
+        public async Task<SampleEntity> CreateBasedOn(int equipmentID, SampleEntity sampleEntity)
+        {
+            // определяем последний Sample
+            var latestSample = dbContext.Sample
+                .AsNoTracking()
+                .Where(u => u != null &&
+                       u.Equipment != null &&
+                       u.Equipment.Id == equipmentID)
+                .OrderByDescending(s => s.DateCreated)
+                .FirstOrDefault();
+
+            //добавляем новый шаблон на основе старого пока без параметров
+            await dbContext.Sample.AddAsync(sampleEntity);
+            await dbContext.SaveChangesAsync();
+
+            if (latestSample != null)
+            {
+                var parameters = dbContext.Unity
+                    .Include(u => u.Parameters)
+                    .Where(u => u.SampleID == latestSample.Id)
+                    .ToList();
+
+                //добавлляем параметры к шаблону
+                foreach (var unity in parameters)
+                {
+                    var newUnity = new UnityEntity
+                    {
+                        SampleID = sampleEntity.Id, // Связываем с новым Sample
+                        ParametersID = unity.ParametersID, // Связываем с тем же параметром
+                    };
+                    await dbContext.Unity.AddAsync(newUnity);
+                }
+                await dbContext.SaveChangesAsync();
+            }
+            return sampleEntity;
+        }
+
+        /// <summary>
         /// Метод получает шаблоны определенного устройства./>.
         /// <summary>
         /// <param name="name">Имя объекта.</param>
@@ -95,6 +138,32 @@ namespace DataAccess.Postgres.Repositories
                 .ToListAsync();
 
             return entities.ToDictionary(e => e.Id, e => e.Status);
+        }
+
+        /// <summary>
+        /// Метод поиска экземпляра по id.
+        /// <summary>
+        /// <param name="id">Имя объекта.</param>
+        /// <returns>Экземпляр класса SampleEntity/>.</returns>
+        public async Task<SampleEntity> FindById(int? id)
+        {
+            var sampleEntity = await dbContext.Sample.FindAsync(id);
+            return sampleEntity;
+        }
+
+        /// <summary>
+        /// Метод удаляет экзмепляр класса SampleEntity в БД./>.
+        /// <summary>
+        /// <param name="id">Имя объекта.</param>
+        public async Task DeleteConfirmed(int? id)
+        {
+            var sampleEntity = await dbContext.Sample.FindAsync(id);
+            if (sampleEntity != null)
+            {
+                dbContext.Sample.Remove(sampleEntity);
+            }
+
+            await dbContext.SaveChangesAsync();
         }
     }
 }

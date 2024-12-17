@@ -19,7 +19,7 @@ namespace DataAccess.Postgres.Entity
         public string Name { get; set; } = string.Empty;
 
         [Display(Name = "Статус")]
-        public bool Status { get; set; } = true;
+        public bool Status { get; set; } = false;
 
         public int EquipmentID { get; set; }
 

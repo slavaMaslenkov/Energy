@@ -33,7 +33,7 @@ namespace MyProject.Controllers
             var sampleList = await _sampleService.GetAllAsync();
             // Загрузка списка оборудования
             ViewBag.EquipmentList = new SelectList(equipmentList, "Id", "Name");
-            ViewBag.SampleList = new SelectList(sampleList, "Id", "Name");
+            ViewBag.SampleList = new SelectList(sampleList, "EquipmentID", "Name");
             return View();
         }
 
@@ -58,17 +58,19 @@ namespace MyProject.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> CreateBasedOn(SampleEntity sampleEntity)
+        public async Task<IActionResult> CreateBasedOn(int equipmentID, SampleEntity sampleEntity)
         {
             if (ModelState.IsValid)
             {
-                await _sampleService.Create(sampleEntity);
+                await _sampleService.CreateBasedOn(equipmentID, sampleEntity);
                 return RedirectToAction(nameof(Index));
             }
 
             // Повторная загрузка списка оборудования при ошибке валидации
             var equipmentList = await _equipmentService.GetAllAsync();
+            var sampleList = await _sampleService.GetAllAsync();
             ViewBag.EquipmentList = new SelectList(equipmentList, "Id", "Name");
+            ViewBag.SampleList = new SelectList(sampleList, "EquipmentID", "Name");
             return View(sampleEntity);
         }
 
@@ -90,6 +92,37 @@ namespace MyProject.Controllers
             }
 
             return RedirectToAction(nameof(Index));
+        }
+
+        // POST: SampleEntity/Delete/5
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int id)
+        {
+            await _sampleService.DeleteConfirmed(id);
+            return RedirectToAction(nameof(Index));
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> DeleteSelected(string ids)
+        {
+            if (string.IsNullOrEmpty(ids))
+            {
+                return RedirectToAction(nameof(Index));
+            }
+
+            var idList = ids.Split(',').Select(int.Parse).ToList();
+
+            foreach (var id in idList)
+            {
+                var sampleEntity = await _sampleService.FindById(id);
+                if (sampleEntity != null)
+                {
+                    await _sampleService.DeleteConfirmed(id); // Удалить каждый шаблон по ID
+                }
+            }
+
+            return RedirectToAction(nameof(Index)); // Перенаправление на главную страницу
         }
     }
 }

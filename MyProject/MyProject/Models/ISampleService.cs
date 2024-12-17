@@ -12,6 +12,14 @@ namespace MyProject.Models
         Task<SampleEntity> Create(SampleEntity sampleEntity);
 
         /// <summary>
+        /// Метод создает список экзмепляров класса UnityEntity на основе 
+        /// другого экземпляра./>.
+        /// <summary>
+        /// <param name="equipmentID">Имя шаблона.</param>
+        /// <returns>Экземпляр класса SampleEntity/>.</returns>
+        Task<SampleEntity> CreateBasedOn(int equipmentID, SampleEntity sampleEntity);
+
+        /// <summary>
         /// Метод получает все шаблоны из БД./>.
         /// </summary>
         /// <returns>Лист SampleEntity/>.</returns>
@@ -41,5 +49,18 @@ namespace MyProject.Models
         /// <summary>
         /// <returns>Возвращает словарь ID:Status./>.</returns>
         Task<Dictionary<int, bool>> GetStatusesAsync();
+
+        /// <summary>
+        /// Метод поиска экземпляра по id.
+        /// <summary>
+        /// <param name="id">Имя объекта.</param>
+        /// <returns>Экземпляр класса SampleEntity/>.</returns>
+        Task<SampleEntity> FindById(int? id);
+
+        /// <summary>
+        /// Метод удаляет экзмепляр класса SampleEntity в БД./>.
+        /// <summary>
+        /// <param name="id">Имя объекта.</param>
+        Task DeleteConfirmed(int? id);
     }
 }

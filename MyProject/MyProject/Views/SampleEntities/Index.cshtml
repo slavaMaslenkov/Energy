@@ -14,7 +14,7 @@
         <a id="delete-selected"
            class="btn btn-info d-inline-flex align-items-center text-dark"
            style="text-decoration: none;"
-           data-delete-action="@Url.Action("DeleteSelected", "ParametersEntities")">
+           data-delete-action="@Url.Action("DeleteSelected", "SampleEntities")">
             <i class="bi bi-trash me-2"></i> Удалить
         </a>
     </div>
@@ -66,9 +66,6 @@
                             </div>
                         </td>
                         <td>
-                            <a class="text-dark" asp-controller="SampleEntities" asp-action="Edit" asp-route-id="@item.Id" style="text-decoration: none;">
-                                <i class="bi bi-pen me-2" style="cursor: pointer;"></i>
-                            </a>
                             <i class="bi bi-trash me-2 text-dark"
                                style="cursor: pointer;"
                                data-bs-toggle="modal"
@@ -91,3 +88,4 @@
 @Html.Partial("ModalUpdate")
 
 <script src="~/js/UpdateStatus.js?v=@DateTime.Now.Ticks"></script>
+<script src="~/js/ModalDelete.js?v=@DateTime.Now.Ticks"></script>

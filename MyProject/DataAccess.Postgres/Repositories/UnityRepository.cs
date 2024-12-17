@@ -1,5 +1,7 @@
 ﻿using DataAccess.Postgres.Entity;
 using Microsoft.EntityFrameworkCore;
+using System.Xml.Linq;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace DataAccess.Postgres.Repositories
 {
