@@ -1,55 +1,48 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using DataAccess.Postgres.Entity;
-using MyProject.Models;
+﻿using DataAccess.Postgres.Entity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Mvc.Rendering;
+using MyProject.Models;
 
 namespace MyProject.Controllers
 {
-    public class EquipmentEntitiesController : BaseController
+    public class PlantEntitiesController : BaseController
     {
-
-        private readonly IEquipmentService _equipmentService;
 
         private readonly IPlantService _plantService;
 
-        public EquipmentEntitiesController(IEquipmentService equipmentService, 
-            IParametersService parametersService, ISampleService sampleService, IUnityService unityService, IPlantService plantService) 
-            : base(equipmentService, parametersService, sampleService, unityService, plantService) 
+        public PlantEntitiesController(IEquipmentService equipmentService,
+            IParametersService parametersService, ISampleService sampleService, 
+            IUnityService unityService, IPlantService plantService)
+            : base(equipmentService, parametersService, sampleService, unityService, plantService)
         {
-            _equipmentService = equipmentService;
             _plantService = plantService;
         }
 
-        // GET: EquipmentEntities
+        // GET: PlantEntity
         public async Task<IActionResult> Index()
         {
-            return View(await _equipmentService.GetAllAsync());
+            return View(await _plantService.GetAllAsync());
         }
 
-        // GET: EquipmentEntities/Create
-        public async Task<IActionResult> Create()
+        // GET: PlantEntity/Create
+        public IActionResult Create()
         {
-            var plantList = await _plantService.GetAllAsync();
-            ViewBag.PlantList = new SelectList(plantList, "Id", "Name");
             return View();
         }
 
-        // POST: EquipmentEntities/Create
+        // POST: PlantEntity/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(EquipmentEntity equipmentEntity)
+        public async Task<IActionResult> Create(PlantEntity plantEntity)
         {
             if (ModelState.IsValid)
             {
-                 await _equipmentService.Create(equipmentEntity);
-                 return RedirectToAction(nameof(Index));
+                await _plantService.Create(plantEntity);
+                return RedirectToAction(nameof(Index));
             }
-            var plantList = await _plantService.GetAllAsync();
-            ViewBag.PlanttList = new SelectList(plantList, "Id", "Name");
-            return View(equipmentEntity);
+            return View(plantEntity);
         }
-
+        /*
         // GET: EquipmentEntities/Edit
         public async Task<IActionResult> Edit(int? id)
         {
@@ -57,15 +50,13 @@ namespace MyProject.Controllers
             {
                 return NotFound();
             }
-            var plantList = await _plantService.GetAllAsync();
-            ViewBag.PlantList = new SelectList(plantList, "Id", "Name");
             return View(await _equipmentService.FindById(id));
         }
 
         // POST: EquipmentEntities/Edit
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Type,Description,PlantID")] EquipmentEntity equipmentEntity)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Type,Description,Owner")] EquipmentEntity equipmentEntity)
         {
             if (id != equipmentEntity.Id)
             {
@@ -91,11 +82,9 @@ namespace MyProject.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            var plantList = await _plantService.GetAllAsync();
-            ViewBag.PlantList = new SelectList(plantList, "Id", "Name");
             return View(equipmentEntity);
         }
-        
+
         // POST: EquipmentEntities/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
@@ -125,6 +114,6 @@ namespace MyProject.Controllers
             }
 
             return RedirectToAction(nameof(Index)); // Перенаправление на главную страницу
-        }
+        }*/
     }
 }

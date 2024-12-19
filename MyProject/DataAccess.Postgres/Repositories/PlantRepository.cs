@@ -1,36 +1,40 @@
 ﻿using DataAccess.Postgres.Entity;
 using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace DataAccess.Postgres.Repositories
 {
-    internal class EquipmentRepository(DataContext dbContext) : IEquipmentRepository
+    internal class PlantRepository(DataContext dbContext) : IPlantRepository
     {
 
         /// <summary>
         /// Метод получает все устройства из БД./>.
         /// </summary>
-        /// <returns>Лист EquipmentEntity/>.</returns>
-        public async Task<IEnumerable<EquipmentEntity>> GetAllAsync()
+        /// <returns>Лист PlantEntity/>.</returns>
+        public async Task<IEnumerable<PlantEntity>> GetAllAsync()
         {
-            return await dbContext.Equipment
+            return await dbContext.Plant
                 .AsNoTracking()
-                .Include(e => e.Plant)
                 .OrderBy(e => e.Name)
                 .ToListAsync();
         }
 
         /// <summary>
-        /// Метод добавляет экзмепляр класса EquipmentEntity в БД./>.
+        /// Метод добавляет экзмепляр класса PlantEntity в БД./>.
         /// <summary>
-        /// <param name="equipmentEntity">Имя объекта.</param>
-        /// <returns>Экземпляр класса EquipmentEntity/>.</returns>
-        public async Task<EquipmentEntity> Create(EquipmentEntity equipmentEntity)
+        /// <param name="plantEntity">Имя объекта.</param>
+        /// <returns>Экземпляр класса PlantEntity/>.</returns>
+        public async Task<PlantEntity> Create(PlantEntity plantEntity)
         {
-            await dbContext.Equipment.AddAsync(equipmentEntity);
+            await dbContext.Plant.AddAsync(plantEntity);
             await dbContext.SaveChangesAsync();
-            return equipmentEntity;
+            return plantEntity;
         }
-
+        /*
         /// <summary>
         /// Метод удаляет экзмепляр класса EquipmentEntity в БД./>.
         /// <summary>
@@ -103,7 +107,7 @@ namespace DataAccess.Postgres.Repositories
         public bool EquipmentEntityExists(int id)
         {
             return dbContext.Equipment.Any(e => e.Id == id);
-        }
+        }*/
 
     }
 }

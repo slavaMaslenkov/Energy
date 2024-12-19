@@ -29,9 +29,14 @@
                 <span asp-validation-for="Description" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Owner" class="control-label"></label>
-                <input asp-for="Owner" class="form-control" />
-                <span asp-validation-for="Owner" class="text-danger"></span>
+                <label asp-for="PlantID" class="control-label">Станция</label>
+                @Html.DropDownListFor(
+                         model => model.PlantID,
+                         (SelectList)ViewBag.PlantList,
+                         "Выберете станцию",
+                         new { @class = "form-control" }
+                         )
+                <span asp-validation-for="PlantID" class="text-danger"></span>
             </div>
             <div class="form-group mt-3">
                 <button type="submit" class="btn btn-secondary">

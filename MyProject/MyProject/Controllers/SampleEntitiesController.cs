@@ -13,8 +13,8 @@ namespace MyProject.Controllers
         private readonly IEquipmentService _equipmentService;
 
         public SampleEntitiesController(IEquipmentService equipmentService, 
-            IParametersService parametersService, ISampleService sampleService, IUnityService unityService) 
-            : base(equipmentService, parametersService, sampleService, unityService)
+            IParametersService parametersService, ISampleService sampleService, IUnityService unityService, IPlantService plantService) 
+            : base(equipmentService, parametersService, sampleService, unityService, plantService)
         {
             _sampleService = sampleService;
             _equipmentService = equipmentService;
@@ -75,15 +75,18 @@ namespace MyProject.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> UpdateValues([FromBody] Dictionary<int, bool> values)
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> UpdateValues([FromForm] Dictionary<int, bool> values)
         {
             if (values == null || !values.Any())
-                return View("Error");
+            {
+                return RedirectToAction(nameof(Index));
+            }
 
             // Загружаем текущие статусы и обновляем только измененные
             var currentStatuses = await _sampleService.GetStatusesAsync();
             var updatedStatuses = values
-                .Where(kv => currentStatuses[kv.Key] != kv.Value)
+                .Where(kv => currentStatuses.ContainsKey(kv.Key) && currentStatuses[kv.Key] != kv.Value)
                 .ToDictionary(kv => kv.Key, kv => kv.Value);
 
             if (updatedStatuses.Any())

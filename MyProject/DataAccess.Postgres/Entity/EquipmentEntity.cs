@@ -22,9 +22,10 @@ namespace DataAccess.Postgres.Entity
         [Display(Name = "Описание")]
         public string Description { get; set; } = string.Empty;
 
-        [Display(Name = "Собственник")]
-        public string Owner { get; set; } = string.Empty;
+        public int PlantID { get; set; }
 
         public ICollection<SampleEntity>? Sample { get; set; }
+
+        public PlantEntity? Plant { get; set; }
     }
 }

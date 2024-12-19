@@ -3,7 +3,7 @@
         const id = this.getAttribute('data-id');
         const initialStatus = this.checked;
         const templateName = this.getAttribute('data-name') || id;
-        let actionConfirmed = false; // Флаг для отслеживания подтверждения
+        let actionConfirmed = false;
 
         // Обновление данных в модальном окне
         document.getElementById('templateName').innerText = templateName;
@@ -27,14 +27,17 @@
             const payload = {};
             payload[id] = initialStatus;
 
-            // AJAX-запрос
+            // Получаем токен валидации с формы
+            const token = document.querySelector('input[name="__RequestVerificationToken"]').value;
+
+            // Отправка данных через fetch
             fetch('/SampleEntities/UpdateValues', {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json',
-                    'RequestVerificationToken': document.querySelector('input[name="__RequestVerificationToken"]').value
+                    'Content-Type': 'application/json', // Указываем формат JSON
+                    'RequestVerificationToken': token // Передаем токен валидации
                 },
-                body: JSON.stringify(payload)
+                body: JSON.stringify(payload) // Данные в JSON-формате
             })
                 .then(response => {
                     if (response.ok) {
@@ -55,3 +58,4 @@
         };
     });
 });
+

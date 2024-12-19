@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace DataAccess.Postgres.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20241217100903_initial")]
+    [Migration("20241219062656_initial")]
     partial class initial
     {
         /// <inheritdoc />
@@ -41,15 +41,16 @@ namespace DataAccess.Postgres.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("Owner")
-                        .IsRequired()
-                        .HasColumnType("text");
+                    b.Property<int>("PlantID")
+                        .HasColumnType("integer");
 
                     b.Property<string>("Type")
                         .IsRequired()
                         .HasColumnType("text");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("PlantID");
 
                     b.ToTable("Equipment");
                 });
@@ -62,6 +63,10 @@ namespace DataAccess.Postgres.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<string>("Measure")
                         .IsRequired()
                         .HasColumnType("text");
@@ -73,6 +78,31 @@ namespace DataAccess.Postgres.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Parameters");
+                });
+
+            modelBuilder.Entity("DataAccess.Postgres.Entity.PlantEntity", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Control")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Owner")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Plant");
                 });
 
             modelBuilder.Entity("DataAccess.Postgres.Entity.SampleEntity", b =>
@@ -112,8 +142,14 @@ namespace DataAccess.Postgres.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("Access")
+                        .HasColumnType("text");
+
                     b.Property<int>("ParametersID")
                         .HasColumnType("integer");
+
+                    b.Property<string>("Range")
+                        .HasColumnType("text");
 
                     b.Property<int>("SampleID")
                         .HasColumnType("integer");
@@ -128,6 +164,17 @@ namespace DataAccess.Postgres.Migrations
                     b.HasIndex("SampleID");
 
                     b.ToTable("Unity");
+                });
+
+            modelBuilder.Entity("DataAccess.Postgres.Entity.EquipmentEntity", b =>
+                {
+                    b.HasOne("DataAccess.Postgres.Entity.PlantEntity", "Plant")
+                        .WithMany("Equipment")
+                        .HasForeignKey("PlantID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Plant");
                 });
 
             modelBuilder.Entity("DataAccess.Postgres.Entity.SampleEntity", b =>
@@ -168,6 +215,11 @@ namespace DataAccess.Postgres.Migrations
             modelBuilder.Entity("DataAccess.Postgres.Entity.ParametersEntity", b =>
                 {
                     b.Navigation("Unity");
+                });
+
+            modelBuilder.Entity("DataAccess.Postgres.Entity.PlantEntity", b =>
+                {
+                    b.Navigation("Equipment");
                 });
 
             modelBuilder.Entity("DataAccess.Postgres.Entity.SampleEntity", b =>

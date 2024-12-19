@@ -16,17 +16,16 @@
                 <a class="navbar-brand">ГРНРМ</a>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="MainPage">Таблицы</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="EquipmentEntities" asp-action="Index">Устройства</a>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Справочники</a>
+                            <div class="dropdown-menu">
+                                <a class="dropdown-item" asp-area="" asp-controller="EquipmentEntities" asp-action="Index">Устройства</a>
+                                <a class="dropdown-item" asp-area="" asp-controller="PlantEntities" asp-action="Index">Станции</a>
+                                <a class="dropdown-item" asp-area="" asp-controller="ParametersEntities" asp-action="Index">Параметры</a>
+                            </div>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" asp-area="" asp-controller="SampleEntities" asp-action="Index">Шаблоны</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="ParametersEntities" asp-action="Index">Параметры</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Privacy">Настройка</a>

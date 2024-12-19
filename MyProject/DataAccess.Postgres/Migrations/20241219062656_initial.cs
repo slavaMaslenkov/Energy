@@ -13,6 +13,36 @@ namespace DataAccess.Postgres.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
+                name: "Parameters",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Name = table.Column<string>(type: "text", nullable: false),
+                    Measure = table.Column<string>(type: "text", nullable: false),
+                    Description = table.Column<string>(type: "text", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Parameters", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Plant",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Name = table.Column<string>(type: "text", nullable: false),
+                    Control = table.Column<string>(type: "text", nullable: false),
+                    Owner = table.Column<string>(type: "text", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Plant", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Equipment",
                 columns: table => new
                 {
@@ -21,25 +51,17 @@ namespace DataAccess.Postgres.Migrations
                     Name = table.Column<string>(type: "text", nullable: false),
                     Type = table.Column<string>(type: "text", nullable: false),
                     Description = table.Column<string>(type: "text", nullable: false),
-                    Owner = table.Column<string>(type: "text", nullable: false)
+                    PlantID = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Equipment", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Parameters",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Name = table.Column<string>(type: "text", nullable: false),
-                    Measure = table.Column<string>(type: "text", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Parameters", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Equipment_Plant_PlantID",
+                        column: x => x.PlantID,
+                        principalTable: "Plant",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -72,7 +94,9 @@ namespace DataAccess.Postgres.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     ParametersID = table.Column<int>(type: "integer", nullable: false),
                     SampleID = table.Column<int>(type: "integer", nullable: false),
-                    Value = table.Column<string>(type: "text", nullable: true)
+                    Value = table.Column<string>(type: "text", nullable: true),
+                    Range = table.Column<string>(type: "text", nullable: true),
+                    Access = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -90,6 +114,11 @@ namespace DataAccess.Postgres.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Equipment_PlantID",
+                table: "Equipment",
+                column: "PlantID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Sample_EquipmentID",
@@ -121,6 +150,9 @@ namespace DataAccess.Postgres.Migrations
 
             migrationBuilder.DropTable(
                 name: "Equipment");
+
+            migrationBuilder.DropTable(
+                name: "Plant");
         }
     }
 }

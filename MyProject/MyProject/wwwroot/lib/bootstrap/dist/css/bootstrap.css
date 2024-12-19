@@ -3661,18 +3661,18 @@ textarea.form-control-lg {
 }
 
 .dropdown-item {
-  display: block;
-  width: 100%;
-  padding: var(--bs-dropdown-item-padding-y) var(--bs-dropdown-item-padding-x);
-  clear: both;
-  font-weight: 400;
-  color: var(--bs-dropdown-link-color);
-  text-align: inherit;
-  text-decoration: none;
-  white-space: nowrap;
-  background-color: transparent;
-  border: 0;
-  border-radius: var(--bs-dropdown-item-border-radius, 0);
+    display: block;
+    width: 100%;
+    padding: var(--bs-dropdown-item-padding-y) var(--bs-dropdown-item-padding-x);
+    clear: both;
+    font-weight: 400;
+    color: #029acf;
+    text-align: inherit;
+    text-decoration: none;
+    white-space: nowrap;
+    background-color: transparent;
+    border: 0;
+    border-radius: var(--bs-dropdown-item-border-radius, 0);
 }
 .dropdown-item:hover, .dropdown-item:focus {
   color: var(--bs-dropdown-link-hover-color);
@@ -3842,7 +3842,7 @@ textarea.form-control-lg {
   padding: var(--bs-nav-link-padding-y) var(--bs-nav-link-padding-x);
   font-size: var(--bs-nav-link-font-size);
   font-weight: var(--bs-nav-link-font-weight);
-  color: var(--bs-nav-link-color);
+  color: #000000A6;
   text-decoration: none;
   background: none;
   border: 0;

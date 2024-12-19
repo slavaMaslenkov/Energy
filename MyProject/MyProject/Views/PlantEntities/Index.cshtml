@@ -1,11 +1,11 @@
-﻿@model IEnumerable<DataAccess.Postgres.Entity.EquipmentEntity>
+﻿@model IEnumerable<DataAccess.Postgres.Entity.PlantEntity>
 
 @{
-    ViewData["Title"] = "Устройства";
+    ViewData["Title"] = "Станции";
 }
 
 <h1 class="d-flex justify-content-between align-items-center">
-    Устройства
+    Станции
     <div>
         <a class="btn btn-secondary d-inline-flex align-items-center text-dark me-2"
            asp-action="Create" style="text-decoration: none;">
@@ -14,7 +14,7 @@
         <a id="delete-selected"
            class="btn btn-info d-inline-flex align-items-center text-dark"
            style="text-decoration: none;"
-           data-delete-action="@Url.Action("DeleteSelected", "EquipmentEntities")">
+           data-delete-action="@Url.Action("DeleteSelected", "PlantEntities")">
             <i class="bi bi-trash me-2"></i> Удалить
         </a>
     </div>
@@ -29,13 +29,10 @@
                 @Html.DisplayNameFor(model => model.Name)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Type)
+                @Html.DisplayNameFor(model => model.Control)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Description)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Plant.Name)
+                @Html.DisplayNameFor(model => model.Owner)
             </th>
             <th></th>
         </tr>
@@ -51,16 +48,13 @@
                     @Html.DisplayFor(modelItem => item.Name)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Type)
+                    @Html.DisplayFor(modelItem => item.Control)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Description)
+                    @Html.DisplayFor(modelItem => item.Owner)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Plant.Name)
-                </td>
-                <td>
-                    <a class="text-dark" asp-controller="EquipmentEntities" asp-action="Edit" asp-route-id="@item.Id" style="text-decoration: none;">
+                    <a class="text-dark" asp-controller="PlantEntities" asp-action="Edit" asp-route-id="@item.Id" style="text-decoration: none;">
                         <i class="bi bi-pen me-2" style="cursor: pointer;"></i>
                     </a>
                     <i class="bi bi-trash me-2 text-dark"
@@ -68,7 +62,7 @@
                        data-bs-toggle="modal"
                        data-bs-target="#deleteModal"
                        data-device-name="@item.Name"
-                       data-delete-url="@Url.Action("Delete", "EquipmentEntities", new { id = item.Id })">
+                       data-delete-url="@Url.Action("Delete", "PlantEntities", new { id = item.Id })">
                     </i>
                 </td>
             </tr>

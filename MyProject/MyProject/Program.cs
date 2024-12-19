@@ -19,6 +19,7 @@ namespace MyProject
             builder.Services.AddScoped<IParametersService, ParametersService>();
             builder.Services.AddScoped<ISampleService, SampleService>();
             builder.Services.AddScoped<IUnityService, UnityService>();
+            builder.Services.AddScoped<IPlantService, PlantService>();
 
             var app = builder.Build();
 

@@ -99,3 +99,9 @@ footer {
     align-items: center;
     padding: 10px; /* Внутренние отступы */
 }
+
+/* Стили для элементов dropdown-menu */
+.dropdown-menu a.dropdown-item:hover {
+    background-color: #029ACF; /* Синий фон при наведении */
+    color: white; /* Белый текст при наведении */
+}

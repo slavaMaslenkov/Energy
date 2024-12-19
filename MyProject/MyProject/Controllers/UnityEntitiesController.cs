@@ -15,8 +15,8 @@ namespace MyProject.Controllers
         private readonly IParametersService _parametersService;
 
         public UnityEntitiesController(IEquipmentService equipmentService,
-            IParametersService parametersService, ISampleService sampleService, IUnityService unityService)
-            : base(equipmentService, parametersService, sampleService, unityService)
+            IParametersService parametersService, ISampleService sampleService, IUnityService unityService, IPlantService plantService)
+            : base(equipmentService, parametersService, sampleService, unityService, plantService)
         {
             _unityService = unityService;
             _parametersService = parametersService;
