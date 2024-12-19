@@ -75,18 +75,15 @@ namespace MyProject.Controllers
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> UpdateValues([FromForm] Dictionary<int, bool> values)
+        public async Task<IActionResult> UpdateValues([FromBody] Dictionary<int, bool> values)
         {
             if (values == null || !values.Any())
-            {
                 return RedirectToAction(nameof(Index));
-            }
 
             // Загружаем текущие статусы и обновляем только измененные
             var currentStatuses = await _sampleService.GetStatusesAsync();
             var updatedStatuses = values
-                .Where(kv => currentStatuses.ContainsKey(kv.Key) && currentStatuses[kv.Key] != kv.Value)
+                .Where(kv => currentStatuses[kv.Key] != kv.Value)
                 .ToDictionary(kv => kv.Key, kv => kv.Value);
 
             if (updatedStatuses.Any())
