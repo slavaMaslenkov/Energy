@@ -19,6 +19,10 @@ namespace DataAccess.Postgres
 
         public DbSet<PlantEntity> Plant { get; set; }
 
+        public DbSet<SubsystemEntity> Subsystem { get; set; }
+
+        public DbSet<SystemEntity> System { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -27,6 +31,8 @@ namespace DataAccess.Postgres
             modelBuilder.ApplyConfiguration(new SampleConfiguration());
             modelBuilder.ApplyConfiguration(new UnityConfiguration());
             modelBuilder.ApplyConfiguration(new PlantConfiguration());
+            modelBuilder.ApplyConfiguration(new SubsystemConfiguration());
+            modelBuilder.ApplyConfiguration(new SystemConfiguration());
 
 
             base.OnModelCreating(modelBuilder);

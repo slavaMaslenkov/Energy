@@ -13,12 +13,19 @@ namespace MyProject.Controllers
 
         private readonly IPlantService _plantService;
 
+        private readonly ISubsystemService _subsystemService;
+
+        private readonly ISystemService _systemService;
+
         public EquipmentEntitiesController(IEquipmentService equipmentService, 
-            IParametersService parametersService, ISampleService sampleService, IUnityService unityService, IPlantService plantService) 
-            : base(equipmentService, parametersService, sampleService, unityService, plantService) 
+            IParametersService parametersService, ISampleService sampleService, IUnityService unityService, 
+            IPlantService plantService, ISubsystemService subsystemService, ISystemService systemService) 
+            : base(equipmentService, parametersService, sampleService, unityService, plantService, subsystemService, systemService) 
         {
             _equipmentService = equipmentService;
             _plantService = plantService;
+            _subsystemService = subsystemService;
+            _systemService = systemService;
         }
 
         // GET: EquipmentEntities
@@ -31,22 +38,34 @@ namespace MyProject.Controllers
         public async Task<IActionResult> Create()
         {
             var plantList = await _plantService.GetAllAsync();
+            var subsystemList = await _subsystemService.GetAllAsync();
+
             ViewBag.PlantList = new SelectList(plantList, "Id", "Name");
+            ViewBag.SubsystemList = new SelectList(subsystemList, "Id", "Name");
             return View();
         }
 
         // POST: EquipmentEntities/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(EquipmentEntity equipmentEntity)
+        public async Task<IActionResult> Create(EquipmentEntity equipmentEntity, List<int> subsystemIds)
         {
             if (ModelState.IsValid)
             {
-                 await _equipmentService.Create(equipmentEntity);
-                 return RedirectToAction(nameof(Index));
+                await _equipmentService.Create(equipmentEntity);
+
+                // Привязка выбранных систем к устройству
+                await _systemService.AttachSubsystemsToEquipment(equipmentEntity.Id, subsystemIds);
+
+                return RedirectToAction(nameof(Index));
             }
+
             var plantList = await _plantService.GetAllAsync();
-            ViewBag.PlanttList = new SelectList(plantList, "Id", "Name");
+            var subsystemList = await _subsystemService.GetAllAsync();
+
+            ViewBag.PlantList = new SelectList(plantList, "Id", "Name");
+            ViewBag.SubsystemList = new SelectList(subsystemList, "Id", "Name");
+
             return View(equipmentEntity);
         }
 

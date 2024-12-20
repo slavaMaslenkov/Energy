@@ -16,9 +16,9 @@ namespace DataAccess.Postgres.Configurations
             builder.HasKey(s => s.Id);
 
             builder.
-                HasOne(s => s.Equipment)
+                HasOne(s => s.System)
                 .WithMany(e => e.Sample)
-                .HasForeignKey(s => s.EquipmentID);
+                .HasForeignKey(s => s.SystemID);
 
             builder.
                 HasMany(s => s.Unity)

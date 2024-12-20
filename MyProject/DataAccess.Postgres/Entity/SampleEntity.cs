@@ -21,10 +21,10 @@ namespace DataAccess.Postgres.Entity
         [Display(Name = "Статус")]
         public bool Status { get; set; } = false;
 
-        public int EquipmentID { get; set; }
+        public int SystemID { get; set; }
 
         [Display(Name = "Название")]
-        public EquipmentEntity? Equipment { get; set; }
+        public SystemEntity? System { get; set; }
 
         public ICollection<UnityEntity>? Unity { get; set; }
     }

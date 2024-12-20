@@ -2,12 +2,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DataAccess.Postgres
 {
@@ -20,6 +14,8 @@ namespace DataAccess.Postgres
             serviceCollection.AddScoped<ISampleRepository, SampleRepository>();
             serviceCollection.AddScoped<IUnityRepository, UnityRepository>();
             serviceCollection.AddScoped<IPlantRepository, PlantRepository>();
+            serviceCollection.AddScoped<ISubsystemRepository, SubsystemRepository>();
+            serviceCollection.AddScoped<ISystemRepository, SystemRepository>();
             serviceCollection.AddDbContext<DataContext>(
             options =>
             {

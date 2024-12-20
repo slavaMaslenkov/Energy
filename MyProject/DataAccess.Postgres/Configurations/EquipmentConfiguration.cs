@@ -16,7 +16,7 @@ namespace DataAccess.Postgres.Configurations
                 .HasForeignKey(e => e.PlantID);
 
             builder.
-                HasMany(e => e.Sample)
+                HasMany(e => e.System)
                 .WithOne(s => s.Equipment);
         }
     }

@@ -18,7 +18,8 @@ namespace DataAccess.Postgres.Repositories
         public async Task<IEnumerable<SampleEntity>> GetAllAsync()
         {
             return await dbContext.Sample
-                .Include(s => s.Equipment)
+                .Include(s => s.System)
+                .ThenInclude(sy => sy.Equipment)
                 .ToListAsync();
         }
 
@@ -29,7 +30,8 @@ namespace DataAccess.Postgres.Repositories
         public async Task<IEnumerable<SampleEntity>> GetAvailableAsync()
         {
             return await dbContext.Sample
-                .Include(e => e.Equipment)
+                .Include(s => s.System)
+                .ThenInclude(sy => sy.Equipment)
                 .Where(s => s.Status == false)
                 .ToListAsync();
         }
@@ -57,9 +59,9 @@ namespace DataAccess.Postgres.Repositories
             // определяем последний Sample
             var latestSample = dbContext.Sample
                 .AsNoTracking()
-                .Where(u => u != null &&
-                       u.Equipment != null &&
-                       u.Equipment.Id == equipmentID)
+                .Where(s => s.System != null &&
+                       s.System.Equipment != null &&
+                       s.System.Equipment.Id == equipmentID)
                 .OrderByDescending(s => s.DateCreated)
                 .FirstOrDefault();
 
@@ -103,8 +105,9 @@ namespace DataAccess.Postgres.Repositories
 
             var query = dbContext.Sample
                           .AsNoTracking()
-                          .Include(s => s.Equipment) // Включаем данные из Sample
-                          .Where(s => s.Equipment.Name == name);
+                          .Include(s => s.System)
+                          .ThenInclude(sy => sy.Equipment) // Включаем данные из Sample
+                          .Where(sy => sy.System.Equipment.Name == name);
 
             return await query.ToListAsync();
         }

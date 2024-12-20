@@ -16,15 +16,21 @@ namespace MyProject.Controllers
 
         private readonly IPlantService _plantService;
 
+        private readonly ISubsystemService _subsystemService;
+
+        private readonly ISystemService _systemService;
+
         public BaseController(IEquipmentService equipmentService,
             IParametersService parametersService, ISampleService sampleService, 
-            IUnityService unityService, IPlantService plantService)
+            IUnityService unityService, IPlantService plantService, ISubsystemService subsystemService, ISystemService systemService)
         {
             _equipmentService = equipmentService;
             _parametersService = parametersService;
             _sampleService = sampleService;
             _unityService = unityService;
             _plantService = plantService;
+            _subsystemService = subsystemService;
+            _systemService = systemService;
         }
 
         /// Метод необходим для выполнения базовой логики базового контроллера./>.

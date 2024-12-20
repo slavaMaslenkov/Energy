@@ -20,6 +20,8 @@ namespace MyProject
             builder.Services.AddScoped<ISampleService, SampleService>();
             builder.Services.AddScoped<IUnityService, UnityService>();
             builder.Services.AddScoped<IPlantService, PlantService>();
+            builder.Services.AddScoped<ISubsystemService, SubsystemService>();
+            builder.Services.AddScoped<ISystemService, SystemService>();
 
             var app = builder.Build();
 

@@ -1,16 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace DataAccess.Postgres.Entity
 {
-    public class EquipmentEntity
+    public class SubsystemEntity
     {
-        [Key,DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
         [Display(Name = "Название")]
@@ -22,10 +22,6 @@ namespace DataAccess.Postgres.Entity
         [Display(Name = "Описание")]
         public string? Description { get; set; } = string.Empty;
 
-        public int PlantID { get; set; }
-
         public ICollection<SystemEntity>? System { get; set; }
-
-        public PlantEntity? Plant { get; set; }
     }
 }

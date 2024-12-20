@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace DataAccess.Postgres.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20241219165828_initial")]
+    [Migration("20241220062227_initial")]
     partial class initial
     {
         /// <inheritdoc />
@@ -34,7 +34,6 @@ namespace DataAccess.Postgres.Migrations
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Description")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("Name")
@@ -117,9 +116,6 @@ namespace DataAccess.Postgres.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<int>("EquipmentID")
-                        .HasColumnType("integer");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("text");
@@ -127,11 +123,61 @@ namespace DataAccess.Postgres.Migrations
                     b.Property<bool>("Status")
                         .HasColumnType("boolean");
 
+                    b.Property<int>("SystemID")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("SystemID");
+
+                    b.ToTable("Sample");
+                });
+
+            modelBuilder.Entity("DataAccess.Postgres.Entity.SubsystemEntity", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Description")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Subsystem");
+                });
+
+            modelBuilder.Entity("DataAccess.Postgres.Entity.SystemEntity", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("EquipmentID")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("SubsystemID")
+                        .HasColumnType("integer");
+
                     b.HasKey("Id");
 
                     b.HasIndex("EquipmentID");
 
-                    b.ToTable("Sample");
+                    b.HasIndex("SubsystemID");
+
+                    b.ToTable("System");
                 });
 
             modelBuilder.Entity("DataAccess.Postgres.Entity.UnityEntity", b =>
@@ -179,13 +225,32 @@ namespace DataAccess.Postgres.Migrations
 
             modelBuilder.Entity("DataAccess.Postgres.Entity.SampleEntity", b =>
                 {
-                    b.HasOne("DataAccess.Postgres.Entity.EquipmentEntity", "Equipment")
+                    b.HasOne("DataAccess.Postgres.Entity.SystemEntity", "System")
                         .WithMany("Sample")
+                        .HasForeignKey("SystemID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("System");
+                });
+
+            modelBuilder.Entity("DataAccess.Postgres.Entity.SystemEntity", b =>
+                {
+                    b.HasOne("DataAccess.Postgres.Entity.EquipmentEntity", "Equipment")
+                        .WithMany("System")
                         .HasForeignKey("EquipmentID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("DataAccess.Postgres.Entity.SubsystemEntity", "Subsystem")
+                        .WithMany("System")
+                        .HasForeignKey("SubsystemID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Equipment");
+
+                    b.Navigation("Subsystem");
                 });
 
             modelBuilder.Entity("DataAccess.Postgres.Entity.UnityEntity", b =>
@@ -209,7 +274,7 @@ namespace DataAccess.Postgres.Migrations
 
             modelBuilder.Entity("DataAccess.Postgres.Entity.EquipmentEntity", b =>
                 {
-                    b.Navigation("Sample");
+                    b.Navigation("System");
                 });
 
             modelBuilder.Entity("DataAccess.Postgres.Entity.ParametersEntity", b =>
@@ -225,6 +290,16 @@ namespace DataAccess.Postgres.Migrations
             modelBuilder.Entity("DataAccess.Postgres.Entity.SampleEntity", b =>
                 {
                     b.Navigation("Unity");
+                });
+
+            modelBuilder.Entity("DataAccess.Postgres.Entity.SubsystemEntity", b =>
+                {
+                    b.Navigation("System");
+                });
+
+            modelBuilder.Entity("DataAccess.Postgres.Entity.SystemEntity", b =>
+                {
+                    b.Navigation("Sample");
                 });
 #pragma warning restore 612, 618
         }

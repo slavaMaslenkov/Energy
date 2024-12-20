@@ -1,36 +1,40 @@
 ﻿using DataAccess.Postgres.Entity;
 using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace DataAccess.Postgres.Repositories
 {
-    internal class EquipmentRepository(DataContext dbContext) : IEquipmentRepository
+    internal class SubsystemRepository(DataContext dbContext) : ISubsystemRepository
     {
 
         /// <summary>
         /// Метод получает все устройства из БД./>.
         /// </summary>
-        /// <returns>Лист EquipmentEntity/>.</returns>
-        public async Task<IEnumerable<EquipmentEntity>> GetAllAsync()
+        /// <returns>Лист SubsystemEntity/>.</returns>
+        public async Task<IEnumerable<SubsystemEntity>> GetAllAsync()
         {
-            return await dbContext.Equipment
+            return await dbContext.Subsystem
                 .AsNoTracking()
-                .Include(e => e.Plant)
                 .OrderBy(e => e.Name)
                 .ToListAsync();
         }
 
         /// <summary>
-        /// Метод добавляет экзмепляр класса EquipmentEntity в БД./>.
+        /// Метод добавляет экзмепляр класса SubsystemEntity в БД./>.
         /// <summary>
-        /// <param name="equipmentEntity">Имя объекта.</param>
-        /// <returns>Экземпляр класса EquipmentEntity/>.</returns>
-        public async Task<EquipmentEntity> Create(EquipmentEntity equipmentEntity)
+        /// <param name="subsystemEntity">Имя объекта.</param>
+        /// <returns>Экземпляр класса SubsystemEntity/>.</returns>
+        public async Task<SubsystemEntity> Create(SubsystemEntity subsystemEntity)
         {
-            await dbContext.Equipment.AddAsync(equipmentEntity);
+            await dbContext.Subsystem.AddAsync(subsystemEntity);
             await dbContext.SaveChangesAsync();
-            return equipmentEntity;
+            return subsystemEntity;
         }
-
+        /*
         /// <summary>
         /// Метод удаляет экзмепляр класса EquipmentEntity в БД./>.
         /// <summary>
@@ -68,9 +72,7 @@ namespace DataAccess.Postgres.Repositories
         {
             var devices = await dbContext.Equipment
                  .AsNoTracking()
-                 .Where(e => e.System != null && e.System.Any(
-                     sy => sy.Sample != null && sy.Sample.Any(
-                         s => s.Unity != null && s.Unity.Any()))) // Устройства с привязанными Unity
+                 .Where(e => e.Sample != null && e.Sample.Any(s => s.Unity != null && s.Unity.Any())) // Устройства с привязанными Unity
                  .Select(e => e.Name)
                  .ToListAsync();
             return devices;
@@ -105,7 +107,7 @@ namespace DataAccess.Postgres.Repositories
         public bool EquipmentEntityExists(int id)
         {
             return dbContext.Equipment.Any(e => e.Id == id);
-        }
+        }*/
 
     }
 }

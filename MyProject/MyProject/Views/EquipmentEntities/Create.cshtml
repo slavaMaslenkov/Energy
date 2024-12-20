@@ -10,7 +10,7 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Create">
+        <form asp-action="Create" method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="Name" class="control-label"></label>
@@ -26,16 +26,23 @@
                 <label asp-for="Description" class="control-label"></label>
                 <input asp-for="Description" class="form-control" />
                 <span asp-validation-for="Description" class="text-danger"></span>
-            </div> 
+            </div>
             <div class="form-group">
                 <label asp-for="PlantID" class="control-label">Станция</label>
                 @Html.DropDownListFor(
                          model => model.PlantID,
                          (SelectList)ViewBag.PlantList,
-                         "Выберете станцию",
+                         "Выберите станцию",
                          new { @class = "form-control" }
                          )
                 <span asp-validation-for="PlantID" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label for="Subsystems" class="control-label">Подустройства</label>
+                @Html.ListBox("subsystemIds",
+                         (SelectList)ViewBag.SubsystemList,
+                         new { @class = "form-control", multiple = "multiple" })
+                <span class="text-danger"></span>
             </div>
             <div class="form-group mt-2">
                 <input type="submit" value="Создать" class="btn btn-secondary d-inline-flex align-items-center text-dark" />

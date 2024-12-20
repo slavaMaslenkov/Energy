@@ -1,46 +1,45 @@
 ﻿using DataAccess.Postgres.Entity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using MyProject.Models;
 
 namespace MyProject.Controllers
 {
-    public class PlantEntitiesController : BaseController
+    public class SubsystemEntitiesController : BaseController
     {
 
-        private readonly IPlantService _plantService;
+        private readonly ISubsystemService _subsystemService;
 
-        public PlantEntitiesController(IEquipmentService equipmentService,
-            IParametersService parametersService, ISampleService sampleService, 
+        public SubsystemEntitiesController(IEquipmentService equipmentService,
+            IParametersService parametersService, ISampleService sampleService,
             IUnityService unityService, IPlantService plantService, ISubsystemService subsystemService, ISystemService systemService)
             : base(equipmentService, parametersService, sampleService, unityService, plantService, subsystemService, systemService)
         {
-            _plantService = plantService;
+            _subsystemService = subsystemService;
         }
 
-        // GET: PlantEntity
+        // GET: SubsystemEntity
         public async Task<IActionResult> Index()
         {
-            return View(await _plantService.GetAllAsync());
+            return View(await _subsystemService.GetAllAsync());
         }
 
-        // GET: PlantEntity/Create
+        // GET: SubsystemEntity/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: PlantEntity/Create
+        // POST: SubsystemEntity/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(PlantEntity plantEntity)
+        public async Task<IActionResult> Create(SubsystemEntity subsystemEntity)
         {
             if (ModelState.IsValid)
             {
-                await _plantService.Create(plantEntity);
+                await _subsystemService.Create(subsystemEntity);
                 return RedirectToAction(nameof(Index));
             }
-            return View(plantEntity);
+            return View(subsystemEntity);
         }
         /*
         // GET: EquipmentEntities/Edit

@@ -71,11 +71,13 @@ namespace DataAccess.Postgres.Repositories
             var query = dbContext.Unity
                           .AsNoTracking()
                           .Include(u => u.Sample) // Включаем данные из Sample
-                          .ThenInclude(s => s.Equipment) // Включаем данные из Equipment
+                          .ThenInclude(s => s.System)
+                          .ThenInclude(sy => sy.Equipment) // Включаем данные из Equipment
                           .Include(u => u.Parameters)
                           .Where(u => u.Sample != null &&
-                               u.Sample.Equipment != null &&
-                               u.Sample.Equipment.Name == name)
+                               u.Sample.System != null &&
+                               u.Sample.System.Equipment != null &&
+                               u.Sample.System.Equipment.Name == name)
                           .OrderBy(u => u.Parameters.Name); ;
             return await query.ToListAsync();
         }
