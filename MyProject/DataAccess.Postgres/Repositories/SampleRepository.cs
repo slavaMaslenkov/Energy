@@ -18,8 +18,7 @@ namespace DataAccess.Postgres.Repositories
         public async Task<IEnumerable<SampleEntity>> GetAllAsync()
         {
             return await dbContext.Sample
-                .Include(s => s.System)
-                .ThenInclude(sy => sy.Equipment)
+                .Include(s => s.Equipment)
                 .ToListAsync();
         }
 
@@ -30,8 +29,7 @@ namespace DataAccess.Postgres.Repositories
         public async Task<IEnumerable<SampleEntity>> GetAvailableAsync()
         {
             return await dbContext.Sample
-                .Include(s => s.System)
-                .ThenInclude(sy => sy.Equipment)
+                .Include(s => s.Equipment)
                 .Where(s => s.Status == false)
                 .ToListAsync();
         }
@@ -47,7 +45,7 @@ namespace DataAccess.Postgres.Repositories
             await dbContext.SaveChangesAsync();
             return sampleEntity;
         }
-
+        ///////////////////////////////////////////////////////////////////////////////////////////////////////
         /// <summary>
         /// Метод создает список экзмепляров класса UnityEntity на основе 
         /// другого экземпляра./>.
@@ -59,9 +57,8 @@ namespace DataAccess.Postgres.Repositories
             // определяем последний Sample
             var latestSample = dbContext.Sample
                 .AsNoTracking()
-                .Where(s => s.System != null &&
-                       s.System.Equipment != null &&
-                       s.System.Equipment.Id == equipmentID)
+                .Where(s => s.Equipment != null &&
+                       s.Equipment.Id == equipmentID)
                 .OrderByDescending(s => s.DateCreated)
                 .FirstOrDefault();
 
@@ -71,26 +68,30 @@ namespace DataAccess.Postgres.Repositories
 
             if (latestSample != null)
             {
-                var parameters = dbContext.Unity
-                    .Include(u => u.Parameters)
-                    .Where(u => u.SampleID == latestSample.Id)
+                // Извлекаем все ConnectionEntity, связанные с последним Sample
+                var connections = dbContext.Connection
+                    .Include(c => c.Parameters)  // Загружаем параметры для каждого Connection
+                    .Where(c => c.SubsystemID == latestSample.EquipmentID)  // Используем связь с оборудованием
                     .ToList();
 
-                //добавлляем параметры к шаблону
-                foreach (var unity in parameters)
+                // Добавляем параметры к новому шаблону через связь Unity
+                foreach (var connection in connections)
                 {
                     var newUnity = new UnityEntity
                     {
-                        SampleID = sampleEntity.Id, // Связываем с новым Sample
-                        ParametersID = unity.ParametersID, // Связываем с тем же параметром
+                        SampleID = sampleEntity.Id,  // Связываем с новым Sample
+                        ConnectionID = connection.Id, // Связываем с ConnectionEntity
                     };
+
+                    // Добавляем новый UnityEntity в базу данных
                     await dbContext.Unity.AddAsync(newUnity);
                 }
+
                 await dbContext.SaveChangesAsync();
             }
             return sampleEntity;
         }
-
+        
         /// <summary>
         /// Метод получает шаблоны определенного устройства./>.
         /// <summary>
@@ -105,9 +106,8 @@ namespace DataAccess.Postgres.Repositories
 
             var query = dbContext.Sample
                           .AsNoTracking()
-                          .Include(s => s.System)
-                          .ThenInclude(sy => sy.Equipment) // Включаем данные из Sample
-                          .Where(sy => sy.System.Equipment.Name == name);
+                          .Include(s => s.Equipment)
+                          .Where(s => s.Equipment.Name == name);
 
             return await query.ToListAsync();
         }

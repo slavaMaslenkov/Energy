@@ -16,7 +16,7 @@ namespace DataAccess.Postgres.Configurations
             builder.HasKey(p => p.Id);
 
             builder.
-                HasMany(p => p.Unity)
+                HasMany(p => p.Connection)
                 .WithOne(u => u.Parameters);
         }
 

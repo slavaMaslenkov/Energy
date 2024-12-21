@@ -23,6 +23,16 @@ namespace MyProject.Models
         {
             return await subsystemRepository.GetAllAsync();
         }
+
+        /// <summary>
+        /// Метод возвращает подсистемы конкретного устройства./>.
+        /// <summary>
+        /// <param name="equipmentId">Имя объекта.</param>
+        /// <returns>Список экземпляров SubsystemEntity/>.</returns>
+        public async Task<IEnumerable<SubsystemEntity>> GetByEquipmentIdAsync(int equipmentId)
+        {
+            return await subsystemRepository.GetByEquipmentIdAsync(equipmentId);
+        }
         /*
         /// <summary>
         /// Метод удаляет экзмепляр класса EquipmentEntity в БД./>.

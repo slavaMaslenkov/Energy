@@ -12,7 +12,8 @@ namespace DataAccess.Postgres.Entity
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
-        public int ParametersID { get; set; }
+
+        public int ConnectionID { get; set; }
 
         public int SampleID { get; set; }
 
@@ -25,7 +26,7 @@ namespace DataAccess.Postgres.Entity
         [Display(Name = "Доступ к изменению")]
         public string? Access { get; set; }
 
-        public ParametersEntity? Parameters { get; set; }
+        public ConnectionEntity? Connection { get; set; }
 
         public SampleEntity? Sample { get; set; }
     }

@@ -22,6 +22,6 @@ namespace DataAccess.Postgres.Entity
         [Display(Name = "Описание")]
         public string Description { get; set; } = string.Empty;
 
-        public ICollection<UnityEntity>? Unity { get; set; }
+        public ICollection<ConnectionEntity>? Connection { get; set; }
     }
 }

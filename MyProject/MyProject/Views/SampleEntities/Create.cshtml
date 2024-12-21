@@ -19,14 +19,14 @@
                          <span asp-validation-for="Name" class="text-danger"></span>
                      </div>
                      <div class="form-group">
-                         <label asp-for="System.EquipmentID" class="control-label">Устройство</label>
+                         <label asp-for="EquipmentID" class="control-label">Устройство</label>
                          @Html.DropDownListFor(
-                                 model => model.System.EquipmentID,
+                                 model => model.EquipmentID,
                                   (SelectList)ViewBag.EquipmentList,
                                   "Выберете устройство",
                                   new { @class = "form-control" }
                                   )
-                        <span asp-validation-for="System.EquipmentID" class="text-danger"></span>
+                        <span asp-validation-for="EquipmentID" class="text-danger"></span>
                      </div>
                      <div class="form-group mt-2">
                          <input type="submit" value="Создать" class="btn btn-secondary d-inline-flex align-items-center text-dark" />
@@ -48,14 +48,14 @@
                         <span asp-validation-for="Name" class="text-danger"></span>
                     </div>
                     <div class="form-group">
-                        <label asp-for="System.EquipmentID" class="control-label">На основе</label>
+                        <label asp-for="EquipmentID" class="control-label">На основе</label>
                         @Html.DropDownListFor(
-                                 model => model.System.EquipmentID,
+                                 model => model.EquipmentID,
                                  (SelectList)ViewBag.SampleList,
                                  "Выберете шаблон",
                                  new { @class = "form-control" }
                                  )
-                        <span asp-validation-for="System.EquipmentID" class="text-danger"></span>
+                        <span asp-validation-for="EquipmentID" class="text-danger"></span>
                     </div>
                     <div class="form-group mt-2">
                         <input type="submit" value="Создать" class="btn btn-secondary d-inline-flex align-items-center text-dark" />

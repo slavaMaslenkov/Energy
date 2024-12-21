@@ -1,42 +1,47 @@
 ﻿@model DataAccess.Postgres.Entity.UnityEntity
 
 @{
-    ViewData["Title"] = "Добавить";
+    ViewData["Title"] = "Создать параметр";
 }
 
-<h2>Добавить параметр в список</h2>
+<h1>Создание параметра</h1>
 
+<hr />
 <div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create" method="post">
-            <input type="hidden" name="deviceName" value="@ViewBag.DeviceName" />
-            <div class="form-group">
-                <label asp-for="SampleID" class="control-label">Шаблон</label>
-                @Html.DropDownListFor(
-                         model => model.SampleID,
-                         (SelectList)ViewBag.SampleList,
-                         "Шаблон",
-                         new { @class = "form-control" }
-                         )
-                <span asp-validation-for="SampleID" class="text-danger"></span>
-            </div>
+    <div class="col-md-6">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <!-- Поле выбора параметра -->
             <div class="form-group">
                 <label asp-for="ParametersID" class="control-label">Параметр</label>
-                @Html.DropDownListFor(
-                         model => model.ParametersID,
-                         (SelectList)ViewBag.ParametersList,
-                         "Параметр",
-                         new { @class = "form-control" }
-                         )
+                @Html.DropDownListFor(model => model.ParametersID, (SelectList)ViewBag.ParametersList, "Выберите параметр", new { @class = "form-control" })
                 <span asp-validation-for="ParametersID" class="text-danger"></span>
             </div>
+
+            <!-- Поле выбора шаблона -->
+            <div class="form-group">
+                <label asp-for="SampleID" class="control-label">Шаблон</label>
+                @Html.DropDownListFor(model => model.SampleID, (SelectList)ViewBag.SampleList, "Выберите шаблон", new { @class = "form-control" })
+                <span asp-validation-for="SampleID" class="text-danger"></span>
+            </div>
+
+            <!-- Поле выбора подсистемы -->
+            <div class="form-group">
+                <label class="control-label">Подсистема</label>
+                @Html.DropDownList("SubsystemID", (SelectList)ViewBag.SubsystemList, "Выберите подсистему", new { @class = "form-control" })
+                <span asp-validation-for="SampleID" class="text-danger"></span>
+            </div>
+
+            <!-- Поле значения -->
             <div class="form-group">
                 <label asp-for="Value" class="control-label"></label>
                 <input asp-for="Value" class="form-control" />
                 <span asp-validation-for="Value" class="text-danger"></span>
             </div>
-            <div class="form-group mt-2">
-                <input type="submit" value="Создать" class="btn btn-secondary d-inline-flex align-items-center text-dark" />
+
+            <div class="form-group mt-3">
+                <input type="submit" value="Создать" class="btn btn-primary" />
             </div>
         </form>
     </div>

@@ -14,7 +14,8 @@ namespace DataAccess.Postgres.Repositories
         public async Task<IEnumerable<UnityEntity>> GetAllAsync()
         {
             return await dbContext.Unity
-                .Include(u => u.Parameters)
+                .Include(u => u.Connection)
+                .ThenInclude(u => u.Parameters)
                 .ToListAsync();
         }
 
@@ -28,6 +29,35 @@ namespace DataAccess.Postgres.Repositories
             await dbContext.Unity.AddAsync(unityEntity);
             await dbContext.SaveChangesAsync();
             return unityEntity;
+        }
+        ///////////////////////////////////////////////////////////////////////////////
+        /// <summary>
+        /// Метод добавляет экзмепляр класса UnityEntity в БД с привязкой с Subsystem./>.
+        /// <summary>
+        /// <param name="unityEntity">Имя объекта.</param>
+        /// <param name="subsystemId">Имя объекта.</param>
+        /// <returns>Лист шаблонов устройства/>.</returns>
+        public async Task CreateWithSubsystem(UnityEntity unityEntity, int subsystemId)
+        {
+            // Находим связь между системой и подсистемой, которая привязана к оборудованию
+            var systemEntity = await dbContext.System
+                .FirstOrDefaultAsync(system => system.SubsystemID == subsystemId &&
+                                                system.EquipmentID == unityEntity.Sample.EquipmentID);
+
+            if (systemEntity == null)
+            {
+                throw new Exception("Система для указанной подсистемы не найдена.");
+            }
+
+            // Привязываем unityEntity к найденной системе
+            // Записываем ID системы в сущность UnityEntity
+            unityEntity.ConnectionID = systemEntity.Id; // Устанавливаем правильную связь через ConnectionEntity (если необходимо)
+
+            // Также, если нужно, можно установить другие связи через `Sample` или `Connection`, если это требуется.
+
+            // Добавление unityEntity в контекст базы данных
+            dbContext.Unity.Add(unityEntity);
+            await dbContext.SaveChangesAsync();
         }
 
         /// <summary>
@@ -69,16 +99,16 @@ namespace DataAccess.Postgres.Repositories
             }
 
             var query = dbContext.Unity
-                          .AsNoTracking()
-                          .Include(u => u.Sample) // Включаем данные из Sample
-                          .ThenInclude(s => s.System)
-                          .ThenInclude(sy => sy.Equipment) // Включаем данные из Equipment
-                          .Include(u => u.Parameters)
-                          .Where(u => u.Sample != null &&
-                               u.Sample.System != null &&
-                               u.Sample.System.Equipment != null &&
-                               u.Sample.System.Equipment.Name == name)
-                          .OrderBy(u => u.Parameters.Name); ;
+                  .AsNoTracking() // Не отслеживаем изменения
+                  .Include(u => u.Sample) // Включаем данные из Sample
+                  .ThenInclude(s => s.Equipment) // Включаем данные из Equipment через Sample
+                  .Include(u => u.Connection) // Включаем данные из Connection (если необходимо)
+                  .ThenInclude(c => c.Parameters) // Включаем параметры через Connection
+                  .Where(u => u.Sample != null &&
+                              u.Sample.Equipment != null && // Проверяем, что Sample и Equipment не null
+                              u.Sample.Equipment.Name == name) // Фильтруем по имени оборудования
+                  .OrderBy(u => u.Connection.Parameters.Name);
+
             return await query.ToListAsync();
         }
 

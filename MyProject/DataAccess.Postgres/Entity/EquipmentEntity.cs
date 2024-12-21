@@ -26,6 +26,8 @@ namespace DataAccess.Postgres.Entity
 
         public ICollection<SystemEntity>? System { get; set; }
 
+        public ICollection<SampleEntity>? Sample { get; set; }
+
         public PlantEntity? Plant { get; set; }
     }
 }

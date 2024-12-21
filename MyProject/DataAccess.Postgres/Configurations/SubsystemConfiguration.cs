@@ -18,6 +18,10 @@ namespace DataAccess.Postgres.Configurations
             builder.
                 HasMany(e => e.System)
                 .WithOne(s => s.Subsystem);
+
+            builder.
+                HasMany(e => e.Connection)
+                .WithOne(s => s.Subsystem);
         }
     }
 }

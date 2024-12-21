@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using MyProject.Models;
+using System.Reflection.PortableExecutable;
 
 namespace MyProject.Controllers
 {
@@ -14,6 +15,8 @@ namespace MyProject.Controllers
 
         private readonly IParametersService _parametersService;
 
+        private readonly ISubsystemService _subsystemService;
+
         public UnityEntitiesController(IEquipmentService equipmentService,
             IParametersService parametersService, ISampleService sampleService, IUnityService unityService, 
             IPlantService plantService, ISubsystemService subsystemService, ISystemService systemService)
@@ -22,6 +25,7 @@ namespace MyProject.Controllers
             _unityService = unityService;
             _parametersService = parametersService;
             _sampleService = sampleService;
+            _subsystemService = subsystemService;
         }
 
         // GET: UnityEntities
@@ -38,42 +42,44 @@ namespace MyProject.Controllers
 
         // GET: UnityEntities/Create
         [HttpGet]
-        public async Task<IActionResult> Create(string deviceName)
+        public async Task<IActionResult> Create(int equipmentId)
         {
             var parametersList = await _parametersService.GetAllAsync();
             var sampleList = await _sampleService.GetAvailableAsync();
-            // Загрузка списка параметров
+            var subsystemList = await _subsystemService.GetByEquipmentIdAsync(equipmentId);
+
             ViewBag.ParametersList = new SelectList(parametersList, "Id", "Name");
-            // Загрузка списка шаблонов
             ViewBag.SampleList = new SelectList(sampleList, "Id", "Name");
-            ViewBag.DeviceName = deviceName;
+            ViewBag.SubsystemList = new SelectList(subsystemList, "Id", "Name");
+            ViewBag.EquipmentId = equipmentId;
             return View();
         }
 
         // POST: UnityEntities/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(UnityEntity unityEntity, string deviceName)
+        public async Task<IActionResult> Create(UnityEntity unityEntity, int equipmentId, int subsystemId)
         {
-            if (string.IsNullOrEmpty(deviceName))
-            {
-                // Добавьте отладочный лог или выбросьте исключение для проверки
-                throw new ArgumentException("DeviceName is null or empty");
-            }
             if (ModelState.IsValid)
             {
-                await _unityService.Create(unityEntity);
-                return RedirectToAction(nameof(DeviceUnity), new { deviceName });
+                unityEntity.Sample.EquipmentID = equipmentId;
+
+                await _unityService.CreateWithSubsystem(unityEntity, subsystemId);
+
+                return RedirectToAction(nameof(DeviceUnity), new { deviceName = unityEntity.Sample.Equipment.Name });
             }
 
 
             // Повторная загрузка списка оборудования при ошибке валидации
             var parametersList = await _parametersService.GetAllAsync();
-            var sampleList = await _sampleService.GetAllAsync();
+            var sampleList = await _sampleService.GetAvailableAsync();
+            var subsystemList = await _subsystemService.GetByEquipmentIdAsync(equipmentId);
+
             ViewBag.ParametersList = new SelectList(parametersList, "Id", "Name");
-            // Загрузка списка шаблонов
             ViewBag.SampleList = new SelectList(sampleList, "Id", "Name");
-            ViewBag.DeviceName = deviceName;
+            ViewBag.SubsystemList = new SelectList(subsystemList, "Id", "Name");
+            ViewBag.EquipmentId = equipmentId;
+
             return View(unityEntity);
         }
 

@@ -68,9 +68,8 @@ namespace DataAccess.Postgres.Repositories
         {
             var devices = await dbContext.Equipment
                  .AsNoTracking()
-                 .Where(e => e.System != null && e.System.Any(
-                     sy => sy.Sample != null && sy.Sample.Any(
-                         s => s.Unity != null && s.Unity.Any()))) // Устройства с привязанными Unity
+                 .Where(sy => sy.Sample != null && sy.Sample.Any(
+                         s => s.Unity != null && s.Unity.Any())) // Устройства с привязанными Unity
                  .Select(e => e.Name)
                  .ToListAsync();
             return devices;

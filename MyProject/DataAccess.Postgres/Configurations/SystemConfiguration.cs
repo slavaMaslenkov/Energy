@@ -19,10 +19,6 @@ namespace DataAccess.Postgres.Configurations
                 HasOne(u => u.Subsystem)
                 .WithMany(p => p.System)
                 .HasForeignKey(u => u.SubsystemID);
-
-            builder.
-                HasMany(s => s.Sample)
-                .WithOne(u => u.System);
         }
 
     }

@@ -23,6 +23,8 @@ namespace DataAccess.Postgres
 
         public DbSet<SystemEntity> System { get; set; }
 
+        public DbSet<ConnectionEntity> Connection { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -33,6 +35,7 @@ namespace DataAccess.Postgres
             modelBuilder.ApplyConfiguration(new PlantConfiguration());
             modelBuilder.ApplyConfiguration(new SubsystemConfiguration());
             modelBuilder.ApplyConfiguration(new SystemConfiguration());
+            modelBuilder.ApplyConfiguration(new ConnectionConfiguration());
 
 
             base.OnModelCreating(modelBuilder);

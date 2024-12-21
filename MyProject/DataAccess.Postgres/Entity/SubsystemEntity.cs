@@ -23,5 +23,7 @@ namespace DataAccess.Postgres.Entity
         public string? Description { get; set; } = string.Empty;
 
         public ICollection<SystemEntity>? System { get; set; }
+
+        public ICollection<ConnectionEntity>? Connection { get; set; }
     }
 }

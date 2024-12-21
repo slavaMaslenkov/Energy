@@ -21,9 +21,9 @@ namespace DataAccess.Postgres.Configurations
                 .HasForeignKey(u => u.SampleID);
 
             builder.
-                HasOne(u => u.Parameters)
+                HasOne(u => u.Connection)
                 .WithMany(p => p.Unity)
-                .HasForeignKey(u => u.ParametersID);
+                .HasForeignKey(u => u.ConnectionID);
         }
 
     }

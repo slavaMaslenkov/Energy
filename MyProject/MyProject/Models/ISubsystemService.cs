@@ -16,6 +16,13 @@ namespace MyProject.Models
         /// </summary>
         /// <returns>Лист SubsystemEntity/>.</returns>
         Task<IEnumerable<SubsystemEntity>> GetAllAsync();
+
+        /// <summary>
+        /// Метод возвращает подсистемы конкретного устройства./>.
+        /// <summary>
+        /// <param name="equipmentId">Имя объекта.</param>
+        /// <returns>Список экземпляров SubsystemEntity/>.</returns>
+        Task<IEnumerable<SubsystemEntity>> GetByEquipmentIdAsync(int equipmentId);
         /*
         /// <summary>
         /// Метод удаляет экзмепляр класса EquipmentEntity в БД./>.

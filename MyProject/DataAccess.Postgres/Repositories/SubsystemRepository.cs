@@ -34,6 +34,20 @@ namespace DataAccess.Postgres.Repositories
             await dbContext.SaveChangesAsync();
             return subsystemEntity;
         }
+
+        /// <summary>
+        /// Метод возвращает подсистемы конкретного устройства./>.
+        /// <summary>
+        /// <param name="equipmentId">Имя объекта.</param>
+        /// <returns>Список экземпляров SubsystemEntity/>.</returns>
+        public async Task<IEnumerable<SubsystemEntity>> GetByEquipmentIdAsync(int equipmentId)
+        {
+            return await dbContext.System
+                                   .Where(s => s.EquipmentID == equipmentId)
+                                   .Select(s => s.Subsystem)
+                                   .Distinct()
+                                   .ToListAsync();
+        }
         /*
         /// <summary>
         /// Метод удаляет экзмепляр класса EquipmentEntity в БД./>.
