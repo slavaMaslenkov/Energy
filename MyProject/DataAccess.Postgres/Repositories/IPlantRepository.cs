@@ -21,6 +21,13 @@ namespace DataAccess.Postgres.Repositories
         /// <param name="plantEntity">Имя объекта.</param>
         /// <returns>Экземпляр класса PlantEntity/>.</returns>
         Task<PlantEntity> Create(PlantEntity plantEntity);
+
+        /// <summary>
+        /// Метод достает данные из БД для отображения
+        /// иерархичного дерева./>.
+        /// <summary>
+        /// <returns>Экземпляр класса PlantEntity/>.</returns>
+        Task<List<dynamic>> Hierarchy();
         /*
         /// <summary>
         /// Метод удаляет экзмепляр класса EquipmentEntity в БД./>.

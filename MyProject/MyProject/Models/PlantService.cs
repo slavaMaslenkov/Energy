@@ -23,6 +23,16 @@ namespace MyProject.Models
         {
             return await plantRepository.GetAllAsync();
         }
+
+        /// <summary>
+        /// Метод достает данные из БД для отображения
+        /// иерархичного дерева./>.
+        /// <summary>
+        /// <returns>Экземпляр класса PlantEntity/>.</returns>
+        public async Task<List<dynamic>> Hierarchy()
+        {
+            return await plantRepository.Hierarchy();
+        }
         /*
         /// <summary>
         /// Метод удаляет экзмепляр класса EquipmentEntity в БД./>.

@@ -11,12 +11,12 @@
     <div class="col-md-6">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-
+            
             <!-- Поле выбора параметра -->
             <div class="form-group">
-                <label asp-for="ParametersID" class="control-label">Параметр</label>
-                @Html.DropDownListFor(model => model.ParametersID, (SelectList)ViewBag.ParametersList, "Выберите параметр", new { @class = "form-control" })
-                <span asp-validation-for="ParametersID" class="text-danger"></span>
+                <label asp-for="Connection.ParametersID" class="control-label">Параметр</label>
+                @Html.DropDownListFor(model => model.Connection.ParametersID, (SelectList)ViewBag.ParametersList, "Выберите параметр", new { @class = "form-control" })
+                <span asp-validation-for="Connection.ParametersID" class="text-danger"></span>
             </div>
 
             <!-- Поле выбора шаблона -->

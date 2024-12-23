@@ -1,6 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using DataAccess.Postgres.Entity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using MyProject.Models;
+using System.Drawing;
+using System.Numerics;
 
 namespace MyProject.Controllers
 {
@@ -39,9 +42,9 @@ namespace MyProject.Controllers
         {
             base.OnActionExecuting(dbContext);
 
-            // Загружаем устройства и добавляем их в ViewBag
-            var devices = _equipmentService.GetDeviceNamesAsync().Result;
-            ViewBag.Devices = devices ?? new List<string>();
+            // Загружаем иерархию и передаем в ViewBag
+            var hierarchy = _plantService.Hierarchy().Result;
+            ViewBag.Plants = hierarchy ?? new List<dynamic>();
         }
     }
 }

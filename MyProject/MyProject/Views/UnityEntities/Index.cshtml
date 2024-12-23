@@ -28,13 +28,12 @@
         <table class="table text-center" style="width: 100%; table-layout: fixed;">
             <thead class="sticky-header">
                 <tr>
-                    <th style="width: 5%;">
-                        <input type="checkbox" id="select-all" /> <!-- Чекбокс для выбора всех -->
-                    </th>
-                    <th style="width: 20%;">@Html.DisplayNameFor(model => model.Sample.Name)</th>
-                    <th style="width: 20%;">@Html.DisplayNameFor(model => model.Parameters.Name)</th>
-                    <th style="width: 40%;">@Html.DisplayNameFor(model => model.Value)</th>
-                    <th style="width: 5%;">@Html.DisplayNameFor(model => model.Parameters.Measure)</th>
+                    <th style="width: 5%;"><input type="checkbox" id="select-all" /></th>
+                    <th style="width: 15%;">@Html.DisplayNameFor(model => model.Sample.Name)</th>
+                    <th style="width: 15%;">@Html.DisplayNameFor(model => model.Connection.Subsystem.Name)</th>
+                    <th style="width: 20%;">@Html.DisplayNameFor(model => model.Connection.Parameters.Name)</th>
+                    <th style="width: 30%;">@Html.DisplayNameFor(model => model.Value)</th>
+                    <th style="width: 5%;">@Html.DisplayNameFor(model => model.Connection.Parameters.Measure)</th>
                     <th style="width: 10%;"></th>
                 </tr>
             </thead>
@@ -42,11 +41,10 @@
                 @foreach (var item in Model)
                 {
                     <tr>
-                        <td>
-                            <input type="checkbox" class="select-item" value="@item.Id" />
-                        </td>
+                        <td><input type="checkbox" class="select-item" value="@item.Id" /></td>
                         <td>@Html.DisplayFor(modelItem => item.Sample.Name)</td>
-                        <td>@Html.DisplayFor(modelItem => item.Parameters.Name)</td>
+                        <td>@Html.DisplayFor(modelItem => item.Connection.Subsystem.Name)</td>
+                        <td>@Html.DisplayFor(modelItem => item.Connection.Parameters.Name)</td>
                         <td>
                             @if (item.Sample.Status)
                             {
@@ -61,13 +59,13 @@
                                        style="width: 200px;" />
                             }
                         </td>
-                        <td>@Html.DisplayFor(modelItem => item.Parameters.Measure)</td>
+                        <td>@Html.DisplayFor(modelItem => item.Connection.Parameters.Measure)</td>
                         <td>
                             <i class="bi bi-trash me-2 text-dark"
                                style="cursor: pointer;"
                                data-bs-toggle="modal"
                                data-bs-target="#deleteModal"
-                               data-device-name="@item.Parameters.Name"
+                               data-device-name="@item.Connection.Parameters.Name"
                                data-delete-url="@Url.Action("Delete", "UnityEntities", new { id = item.Id, deviceName = ViewBag.DeviceName })">
                             </i>
                         </td>

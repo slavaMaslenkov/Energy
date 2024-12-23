@@ -14,9 +14,11 @@ namespace DataAccess.Postgres.Repositories
         public async Task<IEnumerable<UnityEntity>> GetAllAsync()
         {
             return await dbContext.Unity
-                .Include(u => u.Connection)
-                .ThenInclude(u => u.Parameters)
-                .ToListAsync();
+               .Include(u => u.Connection)                        // Связь с Connection
+               .ThenInclude(c => c.Subsystem)                    // Связь Connection -> Subsystem
+               .Include(u => u.Connection.Parameters)            // Связь Connection -> Parameters
+               .Include(u => u.Sample)                           // Связь Unity -> Sample
+               .ToListAsync();
         }
 
         /// <summary>

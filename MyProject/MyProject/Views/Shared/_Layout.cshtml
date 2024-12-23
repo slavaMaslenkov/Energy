@@ -41,23 +41,39 @@
             <!-- Левый блок (синяя боковая панель) -->
             <aside class="col-md-3 sidebar">
                 <h5>Перечень</h5>
-                @if (ViewBag.Devices != null && ((List<string>)ViewBag.Devices).Any())
+                @if (ViewBag.Plants != null && ((List<dynamic>)ViewBag.Plants).Any())
                 {
-                    <ul style="list-style-type: none;">
-                        @foreach (var device in ViewBag.Devices as List<string>)
+                    <ul class="list-group">
+                        @foreach (var plant in ViewBag.Plants as List<dynamic>)
                         {
-                            <li class="@(device == ViewBag.ActiveDevice ? "active" : "")" style=" margin-bottom: 10px;">
-                                <a asp-controller="UnityEntities" asp-action="DeviceUnity" asp-route-deviceName="@device"
-                                   style="text-decoration: none;">
-                                    <i class="bi bi-table me-3" style="cursor: pointer;"></i>@device                                    
-                                </a>
+                            <li class="list-group-item">
+                                <ul class="list-group ms-3">
+                                    @foreach (var equipment in plant.Equipment)
+                                    {
+                                        <li class="list-group-item">
+                                            <!-- Кнопка для раскрытия устройства -->
+                                            <button class="btn btn-link" type="button" data-bs-toggle="collapse" data-bs-target="#equipment-@equipment.EquipmentName" aria-expanded="false" aria-controls="equipment-@equipment.EquipmentName">
+                                                @equipment.EquipmentName
+                                            </button>
+                                            <!-- Список подсистем для устройства -->
+                                            <div id="equipment-@equipment.EquipmentName" class="collapse">
+                                                <ul class="list-group ms-3">
+                                                    @foreach (var subsystem in equipment.Subsystems)
+                                                    {
+                                                        <li class="list-group-item">@subsystem.SubsystemName</li>
+                                                    }
+                                                </ul>
+                                            </div>
+                                        </li>
+                                    }
+                                </ul>
                             </li>
                         }
                     </ul>
                 }
                 else
                 {
-                    <p>Нет доступных устройств.</p>
+                    <p>Нет доступных данных.</p>
                 }
                 <a class="btn btn-secondary d-inline-flex align-items-center text-dark" asp-area="" asp-controller="EquipmentEntities" asp-action="Create"
                     style="text-decoration: none;">

@@ -33,10 +33,11 @@ namespace MyProject.Controllers
         {
             var parametersList = await _parametersService.GetAllAsync();
             var sampleList = await _sampleService.GetAllAsync();
-            // Загрузка списка параметров
+            var subsystemList = await _subsystemService.GetAllAsync();
+
             ViewBag.ParametersList = new SelectList(parametersList, "Id", "Name");
-            // Загрузка списка шаблонов
             ViewBag.SampleList = new SelectList(sampleList, "Id", "Name");
+            ViewBag.SubsystemList = new SelectList(subsystemList, "Id", "Name");
             return View(await _unityService.GetAllAsync());
         }
 
@@ -64,7 +65,7 @@ namespace MyProject.Controllers
             {
                 unityEntity.Sample.EquipmentID = equipmentId;
 
-                await _unityService.CreateWithSubsystem(unityEntity, subsystemId);
+                ///await _unityService.CreateWithSubsystem(unityEntity, subsystemId);
 
                 return RedirectToAction(nameof(DeviceUnity), new { deviceName = unityEntity.Sample.Equipment.Name });
             }
