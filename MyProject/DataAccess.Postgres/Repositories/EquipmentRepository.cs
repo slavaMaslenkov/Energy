@@ -20,6 +20,18 @@ namespace DataAccess.Postgres.Repositories
         }
 
         /// <summary>
+        /// Метод получает все устройства из БД по ID станции./>.
+        /// </summary>
+        /// <returns>Лист EquipmentEntity/>.</returns>
+        public async Task<List<EquipmentEntity>> GetEquipmentByPlant(int plantId)
+        {
+            return await dbContext.Equipment
+                .AsNoTracking()
+                .Where(e => e.PlantID == plantId)
+                .ToListAsync();
+        }
+
+        /// <summary>
         /// Метод добавляет экзмепляр класса EquipmentEntity в БД./>.
         /// <summary>
         /// <param name="equipmentEntity">Имя объекта.</param>

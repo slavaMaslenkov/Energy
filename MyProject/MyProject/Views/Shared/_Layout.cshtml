@@ -41,39 +41,23 @@
             <!-- Левый блок (синяя боковая панель) -->
             <aside class="col-md-3 sidebar">
                 <h5>Перечень</h5>
-                @if (ViewBag.Plants != null && ((List<dynamic>)ViewBag.Plants).Any())
+                @if (ViewBag.Plants != null && ((List<SelectListItem>)ViewBag.Plants).Any())
                 {
-                    <ul class="list-group">
-                        @foreach (var plant in ViewBag.Plants as List<dynamic>)
+                    <ul id="plant-list" style="list-style-type: none;">
+                        @foreach (var plant in (List<SelectListItem>)ViewBag.Plants)
                         {
-                            <li class="list-group-item">
-                                <ul class="list-group ms-3">
-                                    @foreach (var equipment in plant.Equipment)
-                                    {
-                                        <li class="list-group-item">
-                                            <!-- Кнопка для раскрытия устройства -->
-                                            <button class="btn btn-link" type="button" data-bs-toggle="collapse" data-bs-target="#equipment-@equipment.EquipmentName" aria-expanded="false" aria-controls="equipment-@equipment.EquipmentName">
-                                                @equipment.EquipmentName
-                                            </button>
-                                            <!-- Список подсистем для устройства -->
-                                            <div id="equipment-@equipment.EquipmentName" class="collapse">
-                                                <ul class="list-group ms-3">
-                                                    @foreach (var subsystem in equipment.Subsystems)
-                                                    {
-                                                        <li class="list-group-item">@subsystem.SubsystemName</li>
-                                                    }
-                                                </ul>
-                                            </div>
-                                        </li>
-                                    }
-                                </ul>
+                            <li style="margin-bottom: 10px;">
+                                <span class="station-item" data-plant-id="@plant.Value" style="cursor: pointer;">
+                                    <i class="bi bi-plus-square me-2"></i>@plant.Text
+                                </span>
+                                <ul class="equipment-list" style="display: none; list-style-type: none; margin-left: 20px;"></ul>
                             </li>
                         }
                     </ul>
                 }
                 else
                 {
-                    <p>Нет доступных данных.</p>
+                    <p>Нет доступных станций.</p>
                 }
                 <a class="btn btn-secondary d-inline-flex align-items-center text-dark" asp-area="" asp-controller="EquipmentEntities" asp-action="Create"
                     style="text-decoration: none;">
@@ -95,6 +79,47 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Обработчик клика по станции
+            document.querySelectorAll('.station-item').forEach(function (station) {
+                station.addEventListener('click', async function () {
+                    const plantId = station.getAttribute('data-plant-id');
+                    const equipmentList = station.nextElementSibling; // Находим связанный ul для устройств
+
+                    // Если список уже загружен, скрываем/показываем его
+                    if (equipmentList.style.display === 'block') {
+                        equipmentList.style.display = 'none';
+                        return;
+                    }
+
+                    try {
+                        // Загружаем устройства через AJAX
+                        const response = await fetch(`/Base/GetEquipmentByPlant?plantId=${plantId}`);
+                        const data = await response.json();
+
+                        // Очищаем список перед обновлением
+                        equipmentList.innerHTML = '';
+
+                        // Добавляем устройства в список
+                        data.forEach(equipment => {
+                            const listItem = document.createElement('li');
+                            listItem.innerHTML = `
+                                    <a href="/EquipmentEntities/Details/${equipment.Id}">
+                                        <i class="bi bi-cpu me-2"></i>${equipment.Name}
+                                    </a>`;
+                            equipmentList.appendChild(listItem);
+                        });
+
+                        // Показываем список
+                        equipmentList.style.display = 'block';
+                    } catch (error) {
+                        console.error('Ошибка загрузки устройств:', error);
+                    }
+                });
+            });
+        });
+    </script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

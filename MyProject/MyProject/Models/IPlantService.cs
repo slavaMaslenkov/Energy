@@ -18,6 +18,12 @@ namespace MyProject.Models
         Task<IEnumerable<PlantEntity>> GetAllAsync();
 
         /// <summary>
+        /// Метод получает названия всех устройств из БД./>.
+        /// </summary>
+        /// <returns>Лист названий PlantEntity/>.</returns>
+        Task<List<string>> GetAllAsyncPlants();
+
+        /// <summary>
         /// Метод достает данные из БД для отображения
         /// иерархичного дерева./>.
         /// <summary>

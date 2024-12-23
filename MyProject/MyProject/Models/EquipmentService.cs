@@ -16,6 +16,15 @@ namespace MyProject.Models
         }
 
         /// <summary>
+        /// Метод получает все устройства из БД по ID станции./>.
+        /// </summary>
+        /// <returns>Лист EquipmentEntity/>.</returns>
+        public async Task<List<EquipmentEntity>> GetEquipmentByPlant(int plantId)
+        {
+            return await equipmentRepository.GetEquipmentByPlant(plantId);
+        }
+
+        /// <summary>
         /// Метод получает все устройства из БД./>.
         /// </summary>
         /// <returns>Лист EquipmentEntity/>.</returns>

@@ -24,6 +24,19 @@ namespace DataAccess.Postgres.Repositories
         }
 
         /// <summary>
+        /// Метод получает названия всех устройств из БД./>.
+        /// </summary>
+        /// <returns>Лист названий PlantEntity/>.</returns>
+        public async Task<List<string>> GetAllAsyncPlants()
+        {
+            var devices = await dbContext.Plant
+                .AsNoTracking()
+                .Select(e => e.Name)
+                .ToListAsync();
+            return devices;
+        }
+
+        /// <summary>
         /// Метод добавляет экзмепляр класса PlantEntity в БД./>.
         /// <summary>
         /// <param name="plantEntity">Имя объекта.</param>

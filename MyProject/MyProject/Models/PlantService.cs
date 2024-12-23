@@ -25,6 +25,15 @@ namespace MyProject.Models
         }
 
         /// <summary>
+        /// Метод получает названия всех устройств из БД./>.
+        /// </summary>
+        /// <returns>Лист названий PlantEntity/>.</returns>
+        public async Task<List<string>> GetAllAsyncPlants()
+        {
+            return await plantRepository.GetAllAsyncPlants();
+        }
+
+        /// <summary>
         /// Метод достает данные из БД для отображения
         /// иерархичного дерева./>.
         /// <summary>

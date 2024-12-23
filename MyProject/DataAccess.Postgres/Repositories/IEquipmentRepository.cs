@@ -17,6 +17,12 @@ namespace DataAccess.Postgres.Repositories
         Task<EquipmentEntity> Create(EquipmentEntity equipmentEntity);
 
         /// <summary>
+        /// Метод получает все устройства из БД по ID станции./>.
+        /// </summary>
+        /// <returns>Лист EquipmentEntity/>.</returns>
+        Task<List<EquipmentEntity>> GetEquipmentByPlant(int plantId);
+
+        /// <summary>
         /// Метод получает все устройства из БД./>.
         /// </summary>
         /// <returns>Лист EquipmentEntity/>.</returns>

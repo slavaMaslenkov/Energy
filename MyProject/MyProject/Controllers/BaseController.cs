@@ -1,6 +1,7 @@
 ﻿using DataAccess.Postgres.Entity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using MyProject.Models;
 using System.Drawing;
 using System.Numerics;
@@ -38,13 +39,51 @@ namespace MyProject.Controllers
 
         /// Метод необходим для выполнения базовой логики базового контроллера./>.
         /// <summary>
-        public override void OnActionExecuting(ActionExecutingContext dbContext)
+        public override async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
         {
-            base.OnActionExecuting(dbContext);
+            var plants = await _plantService.GetAllAsync();
+            // Преобразуем данные в список SelectListItem
+            var plantList = plants.Select(plant => new SelectListItem
+            {
+                Value = plant.Id.ToString(),
+                Text = plant.Name
+            }).ToList();
 
-            // Загружаем иерархию и передаем в ViewBag
-            var hierarchy = _plantService.Hierarchy().Result;
-            ViewBag.Plants = hierarchy ?? new List<dynamic>();
+            ViewBag.Plants = plantList;
+            await next();
         }
+
+        /// <summary>
+        /// Метод для получения устройств, связанных со станцией.
+        /// </summary>
+        /// <param name="plantId">ID станции.</param>
+        /// <returns>Список устройств.</returns>
+        [HttpGet]
+        public async Task<IActionResult> GetEquipmentByPlant(int plantId)
+        {
+            var equipment = await _equipmentService.GetEquipmentByPlant(plantId);
+
+            var result = equipment.Select(e => new
+            {
+                e.Id,
+                e.Name
+            });
+
+            return Json(result);
+        }
+        /*
+        /// <summary>
+        /// Метод для получения подсистем, связанных с устройством.
+        /// </summary>
+        /// <param name="name">ID устройства.</param>
+        /// <returns>Список подсистем в формате JSON.</returns>
+        [HttpGet]
+        public async Task<IActionResult> GetSubsystemsByEquipment(string name)
+        {
+            var equipment = await _systemService.GetAllByEquipment(name);
+
+            ViewBag.PlantList = new SelectList(equipment, "Id", "Name");
+            return View();
+        }*/
     }
 }
