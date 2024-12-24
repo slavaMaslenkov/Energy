@@ -14,14 +14,15 @@ namespace DataAccess.Postgres.Repositories
         /// <summary>
         /// Метод получает все подустройства конкретного устройства из БД./>.
         /// </summary>
-        ///<param name="name">Имя объекта.</param>
+        ///<param name="equipmentId">Имя объекта.</param>
         /// <returns>Лист SystemEntity/>.</returns>
-        public async Task<List<SystemEntity>> GetAllByEquipment(string name)
+        public async Task<List<SystemEntity>> GetAllByEquipment(int equipmentId)
         {
             return await dbContext.System
                 .AsNoTracking()
                 .Include(s => s.Equipment)
-                .Where(s => s.Equipment.Name == name)
+                .Where(s => s.Equipment.Id == equipmentId)
+                .Include(s => s.Subsystem)
                 .ToListAsync();
         }
 

@@ -48,34 +48,6 @@ namespace DataAccess.Postgres.Repositories
             return plantEntity;
         }
 
-        /// <summary>
-        /// Метод достает данные из БД для отображения иерархичного дерева.
-        /// </summary>
-        /// <returns>Список объектов с данными о станциях, устройствах и подсистемах.</returns>
-        public async Task<List<dynamic>> Hierarchy()
-        {
-            var plants = await dbContext.Plant
-              .Include(p => p.Equipment)
-                  .ThenInclude(e => e.System)
-                      .ThenInclude(s => s.Subsystem)
-              .Select(p => new
-              {
-                  PlantName = p.Name,
-                  Equipment = p.Equipment.Select(e => new
-                  {
-                      EquipmentName = e.Name,
-                      // Отбираем только те подсистемы, которые относятся к конкретной системе устройства
-                      Subsystems = e.System
-                          .Select(s => s.Subsystem) // Извлекаем подсистемы для всех систем устройства
-                          .Select(sub => new { SubsystemName = sub.Name })
-                          .ToList()
-                  }).ToList()
-              })
-              .ToListAsync();
-
-            // Преобразуем результат в список объектов
-            return plants.Cast<dynamic>().ToList();
-        }
         /*
         /// <summary>
         /// Метод удаляет экзмепляр класса EquipmentEntity в БД./>.

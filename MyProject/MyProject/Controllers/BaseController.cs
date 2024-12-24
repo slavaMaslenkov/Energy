@@ -71,6 +71,25 @@ namespace MyProject.Controllers
 
             return Json(result);
         }
+
+        /// <summary>
+        /// Метод для получения устройств, связанных со станцией.
+        /// </summary>
+        /// <param name="equipmentId">ID станции.</param>
+        /// <returns>Список устройств.</returns>
+        [HttpGet]
+        public async Task<IActionResult> GetSubsystemsByEquipment(int equipmentId)
+        {
+            var subsystems = await _systemService.GetAllByEquipment(equipmentId);
+
+            var result = subsystems.Select(s => new
+            {
+                s.Subsystem.Id,
+                s.Subsystem.Name
+            });
+
+            return Json(result);
+        }
         /*
         /// <summary>
         /// Метод для получения подсистем, связанных с устройством.

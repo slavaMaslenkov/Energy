@@ -15,5 +15,15 @@ namespace MyProject.Models
         {
            await systemRepository.AttachSubsystemsToEquipment(equipmentId, subsystemIds);
         }
+
+        /// <summary>
+        /// Метод получает все подустройства конкретного устройства из БД./>.
+        /// </summary>
+        ///<param name="equipmentId">Имя объекта.</param>
+        /// <returns>Лист SystemEntity/>.</returns>
+        public async Task<List<SystemEntity>> GetAllByEquipment(int equipmentId)
+        {
+            return await systemRepository.GetAllByEquipment(equipmentId);
+        }
     }
 }

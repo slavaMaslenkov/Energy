@@ -1,4 +1,6 @@
-﻿namespace MyProject.Models
+﻿using DataAccess.Postgres.Entity;
+
+namespace MyProject.Models
 {
     public interface ISystemService
     {
@@ -9,5 +11,12 @@
         ///<param name="subsystemIds">Имя объекта.</param>
         /// <returns>Лист SystemEntity/>.</returns>
         Task AttachSubsystemsToEquipment(int equipmentId, List<int> subsystemIds);
+
+        /// <summary>
+        /// Метод получает все подустройства конкретного устройства из БД./>.
+        /// </summary>
+        ///<param name="equipmentId">Имя объекта.</param>
+        /// <returns>Лист SystemEntity/>.</returns>
+        Task<List<SystemEntity>> GetAllByEquipment(int equipmentId);
     }
 }
