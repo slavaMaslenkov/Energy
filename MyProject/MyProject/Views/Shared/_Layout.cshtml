@@ -105,8 +105,8 @@
                         data.forEach(equipment => {
                             const listItem = document.createElement('li');
                             listItem.innerHTML = `
-                                    <a href="/EquipmentEntities/Details/${equipment.Id}">
-                                        <i class="bi bi-cpu me-2"></i>${equipment.Name}
+                                    <a href="/EquipmentEntities/Details/${equipment.id}">
+                                        <i class="bi bi-cpu me-2"></i>${equipment.name}
                                     </a>`;
                             equipmentList.appendChild(listItem);
                         });
