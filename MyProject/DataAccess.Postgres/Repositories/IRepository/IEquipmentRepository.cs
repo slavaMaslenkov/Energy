@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DataAccess.Postgres.Repositories
+namespace DataAccess.Postgres.Repositories.IRepository
 {
     public interface IEquipmentRepository
     {

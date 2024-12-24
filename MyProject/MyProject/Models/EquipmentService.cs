@@ -1,5 +1,5 @@
 ﻿using DataAccess.Postgres.Entity;
-using DataAccess.Postgres.Repositories;
+using DataAccess.Postgres.Repositories.IRepository;
 
 namespace MyProject.Models
 {

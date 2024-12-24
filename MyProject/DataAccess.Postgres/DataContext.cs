@@ -25,6 +25,10 @@ namespace DataAccess.Postgres
 
         public DbSet<ConnectionEntity> Connection { get; set; }
 
+        public DbSet<UserEntity> User { get; set; }
+
+        public DbSet<RoleEntity> Role { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -36,6 +40,8 @@ namespace DataAccess.Postgres
             modelBuilder.ApplyConfiguration(new SubsystemConfiguration());
             modelBuilder.ApplyConfiguration(new SystemConfiguration());
             modelBuilder.ApplyConfiguration(new ConnectionConfiguration());
+            modelBuilder.ApplyConfiguration(new UserConfiguration());
+            modelBuilder.ApplyConfiguration(new RoleConfiguration());
 
 
             base.OnModelCreating(modelBuilder);

@@ -39,6 +39,7 @@ namespace MyProject.Controllers
 
         /// Метод необходим для выполнения базовой логики базового контроллера./>.
         /// <summary>
+        [HttpGet("/main")]
         public override async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
         {
             var plants = await _plantService.GetAllAsync();

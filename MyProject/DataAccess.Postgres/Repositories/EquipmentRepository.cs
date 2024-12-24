@@ -1,4 +1,5 @@
 ﻿using DataAccess.Postgres.Entity;
+using DataAccess.Postgres.Repositories.IRepository;
 using Microsoft.EntityFrameworkCore;
 
 namespace DataAccess.Postgres.Repositories

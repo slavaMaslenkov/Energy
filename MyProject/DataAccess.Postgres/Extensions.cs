@@ -1,4 +1,5 @@
 ﻿using DataAccess.Postgres.Repositories;
+using DataAccess.Postgres.Repositories.IRepository;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -16,6 +17,7 @@ namespace DataAccess.Postgres
             serviceCollection.AddScoped<IPlantRepository, PlantRepository>();
             serviceCollection.AddScoped<ISubsystemRepository, SubsystemRepository>();
             serviceCollection.AddScoped<ISystemRepository, SystemRepository>();
+            serviceCollection.AddScoped<IUserRepository, UserRepository>();
             serviceCollection.AddDbContext<DataContext>(
             options =>
             {

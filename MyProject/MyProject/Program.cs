@@ -1,6 +1,8 @@
 using DataAccess.Postgres;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 using MyProject.Models;
+using MyProject.Models.IService;
 
 namespace MyProject
 {
@@ -22,6 +24,15 @@ namespace MyProject
             builder.Services.AddScoped<IPlantService, PlantService>();
             builder.Services.AddScoped<ISubsystemService, SubsystemService>();
             builder.Services.AddScoped<ISystemService, SystemService>();
+            builder.Services.AddScoped<IUserService, UserService>();
+
+
+            builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie(options =>
+                {
+                    options.LoginPath = "/login";
+                    options.AccessDeniedPath = "/accessdenied";
+                });
 
             var app = builder.Build();
 
@@ -37,12 +48,12 @@ namespace MyProject
             app.UseStaticFiles();
 
             app.UseRouting();
-
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.MapControllerRoute(
                 name: "default",
-                pattern: "{controller=Home}/{action=MainPage}/{id?}");
+                pattern: "{controller=Auth}/{action=Login}/{id?}");
 
             app.Run();
         }
