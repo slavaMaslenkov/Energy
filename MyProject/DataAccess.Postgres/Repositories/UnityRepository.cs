@@ -93,9 +93,9 @@ namespace DataAccess.Postgres.Repositories
         /// </summary>
         /// <param name="name">Имя объекта.</param>
         /// <returns>Возвращает таблицу Unity по опрделенному шаблону./>.</returns>
-        public async Task<List<UnityEntity>> GetByFilter(string name)
+        public async Task<List<UnityEntity>> GetByFilter(int id)
         {
-            if (string.IsNullOrEmpty(name))
+            if (string.IsNullOrEmpty(id.ToString()))
             {
                 return new List<UnityEntity>();
             }
@@ -108,7 +108,7 @@ namespace DataAccess.Postgres.Repositories
                   .ThenInclude(c => c.Parameters) // Включаем параметры через Connection
                   .Where(u => u.Sample != null &&
                               u.Sample.Equipment != null && // Проверяем, что Sample и Equipment не null
-                              u.Sample.Equipment.Name == name) // Фильтруем по имени оборудования
+                              u.Sample.Equipment.Id == id) // Фильтруем по имени оборудования
                   .OrderBy(u => u.Connection.Parameters.Name);
 
             return await query.ToListAsync();

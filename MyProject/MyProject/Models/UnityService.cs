@@ -9,11 +9,11 @@ namespace MyProject.Models
         /// <summary>
         /// Метод получения листа шаблонов по имени устройства из БД./>.
         /// <summary>
-        /// <param name="name">Словарь.</param>
+        /// <param name="id">Словарь.</param>
         /// <returns>Лист шаблонов одного устройства/>.</returns>
-        public async Task<List<UnityEntity>> GetByFilter(string name)
+        public async Task<List<UnityEntity>> GetByFilter(int id)
         {
-            return await unityRepository.GetByFilter(name);
+            return await unityRepository.GetByFilter(id);
         }
 
         /// <summary>

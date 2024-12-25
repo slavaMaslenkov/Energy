@@ -21,7 +21,8 @@
                     equipmentItem.innerHTML = `
                         <span style="cursor: pointer; display: flex; align-items: center;">
                             <i class="bi bi-caret-down-fill me-2 toggle-subsystems" data-equipment-id="${equipment.id}"></i>
-                            <a href="/UnityEntities/DeviceUnity/${equipment.name}" style="text-decoration: none; color: inherit;">${equipment.name}</a>
+                            <a href="/UnityEntities/DeviceUnity?equipmentId=${equipment.id}"
+                            style="text-decoration: none; color: inherit;">${equipment.name}</a>
                         </span>
                         <ul class="subsystem-list" style="display: none; list-style-type: none; margin-left: 20px;"></ul>
                     `;

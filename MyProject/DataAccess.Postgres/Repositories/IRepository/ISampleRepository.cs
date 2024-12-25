@@ -39,9 +39,9 @@ namespace DataAccess.Postgres.Repositories
         /// <summary>
         /// Метод получает шаблоны определенного устройства./>.
         /// <summary>
-        /// <param name="name">Имя объекта.</param>
+        /// <param name="id">Имя объекта.</param>
         /// <returns>Возвращает таблицу Sample по опрделенному шаблону./>.</returns>
-        Task<List<SampleEntity>> GetByFilter(string name);
+        Task<List<SampleEntity>> GetByFilter(int id);
 
         /// <summary>
         /// Метод обновляет статус шаблона./>.

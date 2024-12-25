@@ -97,9 +97,9 @@ namespace DataAccess.Postgres.Repositories
         /// <summary>
         /// <param name="name">Имя объекта.</param>
         /// <returns>Возвращает таблицу Sample по опрделенному шаблону./>.</returns>
-        public async Task<List<SampleEntity>> GetByFilter(string name)
+        public async Task<List<SampleEntity>> GetByFilter(int id)
         {
-            if (string.IsNullOrEmpty(name))
+            if (string.IsNullOrEmpty(id.ToString()))
             {
                 return new List<SampleEntity>();
             }
@@ -107,7 +107,7 @@ namespace DataAccess.Postgres.Repositories
             var query = dbContext.Sample
                           .AsNoTracking()
                           .Include(s => s.Equipment)
-                          .Where(s => s.Equipment.Name == name);
+                          .Where(s => s.Equipment.Id == id);
 
             return await query.ToListAsync();
         }

@@ -25,9 +25,9 @@ namespace DataAccess.Postgres.Repositories
         /// <summary>
         /// Метод получения листа шаблонов по имени устройства из БД./>.
         /// <summary>
-        /// <param name="name">Словарь.</param>
+        /// <param name="id">Словарь.</param>
         /// <returns>Лист шаблонов одного устройства/>.</returns>
-        Task<List<UnityEntity>> GetByFilter(string name);
+        Task<List<UnityEntity>> GetByFilter(int id);
 
         /// <summary>
         /// Метод обновления значений в БД./>.

@@ -48,7 +48,7 @@ namespace MyProject.Controllers
         [HttpGet]
         public async Task<IActionResult> Create(int equipmentId)
         {
-            var sampleList = await _sampleService.GetAvailableAsync();
+            var sampleList = await _sampleService.GetByFilter(equipmentId);
             var subsystemList = await _systemService.GetAllByEquipment(equipmentId);
 
             ViewBag.SampleList = new SelectList(sampleList, "Id", "Name");
@@ -128,34 +128,34 @@ namespace MyProject.Controllers
             }
         }
 
-        public async Task<IActionResult> DeviceUnity(string deviceName)
+        public async Task<IActionResult> DeviceUnity(int equipmentId)
         {
-            if (string.IsNullOrEmpty(deviceName))
+            if (string.IsNullOrEmpty(equipmentId.ToString()))
             {
                 return View("Error");
             }
 
-            var unityData = await _unityService.GetByFilter(deviceName);
-            var sampleData = await _sampleService.GetByFilter(deviceName);
+            var unityData = await _unityService.GetByFilter(equipmentId);
+            var sampleData = await _sampleService.GetByFilter(equipmentId);
             if (!sampleData.Any())
             {
                 return RedirectToAction("Create", "SampleEntities");
             }
             if (!unityData.Any())
             {
-                return RedirectToAction("Create", "UnityEntities", new { deviceName });
+                return RedirectToAction("Create", "UnityEntities", new { equipmentId });
             }
 
-            ViewBag.DeviceName = deviceName;
+            ViewBag.DeviceName = equipmentId;
             return View("Index", unityData);
         }
 
         [HttpPost]
-        public async Task<IActionResult> UpdateValues(Dictionary<int, string> values, string deviceName)
+        public async Task<IActionResult> UpdateValues(Dictionary<int, string> values, int id)
         {
             await _unityService.UpdateValues(values);
-            var unityData = await _unityService.GetByFilter(deviceName);
-            ViewBag.DeviceName = deviceName;
+            var unityData = await _unityService.GetByFilter(id);
+            ViewBag.DeviceName = id;
             return View("Index", unityData);
         }
 
