@@ -20,9 +20,8 @@ namespace DataAccess.Postgres.Repositories
         {
             return await dbContext.System
                 .AsNoTracking()
-                .Include(s => s.Equipment)
-                .Where(s => s.Equipment.Id == equipmentId)
-                .Include(s => s.Subsystem)
+                .Where(s => s.EquipmentID == equipmentId)
+                .Include(s => s.Subsystem) 
                 .ToListAsync();
         }
 

@@ -19,6 +19,8 @@ namespace MyProject.Controllers
 
         private readonly ISystemService _systemService;
 
+        private readonly IEquipmentService _equipmentService;
+
         public UnityEntitiesController(IEquipmentService equipmentService,
             IParametersService parametersService, ISampleService sampleService, IUnityService unityService, 
             IPlantService plantService, ISubsystemService subsystemService, ISystemService systemService)
@@ -29,6 +31,7 @@ namespace MyProject.Controllers
             _sampleService = sampleService;
             _subsystemService = subsystemService;
             _systemService = systemService;
+            _equipmentService = equipmentService;
         }
 
         // GET: UnityEntities
@@ -52,8 +55,8 @@ namespace MyProject.Controllers
             var subsystemList = await _systemService.GetAllByEquipment(equipmentId);
 
             ViewBag.SampleList = new SelectList(sampleList, "Id", "Name");
-            ViewBag.SubsystemList = new SelectList(subsystemList, "Id", "Name");
-            ViewBag.EquipmentId = equipmentId;
+            ViewBag.SubsystemList = new SelectList(subsystemList.Select(s => s.Subsystem), "Id", "Name");
+            ViewBag.DeviceId = equipmentId;
             return View();
         }
 
@@ -69,7 +72,7 @@ namespace MyProject.Controllers
                 // Привязка выбранных систем к устройству
                 ///await _systemService.AttachParametersToSample(equipmentEntity.Id, subsystemIds);
 
-                return RedirectToAction(nameof(DeviceUnity), new { deviceName = unityEntity.Sample.Equipment.Name });
+                return RedirectToAction(nameof(DeviceUnity), new { deviceId = unityEntity.Sample.Equipment.Name });
             }
 
 
@@ -86,21 +89,38 @@ namespace MyProject.Controllers
             return View(unityEntity);
         }
 
+        [HttpGet]
+        public async Task<IActionResult> GetParametersBySubsystem(int subsystemId)
+        {
+            // Получение всех параметров, связанных с выбранной подсистемой
+            var connections = await dbContext.Connections
+                .Include(c => c.Parameters)
+                .Where(c => c.SubsystemID == subsystemId)
+                .Select(c => new
+                {
+                    id = c.ParametersID,
+                    name = c.Parameters.Name
+                })
+                .ToListAsync();
+
+            return Json(connections);
+        }
+
         // POST: UnityEntities/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id, string deviceName)
+        public async Task<IActionResult> DeleteConfirmed(int id)
         {
             await _unityService.DeleteConfirmed(id);
-            return RedirectToAction(nameof(DeviceUnity), new { deviceName });
+            return RedirectToAction(nameof(DeviceUnity), new { id });
         }
 
         [HttpPost]
-        public async Task<IActionResult> DeleteSelected(string ids, string deviceName)
+        public async Task<IActionResult> DeleteSelected(string ids, int deviceId)
         {
             if (string.IsNullOrEmpty(ids))
             {
-                return RedirectToAction(nameof(DeviceUnity), new { deviceName });
+                return RedirectToAction(nameof(DeviceUnity), new { deviceId });
             }
 
             try
@@ -120,7 +140,7 @@ namespace MyProject.Controllers
                     }
                 }
 
-                return RedirectToAction(nameof(DeviceUnity), new { deviceName });
+                return RedirectToAction(nameof(DeviceUnity), new { deviceId });
             }
             catch (Exception ex)
             {
@@ -137,6 +157,7 @@ namespace MyProject.Controllers
 
             var unityData = await _unityService.GetByFilter(equipmentId);
             var sampleData = await _sampleService.GetByFilter(equipmentId);
+
             if (!sampleData.Any())
             {
                 return RedirectToAction("Create", "SampleEntities");
@@ -146,7 +167,10 @@ namespace MyProject.Controllers
                 return RedirectToAction("Create", "UnityEntities", new { equipmentId });
             }
 
-            ViewBag.DeviceName = equipmentId;
+            var nameDevice = await _equipmentService.FindById(equipmentId);
+            ViewBag.nameDevice = nameDevice.Name;
+
+            ViewBag.DeviceId = equipmentId;
             return View("Index", unityData);
         }
 
@@ -155,7 +179,7 @@ namespace MyProject.Controllers
         {
             await _unityService.UpdateValues(values);
             var unityData = await _unityService.GetByFilter(id);
-            ViewBag.DeviceName = id;
+            ViewBag.DeviceId = id;
             return View("Index", unityData);
         }
 

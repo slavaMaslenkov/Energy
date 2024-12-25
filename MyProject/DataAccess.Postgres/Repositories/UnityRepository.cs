@@ -32,6 +32,7 @@ namespace DataAccess.Postgres.Repositories
             await dbContext.SaveChangesAsync();
             return unityEntity;
         }
+
         ///////////////////////////////////////////////////////////////////////////////
         /// <summary>
         /// Метод добавляет экзмепляр класса UnityEntity в БД с привязкой с Subsystem./>.
@@ -104,7 +105,9 @@ namespace DataAccess.Postgres.Repositories
                   .AsNoTracking() // Не отслеживаем изменения
                   .Include(u => u.Sample) // Включаем данные из Sample
                   .ThenInclude(s => s.Equipment) // Включаем данные из Equipment через Sample
-                  .Include(u => u.Connection) // Включаем данные из Connection (если необходимо)
+                  .Include(u => u.Connection)
+                  .ThenInclude(c => c.Subsystem)
+                  .Include(u => u.Connection)// Включаем данные из Connection (если необходимо)
                   .ThenInclude(c => c.Parameters) // Включаем параметры через Connection
                   .Where(u => u.Sample != null &&
                               u.Sample.Equipment != null && // Проверяем, что Sample и Equipment не null

@@ -6,10 +6,10 @@
 
 <div class="header-container">
     <h1 class="d-flex justify-content-between align-items-center">
-        Параметры устройства
+        Параметры устройства @ViewBag.nameDevice
         <div>
             <a class="btn btn-secondary d-inline-flex align-items-center text-dark me-2"
-               asp-action="Create" asp-route-deviceName=@ViewBag.DeviceName style="text-decoration: none;">
+               asp-action="Create" asp-route-equipmentId=@ViewBag.DeviceId style="text-decoration: none;">
                 <i class="bi bi-plus-square me-2"></i> Добавить
             </a>
             <a id="delete-selected"
@@ -23,7 +23,7 @@
 </div>
 
 <form asp-action="UpdateValues" method="post">
-    <input type="hidden" name="DeviceName" value="@ViewBag.DeviceName" />
+    <input type="hidden" name="DeviceId" value="@ViewBag.DeviceId" />
     <div class="table-container">
         <table class="table text-center" style="width: 100%; table-layout: fixed;">
             <thead class="sticky-header">
@@ -66,7 +66,7 @@
                                data-bs-toggle="modal"
                                data-bs-target="#deleteModal"
                                data-device-name="@item.Connection.Parameters.Name"
-                               data-delete-url="@Url.Action("Delete", "UnityEntities", new { id = item.Id, deviceName = ViewBag.DeviceName })">
+                               data-delete-url="@Url.Action("Delete", "UnityEntities", new { id = item.Id, deviceName = ViewBag.DeviceId })">
                             </i>
                         </td>
                     </tr>
