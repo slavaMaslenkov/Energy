@@ -23,46 +23,30 @@ namespace MyProject.Models
         /// <returns>Лист названий PlantEntity/>.</returns>
         Task<List<string>> GetAllAsyncPlants();
 
-        /*
         /// <summary>
-        /// Метод удаляет экзмепляр класса EquipmentEntity в БД./>.
+        /// Метод удаляет экзмепляр класса PlantEntity в БД./>.
         /// <summary>
         /// <param name="id">Имя объекта.</param>
         Task DeleteConfirmed(int? id);
 
         /// <summary>
-        /// Метод получения списка устройств из БД./>.
-        /// <summary>
-        /// <returns>Лист экземпляров класса EquipmentEntity/>.</returns>
-        Task<List<string>> GetDeviceNamesAsync();
-
-        /// <summary>
-        /// Метод получения названий экземпляров EquipmentEntity,
-        /// у которых есть экземпляр UnityEntity.
-        /// <summary>
-        /// <returns>Лист экземпляров класса EquipmentEntity/>.</returns>
-        Task<List<string>> GetAvailableDeviceNamesAsync();
-
-        /// <summary>
         /// Метод получения возможности редактирования.
         /// <summary>
         /// <param name="id">Имя объекта.</param>
-        /// <returns>Экземпляр класса EquipmentEntity/>.</returns>
-        Task<EquipmentEntity> FindById(int? id);
+        /// <returns>Экземпляр класса PlantEntity/>.</returns>
+        Task<PlantEntity> FindById(int? id);
 
         /// <summary>
-        /// Метод редактирования экземпляра EquipmentEntity.
+        /// Метод редактирования экземпляра PlantEntity.
         /// <summary>
-        /// <param name="equipmentEntity">Имя объекта.</param>
-        Task EditPost(EquipmentEntity equipmentEntity);
+        /// <param name="plantEntity">Имя объекта.</param>
+        Task EditPost(PlantEntity plantEntity);
 
-        // <summary>
+        /// <summary>
         /// Метод проверки наличия экземпляра.
         /// <summary>
         /// <param name="id">Имя объекта.</param>
         /// <returns>Булевое значение/>.</returns>
-        bool EquipmentEntityExists(int id);
-
-        */
+        bool PlantEntityExists(int id);
     }
 }

@@ -1,4 +1,5 @@
 ﻿using DataAccess.Postgres.Entity;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -39,7 +40,7 @@ namespace MyProject.Controllers
 
         /// Метод необходим для выполнения базовой логики базового контроллера./>.
         /// <summary>
-        [HttpGet("/main")]
+        [Authorize]
         public override async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
         {
             var plants = await _plantService.GetAllAsync();

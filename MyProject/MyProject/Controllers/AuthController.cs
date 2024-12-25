@@ -47,7 +47,7 @@ namespace MyProject.Controllers
             var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
             await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
 
-            return Redirect("/main");
+            return RedirectToAction("MainPage", "Home"); 
         }
 
         // Выход

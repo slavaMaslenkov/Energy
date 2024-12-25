@@ -64,7 +64,7 @@ namespace DataAccess.Postgres.Repositories
         /// <summary>
         /// Метод редактирования экземпляра ParametersEntity.
         /// <summary>
-        /// <param name="equipmentEntity">Имя объекта.</param>
+        /// <param name="parametersEntity">Имя объекта.</param>
         public async Task EditPost(ParametersEntity parametersEntity)
         {
             dbContext.Update(parametersEntity);

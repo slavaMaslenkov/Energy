@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace DataAccess.Postgres.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20241223165040_initial")]
+    [Migration("20241225042948_initial")]
     partial class initial
     {
         /// <inheritdoc />
@@ -127,6 +127,45 @@ namespace DataAccess.Postgres.Migrations
                     b.ToTable("Plant");
                 });
 
+            modelBuilder.Entity("DataAccess.Postgres.Entity.RoleEntity", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Role");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "Admin"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "User1"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Name = "User2"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Name = "User3"
+                        });
+                });
+
             modelBuilder.Entity("DataAccess.Postgres.Entity.SampleEntity", b =>
                 {
                     b.Property<int>("Id")
@@ -235,6 +274,32 @@ namespace DataAccess.Postgres.Migrations
                     b.ToTable("Unity");
                 });
 
+            modelBuilder.Entity("DataAccess.Postgres.Entity.UserEntity", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int>("RoleID")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("UserName")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("RoleID");
+
+                    b.ToTable("User");
+                });
+
             modelBuilder.Entity("DataAccess.Postgres.Entity.ConnectionEntity", b =>
                 {
                     b.HasOne("DataAccess.Postgres.Entity.ParametersEntity", "Parameters")
@@ -314,6 +379,17 @@ namespace DataAccess.Postgres.Migrations
                     b.Navigation("Sample");
                 });
 
+            modelBuilder.Entity("DataAccess.Postgres.Entity.UserEntity", b =>
+                {
+                    b.HasOne("DataAccess.Postgres.Entity.RoleEntity", "Role")
+                        .WithMany("User")
+                        .HasForeignKey("RoleID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Role");
+                });
+
             modelBuilder.Entity("DataAccess.Postgres.Entity.ConnectionEntity", b =>
                 {
                     b.Navigation("Unity");
@@ -334,6 +410,11 @@ namespace DataAccess.Postgres.Migrations
             modelBuilder.Entity("DataAccess.Postgres.Entity.PlantEntity", b =>
                 {
                     b.Navigation("Equipment");
+                });
+
+            modelBuilder.Entity("DataAccess.Postgres.Entity.RoleEntity", b =>
+                {
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("DataAccess.Postgres.Entity.SampleEntity", b =>

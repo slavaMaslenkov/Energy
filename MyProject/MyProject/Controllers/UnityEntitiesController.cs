@@ -17,6 +17,8 @@ namespace MyProject.Controllers
 
         private readonly ISubsystemService _subsystemService;
 
+        private readonly ISystemService _systemService;
+
         public UnityEntitiesController(IEquipmentService equipmentService,
             IParametersService parametersService, ISampleService sampleService, IUnityService unityService, 
             IPlantService plantService, ISubsystemService subsystemService, ISystemService systemService)
@@ -26,6 +28,7 @@ namespace MyProject.Controllers
             _parametersService = parametersService;
             _sampleService = sampleService;
             _subsystemService = subsystemService;
+            _systemService = systemService;
         }
 
         // GET: UnityEntities
@@ -45,11 +48,9 @@ namespace MyProject.Controllers
         [HttpGet]
         public async Task<IActionResult> Create(int equipmentId)
         {
-            var parametersList = await _parametersService.GetAllAsync();
             var sampleList = await _sampleService.GetAvailableAsync();
-            var subsystemList = await _subsystemService.GetByEquipmentIdAsync(equipmentId);
+            var subsystemList = await _systemService.GetAllByEquipment(equipmentId);
 
-            ViewBag.ParametersList = new SelectList(parametersList, "Id", "Name");
             ViewBag.SampleList = new SelectList(sampleList, "Id", "Name");
             ViewBag.SubsystemList = new SelectList(subsystemList, "Id", "Name");
             ViewBag.EquipmentId = equipmentId;
@@ -65,7 +66,8 @@ namespace MyProject.Controllers
             {
                 unityEntity.Sample.EquipmentID = equipmentId;
 
-                ///await _unityService.CreateWithSubsystem(unityEntity, subsystemId);
+                // Привязка выбранных систем к устройству
+                ///await _systemService.AttachParametersToSample(equipmentEntity.Id, subsystemIds);
 
                 return RedirectToAction(nameof(DeviceUnity), new { deviceName = unityEntity.Sample.Equipment.Name });
             }

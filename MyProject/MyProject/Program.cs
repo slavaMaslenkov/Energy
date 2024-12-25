@@ -53,7 +53,7 @@ namespace MyProject
 
             app.MapControllerRoute(
                 name: "default",
-                pattern: "{controller=Auth}/{action=Login}/{id?}");
+                pattern: "{controller=Home}/{action=MainPage}/{id?}");
 
             app.Run();
         }

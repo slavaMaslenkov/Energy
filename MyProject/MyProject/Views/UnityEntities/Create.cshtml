@@ -10,14 +10,7 @@
 <div class="row">
     <div class="col-md-6">
         <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            
-            <!-- Поле выбора параметра -->
-            <div class="form-group">
-                <label asp-for="Connection.ParametersID" class="control-label">Параметр</label>
-                @Html.DropDownListFor(model => model.Connection.ParametersID, (SelectList)ViewBag.ParametersList, "Выберите параметр", new { @class = "form-control" })
-                <span asp-validation-for="Connection.ParametersID" class="text-danger"></span>
-            </div>
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>    
 
             <!-- Поле выбора шаблона -->
             <div class="form-group">
@@ -33,11 +26,31 @@
                 <span asp-validation-for="SampleID" class="text-danger"></span>
             </div>
 
+            <!-- Поле выбора параметра -->
+            <div class="form-group">
+                <label asp-for="Connection.ParametersID" class="control-label">Параметр</label>
+                <select id="ParameterId" name="Connection.ParametersID" class="form-control">
+                    <option value="">Выберите параметр</option>
+                </select>
+                <span asp-validation-for="Connection.ParametersID" class="text-danger"></span>
+            </div>
+
             <!-- Поле значения -->
             <div class="form-group">
                 <label asp-for="Value" class="control-label"></label>
                 <input asp-for="Value" class="form-control" />
                 <span asp-validation-for="Value" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Range" class="control-label"></label>
+                <input asp-for="Range" class="form-control" />
+                <span asp-validation-for="Range" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Access" class="control-label"></label>
+                <input asp-for="Access" class="form-control" />
+                <span asp-validation-for="Access" class="text-danger"></span>
             </div>
 
             <div class="form-group mt-3">
@@ -51,4 +64,34 @@
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const subsystemDropdown = document.getElementById('SubsystemId');
+            const parameterDropdown = document.getElementById('ParameterId');
+
+            subsystemDropdown.addEventListener('change', async function () {
+                const subsystemId = subsystemDropdown.value;
+
+                if (subsystemId) {
+                    try {
+                        const response = await fetch(`/Base/GetParametersBySubsystem?subsystemId=${subsystemId}`);
+                        const data = await response.json();
+
+                        // Очистка и заполнение списка параметров
+                        parameterDropdown.innerHTML = '<option value="">Выберите параметр</option>';
+                        data.forEach(param => {
+                            const option = document.createElement('option');
+                            option.value = param.id;
+                            option.textContent = param.name;
+                            parameterDropdown.appendChild(option);
+                        });
+                    } catch (error) {
+                        console.error('Ошибка загрузки параметров:', error);
+                    }
+                } else {
+                    parameterDropdown.innerHTML = '<option value="">Выберите параметр</option>';
+                }
+            });
+        });
+    </script>
 }

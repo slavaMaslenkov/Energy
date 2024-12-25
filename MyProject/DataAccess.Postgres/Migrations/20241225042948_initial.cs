@@ -4,6 +4,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
 namespace DataAccess.Postgres.Migrations
 {
     /// <inheritdoc />
@@ -43,6 +45,19 @@ namespace DataAccess.Postgres.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Role",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Name = table.Column<string>(type: "text", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Role", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Subsystem",
                 columns: table => new
                 {
@@ -75,6 +90,27 @@ namespace DataAccess.Postgres.Migrations
                         name: "FK_Equipment_Plant_PlantID",
                         column: x => x.PlantID,
                         principalTable: "Plant",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "User",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    UserName = table.Column<string>(type: "text", nullable: false),
+                    Password = table.Column<string>(type: "text", nullable: false),
+                    RoleID = table.Column<int>(type: "integer", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_User", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_User_Role_RoleID",
+                        column: x => x.RoleID,
+                        principalTable: "Role",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -182,6 +218,17 @@ namespace DataAccess.Postgres.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.InsertData(
+                table: "Role",
+                columns: new[] { "Id", "Name" },
+                values: new object[,]
+                {
+                    { 1, "Admin" },
+                    { 2, "User1" },
+                    { 3, "User2" },
+                    { 4, "User3" }
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_Connection_ParametersID",
                 table: "Connection",
@@ -221,6 +268,11 @@ namespace DataAccess.Postgres.Migrations
                 name: "IX_Unity_SampleID",
                 table: "Unity",
                 column: "SampleID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_User_RoleID",
+                table: "User",
+                column: "RoleID");
         }
 
         /// <inheritdoc />
@@ -233,10 +285,16 @@ namespace DataAccess.Postgres.Migrations
                 name: "Unity");
 
             migrationBuilder.DropTable(
+                name: "User");
+
+            migrationBuilder.DropTable(
                 name: "Connection");
 
             migrationBuilder.DropTable(
                 name: "Sample");
+
+            migrationBuilder.DropTable(
+                name: "Role");
 
             migrationBuilder.DropTable(
                 name: "Parameters");

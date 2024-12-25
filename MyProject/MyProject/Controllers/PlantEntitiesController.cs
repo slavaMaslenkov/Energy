@@ -42,23 +42,23 @@ namespace MyProject.Controllers
             }
             return View(plantEntity);
         }
-        /*
-        // GET: EquipmentEntities/Edit
+
+        // GET: PlantEntity/Edit
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
-            return View(await _equipmentService.FindById(id));
+            return View(await _plantService.FindById(id));
         }
 
-        // POST: EquipmentEntities/Edit
+        // POST: PlantEntity/Edit
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Type,Description,Owner")] EquipmentEntity equipmentEntity)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Control,Owner")] PlantEntity plantEntity)
         {
-            if (id != equipmentEntity.Id)
+            if (id != plantEntity.Id)
             {
                 return NotFound();
             }
@@ -67,11 +67,11 @@ namespace MyProject.Controllers
             {
                 try
                 {
-                    await _equipmentService.EditPost(equipmentEntity);
+                    await _plantService.EditPost(plantEntity);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!_equipmentService.EquipmentEntityExists(equipmentEntity.Id))
+                    if (!_plantService.PlantEntityExists(plantEntity.Id))
                     {
                         return NotFound();
                     }
@@ -82,15 +82,15 @@ namespace MyProject.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(equipmentEntity);
+            return View(plantEntity);
         }
 
-        // POST: EquipmentEntities/Delete/5
+        // POST: PlantEntity/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            await _equipmentService.DeleteConfirmed(id);
+            await _plantService.DeleteConfirmed(id);
             return RedirectToAction(nameof(Index));
         }
 
@@ -106,14 +106,14 @@ namespace MyProject.Controllers
 
             foreach (var id in idList)
             {
-                var equipmentEntity = await _equipmentService.FindById(id);
-                if (equipmentEntity != null)
+                var plantEntity = await _plantService.FindById(id);
+                if (plantEntity != null)
                 {
-                    await _equipmentService.DeleteConfirmed(id); // Удалить каждое устройство по ID
+                    await _plantService.DeleteConfirmed(id); // Удалить каждое устройство по ID
                 }
             }
 
             return RedirectToAction(nameof(Index)); // Перенаправление на главную страницу
-        }*/
+        }
     }
 }

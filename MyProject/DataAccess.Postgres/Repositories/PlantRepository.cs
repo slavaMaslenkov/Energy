@@ -48,68 +48,40 @@ namespace DataAccess.Postgres.Repositories
             return plantEntity;
         }
 
-        /*
+
         /// <summary>
-        /// Метод удаляет экзмепляр класса EquipmentEntity в БД./>.
+        /// Метод удаляет экзмепляр класса PlantEntity в БД./>.
         /// <summary>
         /// <param name="id">Имя объекта.</param>
         public async Task DeleteConfirmed(int? id)
         {
-            var equipmentEntity = await dbContext.Equipment.FindAsync(id);
-            if (equipmentEntity != null)
+            var plantEntity = await dbContext.Plant.FindAsync(id);
+            if (plantEntity != null)
             {
-                dbContext.Equipment.Remove(equipmentEntity);
+                dbContext.Plant.Remove(plantEntity);
             }
 
             await dbContext.SaveChangesAsync();
         }
 
         /// <summary>
-        /// Метод получения списка устройств из БД./>.
-        /// <summary>
-        /// <returns>Лист экземпляров класса EquipmentEntity/>.</returns>
-        public async Task<List<string>> GetDeviceNamesAsync()
-        {
-            var devices = await dbContext.Equipment
-                .AsNoTracking()
-                .Select(e => e.Name)
-                .ToListAsync();
-            return devices;
-        }
-
-        /// <summary>
-        /// Метод получения названий экземпляров EquipmentEntity,
-        /// у которых есть экземпляр UnityEntity.
-        /// <summary>
-        /// <returns>Лист экземпляров класса EquipmentEntity/>.</returns>
-        public async Task<List<string>> GetAvailableDeviceNamesAsync()
-        {
-            var devices = await dbContext.Equipment
-                 .AsNoTracking()
-                 .Where(e => e.Sample != null && e.Sample.Any(s => s.Unity != null && s.Unity.Any())) // Устройства с привязанными Unity
-                 .Select(e => e.Name)
-                 .ToListAsync();
-            return devices;
-        }
-
-        /// <summary>
         /// Метод получения возможности редактирования.
         /// <summary>
         /// <param name="id">Имя объекта.</param>
-        /// <returns>Экземпляр класса EquipmentEntity/>.</returns>
-        public async Task<EquipmentEntity> FindById(int? id)
+        /// <returns>Экземпляр класса PlantEntity/>.</returns>
+        public async Task<PlantEntity> FindById(int? id)
         {
-            var equipmentEntity = await dbContext.Equipment.FindAsync(id);
-            return equipmentEntity;
+            var plantEntity = await dbContext.Plant.FindAsync(id);
+            return plantEntity;
         }
 
         /// <summary>
-        /// Метод редактирования экземпляра EquipmentEntity.
+        /// Метод редактирования экземпляра PlantEntity.
         /// <summary>
-        /// <param name="equipmentEntity">Имя объекта.</param>
-        public async Task EditPost(EquipmentEntity equipmentEntity)
+        /// <param name="plantEntity">Имя объекта.</param>
+        public async Task EditPost(PlantEntity plantEntity)
         {
-            dbContext.Update(equipmentEntity);
+            dbContext.Update(plantEntity);
             await dbContext.SaveChangesAsync();
         }
 
@@ -118,10 +90,10 @@ namespace DataAccess.Postgres.Repositories
         /// <summary>
         /// <param name="id">Имя объекта.</param>
         /// <returns>Булевое значение/>.</returns>
-        public bool EquipmentEntityExists(int id)
+        public bool PlantEntityExists(int id)
         {
-            return dbContext.Equipment.Any(e => e.Id == id);
-        }*/
+            return dbContext.Plant.Any(e => e.Id == id);
+        }
 
     }
 }

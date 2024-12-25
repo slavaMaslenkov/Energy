@@ -1,5 +1,6 @@
 ﻿using DataAccess.Postgres.Entity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using MyProject.Models;
 
 namespace MyProject.Controllers
@@ -41,23 +42,23 @@ namespace MyProject.Controllers
             }
             return View(subsystemEntity);
         }
-        /*
-        // GET: EquipmentEntities/Edit
+
+        // GET: SubsystemEntity/Edit
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
-            return View(await _equipmentService.FindById(id));
+            return View(await _subsystemService.FindById(id));
         }
 
-        // POST: EquipmentEntities/Edit
+        // POST: SubsystemEntity/Edit
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Type,Description,Owner")] EquipmentEntity equipmentEntity)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Type,Description")] SubsystemEntity subsystemEntity)
         {
-            if (id != equipmentEntity.Id)
+            if (id != subsystemEntity.Id)
             {
                 return NotFound();
             }
@@ -66,11 +67,11 @@ namespace MyProject.Controllers
             {
                 try
                 {
-                    await _equipmentService.EditPost(equipmentEntity);
+                    await _subsystemService.EditPost(subsystemEntity);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!_equipmentService.EquipmentEntityExists(equipmentEntity.Id))
+                    if (!_subsystemService.SubsystemEntityExists(subsystemEntity.Id))
                     {
                         return NotFound();
                     }
@@ -81,7 +82,7 @@ namespace MyProject.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(equipmentEntity);
+            return View(subsystemEntity);
         }
 
         // POST: EquipmentEntities/Delete/5
@@ -89,7 +90,7 @@ namespace MyProject.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            await _equipmentService.DeleteConfirmed(id);
+            await _subsystemService.DeleteConfirmed(id);
             return RedirectToAction(nameof(Index));
         }
 
@@ -105,14 +106,14 @@ namespace MyProject.Controllers
 
             foreach (var id in idList)
             {
-                var equipmentEntity = await _equipmentService.FindById(id);
-                if (equipmentEntity != null)
+                var subsystemEntity = await _subsystemService.FindById(id);
+                if (subsystemEntity != null)
                 {
-                    await _equipmentService.DeleteConfirmed(id); // Удалить каждое устройство по ID
+                    await _subsystemService.DeleteConfirmed(id); // Удалить каждое устройство по ID
                 }
             }
 
             return RedirectToAction(nameof(Index)); // Перенаправление на главную страницу
-        }*/
+        }
     }
 }

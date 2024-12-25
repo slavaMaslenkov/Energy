@@ -1,4 +1,5 @@
 ﻿using DataAccess.Postgres.Entity;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using MyProject.Models;
@@ -22,6 +23,7 @@ namespace MyProject.Controllers
         }
 
         // GET: SampleEntities
+        [Authorize]
         public async Task<IActionResult> Index()
         {
             return View(await _sampleService.GetAllAsync());

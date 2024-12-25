@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MyProject.Models;
 using System.Diagnostics;
@@ -11,6 +12,7 @@ namespace MyProject.Controllers
             IPlantService plantService, ISubsystemService subsystemService, ISystemService systemService) 
             : base(equipmentService, parametersService, sampleService, unityService, plantService, subsystemService, systemService) { }
 
+        [Authorize]
         public IActionResult MainPage()
         {
             return View();

@@ -76,7 +76,7 @@ namespace MyProject.Controllers
         }
 
         // GET: ParametersEntities/Edit/5
-        public async Task<IActionResult> FindById(int? id)
+        public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
             {

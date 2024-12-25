@@ -19,21 +19,23 @@
                 data.forEach(equipment => {
                     const equipmentItem = document.createElement('li');
                     equipmentItem.innerHTML = `
-                                <span class="equipment-item" data-equipment-id="${equipment.id}" style="cursor: pointer;">
-                                    <i class="bi bi-cpu me-2"></i>${equipment.name}
-                                </span>
-                                <ul class="subsystem-list" style="display: none; list-style-type: none; margin-left: 20px;"></ul>
-                            `;
+                        <span style="cursor: pointer; display: flex; align-items: center;">
+                            <i class="bi bi-caret-down-fill me-2 toggle-subsystems" data-equipment-id="${equipment.id}"></i>
+                            <a href="/UnityEntities/DeviceUnity/${equipment.name}" style="text-decoration: none; color: inherit;">${equipment.name}</a>
+                        </span>
+                        <ul class="subsystem-list" style="display: none; list-style-type: none; margin-left: 20px;"></ul>
+                    `;
                     equipmentList.appendChild(equipmentItem);
                 });
 
                 equipmentList.style.display = 'block';
 
-                // Добавляем обработчики для устройств
-                document.querySelectorAll('.equipment-item').forEach(function (equipment) {
-                    equipment.addEventListener('click', async function () {
-                        const equipmentId = equipment.getAttribute('data-equipment-id');
-                        const subsystemList = equipment.nextElementSibling;
+                // Добавляем обработчики для раскрытия подустройств
+                document.querySelectorAll('.toggle-subsystems').forEach(function (icon) {
+                    icon.addEventListener('click', async function (event) {
+                        event.stopPropagation(); // Предотвращаем раскрытие списка устройств
+                        const equipmentId = icon.getAttribute('data-equipment-id');
+                        const subsystemList = icon.parentElement.nextElementSibling;
 
                         if (subsystemList.style.display === 'block') {
                             subsystemList.style.display = 'none';
@@ -49,9 +51,9 @@
                             data.forEach(subsystem => {
                                 const subsystemItem = document.createElement('li');
                                 subsystemItem.innerHTML = `
-                                            <a href="/SubsystemEntities/Details/${subsystem.id}">
-                                                <i class="bi bi-box me-2"></i>${subsystem.name}
-                                            </a>`;
+                                    <a href="/SubsystemEntities/Details/${subsystem.id}">
+                                        <i class="bi bi-box me-2"></i>${subsystem.name}
+                                    </a>`;
                                 subsystemList.appendChild(subsystemItem);
                             });
 

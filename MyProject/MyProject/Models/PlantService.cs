@@ -33,52 +33,32 @@ namespace MyProject.Models
             return await plantRepository.GetAllAsyncPlants();
         }
 
-        /*
         /// <summary>
         /// Метод удаляет экзмепляр класса EquipmentEntity в БД./>.
         /// <summary>
         /// <param name="id">Имя объекта.</param>
         public async Task DeleteConfirmed(int? id)
         {
-            await equipmentRepository.DeleteConfirmed(id);
-        }
-
-        /// <summary>
-        /// Метод получения списка устройств из БД./>.
-        /// <summary>
-        /// <returns>Лист экземпляров класса EquipmentEntity/>.</returns>
-        public async Task<List<string>> GetDeviceNamesAsync()
-        {
-            return await equipmentRepository.GetDeviceNamesAsync();
-        }
-
-        /// <summary>
-        /// Метод получения названий экземпляров EquipmentEntity,
-        /// у которых есть экземпляр UnityEntity.
-        /// <summary>
-        /// <returns>Лист экземпляров класса EquipmentEntity/>.</returns>
-        public async Task<List<string>> GetAvailableDeviceNamesAsync()
-        {
-            return await equipmentRepository.GetAvailableDeviceNamesAsync();
+            await plantRepository.DeleteConfirmed(id);
         }
 
         /// <summary>
         /// Метод получения возможности редактирования.
         /// <summary>
         /// <param name="id">Имя объекта.</param>
-        /// <returns>Экземпляр класса EquipmentEntity/>.</returns>
-        public async Task<EquipmentEntity> FindById(int? id)
+        /// <returns>Экземпляр класса PlantEntity/>.</returns>
+        public async Task<PlantEntity> FindById(int? id)
         {
-            return await equipmentRepository.FindById(id);
+            return await plantRepository.FindById(id);
         }
 
         /// <summary>
-        /// Метод редактирования экземпляра EquipmentEntity.
+        /// Метод редактирования экземпляра PlantEntity.
         /// <summary>
-        /// <param name="equipmentEntity">Имя объекта.</param>
-        public async Task EditPost(EquipmentEntity equipmentEntity)
+        /// <param name="plantEntity">Имя объекта.</param>
+        public async Task EditPost(PlantEntity plantEntity)
         {
-            await equipmentRepository.EditPost(equipmentEntity);
+            await plantRepository.EditPost(plantEntity);
         }
 
         /// <summary>
@@ -86,9 +66,9 @@ namespace MyProject.Models
         /// <summary>
         /// <param name="id">Имя объекта.</param>
         /// <returns>Булевое значение/>.</returns>
-        public bool EquipmentEntityExists(int id)
+        public bool PlantEntityExists(int id)
         {
-            return equipmentRepository.EquipmentEntityExists(id);
-        }*/
+            return plantRepository.PlantEntityExists(id);
+        }
     }
 }
