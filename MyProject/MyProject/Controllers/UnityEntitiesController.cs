@@ -72,6 +72,7 @@ namespace MyProject.Controllers
         {
             if (ModelState.IsValid)
             {
+                ViewBag.DeviceId = equipmentId;
                 // Получаем ConnectionID из таблицы Connection на основе выбранных параметров
                 var connection = await _connectionService.GetConnectionBySubsystemAndParameterAsync(subsystemId, parameterId);
 
@@ -89,7 +90,7 @@ namespace MyProject.Controllers
                 await _unityService.Create(unityEntity);
 
                 // Перенаправление на другую страницу (например, устройство)
-                return RedirectToAction(nameof(DeviceUnity), new { deviceId = equipmentId });
+                return RedirectToAction(nameof(DeviceUnity), new { equipmentId });
             }
 
             // Повторная загрузка списка при ошибке валидации
