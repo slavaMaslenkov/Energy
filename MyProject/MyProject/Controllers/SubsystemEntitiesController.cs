@@ -1,7 +1,9 @@
 ﻿using DataAccess.Postgres.Entity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using MyProject.Models;
+using MyProject.Models.IService;
 
 namespace MyProject.Controllers
 {
@@ -10,12 +12,18 @@ namespace MyProject.Controllers
 
         private readonly ISubsystemService _subsystemService;
 
+        private readonly IParametersService _parametersService;
+
+        private readonly IConnectionService _connectionService;
+
         public SubsystemEntitiesController(IEquipmentService equipmentService,
             IParametersService parametersService, ISampleService sampleService,
-            IUnityService unityService, IPlantService plantService, ISubsystemService subsystemService, ISystemService systemService)
-            : base(equipmentService, parametersService, sampleService, unityService, plantService, subsystemService, systemService)
+            IUnityService unityService, IPlantService plantService, ISubsystemService subsystemService, ISystemService systemService, IConnectionService connectionService)
+            : base(equipmentService, parametersService, sampleService, unityService, plantService, subsystemService, systemService, connectionService)
         {
             _subsystemService = subsystemService;
+            _parametersService = parametersService;
+            _connectionService = connectionService;
         }
 
         // GET: SubsystemEntity
@@ -25,21 +33,32 @@ namespace MyProject.Controllers
         }
 
         // GET: SubsystemEntity/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
+            var parametersList = await _parametersService.GetAllAsync();
+
+            // Передаем список параметров в представление
+            ViewBag.ParametersList = new SelectList(parametersList, "Id", "Name");
             return View();
         }
 
         // POST: SubsystemEntity/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(SubsystemEntity subsystemEntity)
+        public async Task<IActionResult> Create(SubsystemEntity subsystemEntity, List<int> parametersIds)
         {
             if (ModelState.IsValid)
             {
                 await _subsystemService.Create(subsystemEntity);
+                // Привязка выбранных параметров к системе
+                await _connectionService.AttachParametersToSubsystem(subsystemEntity.Id, parametersIds);
                 return RedirectToAction(nameof(Index));
             }
+
+            var parametersList = await _parametersService.GetAllAsync();
+
+            // Передаем список параметров в представление
+            ViewBag.ParametersList = new SelectList(parametersList, "Id", "Name");
             return View(subsystemEntity);
         }
 

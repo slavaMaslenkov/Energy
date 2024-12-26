@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using MyProject.Models;
+using MyProject.Models.IService;
 using System.Drawing;
 using System.Numerics;
 
@@ -25,9 +26,12 @@ namespace MyProject.Controllers
 
         private readonly ISystemService _systemService;
 
+        private readonly IConnectionService _connectionService;
+
         public BaseController(IEquipmentService equipmentService,
             IParametersService parametersService, ISampleService sampleService, 
-            IUnityService unityService, IPlantService plantService, ISubsystemService subsystemService, ISystemService systemService)
+            IUnityService unityService, IPlantService plantService, ISubsystemService subsystemService,
+            ISystemService systemService, IConnectionService connectionService)
         {
             _equipmentService = equipmentService;
             _parametersService = parametersService;
@@ -36,6 +40,7 @@ namespace MyProject.Controllers
             _plantService = plantService;
             _subsystemService = subsystemService;
             _systemService = systemService;
+            _connectionService = connectionService;
         }
 
         /// Метод необходим для выполнения базовой логики базового контроллера./>.

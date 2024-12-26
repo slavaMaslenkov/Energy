@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using MyProject.Models;
+using MyProject.Models.IService;
 
 namespace MyProject.Controllers
 {
@@ -15,8 +16,8 @@ namespace MyProject.Controllers
 
         public SampleEntitiesController(IEquipmentService equipmentService, 
             IParametersService parametersService, ISampleService sampleService, IUnityService unityService, 
-            IPlantService plantService, ISubsystemService subsystemService, ISystemService systemService) 
-            : base(equipmentService, parametersService, sampleService, unityService, plantService, subsystemService, systemService)
+            IPlantService plantService, ISubsystemService subsystemService, ISystemService systemService, IConnectionService connectionService) 
+            : base(equipmentService, parametersService, sampleService, unityService, plantService, subsystemService, systemService, connectionService)
         {
             _sampleService = sampleService;
             _equipmentService = equipmentService;

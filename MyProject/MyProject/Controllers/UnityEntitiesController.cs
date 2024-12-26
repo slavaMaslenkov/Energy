@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using MyProject.Models;
+using MyProject.Models.IService;
+using System.Reflection.Metadata;
 using System.Reflection.PortableExecutable;
 
 namespace MyProject.Controllers
@@ -21,10 +23,12 @@ namespace MyProject.Controllers
 
         private readonly IEquipmentService _equipmentService;
 
+        private readonly IConnectionService _connectionService;
+
         public UnityEntitiesController(IEquipmentService equipmentService,
             IParametersService parametersService, ISampleService sampleService, IUnityService unityService, 
-            IPlantService plantService, ISubsystemService subsystemService, ISystemService systemService)
-            : base(equipmentService, parametersService, sampleService, unityService, plantService, subsystemService, systemService)
+            IPlantService plantService, ISubsystemService subsystemService, ISystemService systemService, IConnectionService connectionService)
+            : base(equipmentService, parametersService, sampleService, unityService, plantService, subsystemService, systemService, connectionService)
         {
             _unityService = unityService;
             _parametersService = parametersService;
@@ -32,6 +36,7 @@ namespace MyProject.Controllers
             _subsystemService = subsystemService;
             _systemService = systemService;
             _equipmentService = equipmentService;
+            _connectionService = connectionService;
         }
 
         // GET: UnityEntities
@@ -63,20 +68,31 @@ namespace MyProject.Controllers
         // POST: UnityEntities/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(UnityEntity unityEntity, int equipmentId, int subsystemId)
+        public async Task<IActionResult> Create(UnityEntity unityEntity, int equipmentId, int subsystemId, int parameterId)
         {
             if (ModelState.IsValid)
             {
-                unityEntity.Sample.EquipmentID = equipmentId;
+                // Получаем ConnectionID из таблицы Connection на основе выбранных параметров
+                var connection = await _connectionService.GetConnectionBySubsystemAndParameterAsync(subsystemId, parameterId);
 
-                // Привязка выбранных систем к устройству
-                ///await _systemService.AttachParametersToSample(equipmentEntity.Id, subsystemIds);
+                if (connection == null)
+                {
+                    // Обработать случай, если связь не найдена (например, вернуться с ошибкой или уведомлением)
+                    ModelState.AddModelError(string.Empty, "Не удалось найти связь между подсистемой и параметром.");
+                    return View(unityEntity);
+                }
 
-                return RedirectToAction(nameof(DeviceUnity), new { deviceId = unityEntity.Sample.Equipment.Name });
+                // Устанавливаем найденное ConnectionID в unityEntity
+                unityEntity.ConnectionID = connection.Id;
+
+                // Создание новой сущности UnityEntity
+                await _unityService.Create(unityEntity);
+
+                // Перенаправление на другую страницу (например, устройство)
+                return RedirectToAction(nameof(DeviceUnity), new { deviceId = equipmentId });
             }
 
-
-            // Повторная загрузка списка оборудования при ошибке валидации
+            // Повторная загрузка списка при ошибке валидации
             var parametersList = await _parametersService.GetAllAsync();
             var sampleList = await _sampleService.GetAvailableAsync();
             var subsystemList = await _subsystemService.GetByEquipmentIdAsync(equipmentId);
@@ -88,24 +104,15 @@ namespace MyProject.Controllers
 
             return View(unityEntity);
         }
-
+        
         [HttpGet]
         public async Task<IActionResult> GetParametersBySubsystem(int subsystemId)
         {
-            // Получение всех параметров, связанных с выбранной подсистемой
-            var connections = await dbContext.Connections
-                .Include(c => c.Parameters)
-                .Where(c => c.SubsystemID == subsystemId)
-                .Select(c => new
-                {
-                    id = c.ParametersID,
-                    name = c.Parameters.Name
-                })
-                .ToListAsync();
+            var connectionList = await _connectionService.GetParametersBySubsystem(subsystemId);
 
-            return Json(connections);
+            return Json(connectionList);
         }
-
+        
         // POST: UnityEntities/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]

@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MyProject.Models;
+using MyProject.Models.IService;
 
 namespace MyProject.Controllers
 {
@@ -12,8 +13,8 @@ namespace MyProject.Controllers
 
         public PlantEntitiesController(IEquipmentService equipmentService,
             IParametersService parametersService, ISampleService sampleService, 
-            IUnityService unityService, IPlantService plantService, ISubsystemService subsystemService, ISystemService systemService)
-            : base(equipmentService, parametersService, sampleService, unityService, plantService, subsystemService, systemService)
+            IUnityService unityService, IPlantService plantService, ISubsystemService subsystemService, ISystemService systemService, IConnectionService connectionService)
+            : base(equipmentService, parametersService, sampleService, unityService, plantService, subsystemService, systemService, connectionService)
         {
             _plantService = plantService;
         }

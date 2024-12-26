@@ -3,6 +3,7 @@ using DataAccess.Postgres.Entity;
 using MyProject.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using MyProject.Models.IService;
 
 namespace MyProject.Controllers
 {
@@ -19,8 +20,8 @@ namespace MyProject.Controllers
 
         public EquipmentEntitiesController(IEquipmentService equipmentService, 
             IParametersService parametersService, ISampleService sampleService, IUnityService unityService, 
-            IPlantService plantService, ISubsystemService subsystemService, ISystemService systemService) 
-            : base(equipmentService, parametersService, sampleService, unityService, plantService, subsystemService, systemService) 
+            IPlantService plantService, ISubsystemService subsystemService, ISystemService systemService, IConnectionService connectionService) 
+            : base(equipmentService, parametersService, sampleService, unityService, plantService, subsystemService, systemService, connectionService) 
         {
             _equipmentService = equipmentService;
             _plantService = plantService;

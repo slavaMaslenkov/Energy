@@ -27,6 +27,13 @@
                 <input asp-for="Description" class="form-control" />
                 <span asp-validation-for="Description" class="text-danger"></span>
             </div>
+            <div class="form-group">
+                <label class="control-label">Выберите параметры</label>
+                @Html.ListBox("parametersIds",
+                         (SelectList)ViewBag.ParametersList,
+                         new { @class = "form-control", multiple = "multiple" })
+                <span class="text-danger"></span>
+            </div>
             <div class="form-group mt-2">
                 <input type="submit" value="Создать" class="btn btn-secondary d-inline-flex align-items-center text-dark" />
             </div>
