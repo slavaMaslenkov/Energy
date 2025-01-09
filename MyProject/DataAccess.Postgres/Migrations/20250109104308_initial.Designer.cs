@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace DataAccess.Postgres.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20241225145021_initial")]
+    [Migration("20250109104308_initial")]
     partial class initial
     {
         /// <inheritdoc />
@@ -283,6 +283,18 @@ namespace DataAccess.Postgres.Migrations
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Password")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("PersonName")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("PersonPatronymic")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("PersonSurname")
                         .IsRequired()
                         .HasColumnType("text");
 

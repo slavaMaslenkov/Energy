@@ -17,6 +17,12 @@ namespace DataAccess.Postgres.Entity
 
         public string Password { get; private set; } = string.Empty;
 
+        public string PersonName { get; set; } = string.Empty;
+
+        public string PersonSurname { get; set; } = string.Empty;
+
+        public string PersonPatronymic { get; set; } = string.Empty;
+
         public int RoleID { get; set; }
 
         public RoleEntity? Role { get; set; }

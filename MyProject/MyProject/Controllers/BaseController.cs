@@ -97,6 +97,35 @@ namespace MyProject.Controllers
 
             return Json(result);
         }
+
+        /// <summary>
+        /// Метод для получения характеристик пользователя.
+        /// </summary>
+        /// <returns>Характеристику пользователя.</returns>
+        [HttpGet]
+        public IActionResult UserProperties()
+        {
+            var user = HttpContext.User;
+
+            if (user == null || !user.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Login", "Auth");
+            }
+
+            // Извлекаем нужные данные из claims
+            var userName = user.Identity.Name; // Имя пользователя
+            var personName = user.FindFirst("PersonName")?.Value;
+            var personSurname = user.FindFirst("PersonSurname")?.Value;
+            var personPatronymic = user.FindFirst("PersonPatronymic")?.Value;
+
+            // Передаем данные в ViewBag
+            ViewBag.UserName = userName;
+            ViewBag.PersonName = personName;
+            ViewBag.PersonSurname = personSurname;
+            ViewBag.PersonPatronymic = personPatronymic;
+
+            return View();
+        }
         /*
         /// <summary>
         /// Метод для получения подсистем, связанных с устройством.

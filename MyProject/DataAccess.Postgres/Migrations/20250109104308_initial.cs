@@ -102,6 +102,9 @@ namespace DataAccess.Postgres.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     UserName = table.Column<string>(type: "text", nullable: false),
                     Password = table.Column<string>(type: "text", nullable: false),
+                    PersonName = table.Column<string>(type: "text", nullable: false),
+                    PersonSurname = table.Column<string>(type: "text", nullable: false),
+                    PersonPatronymic = table.Column<string>(type: "text", nullable: false),
                     RoleID = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>

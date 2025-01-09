@@ -35,12 +35,16 @@
                         </li>
                     </ul>
                     <ul class="navbar-nav">
-                        @if (User.Identity.IsAuthenticated)
-                        {
-                            <li class="nav-item">
-                                <a class="nav-link" asp-area="" asp-controller="Auth" asp-action="Logout">Выход</a>
-                            </li>
-                        }
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" id="userDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="bi bi-person" style="font-size: 24px;"></i> @ViewBag.UserName
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="userDropdown">
+                                <li><a class="dropdown-item" href="#">@ViewBag.PersonSurname @ViewBag.PersonName @ViewBag.PersonPatronymic</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item" href="/logout">Выход</a></li>
+                            </ul>
+                        </li>
                     </ul>
                 </div>
             </div>

@@ -41,7 +41,10 @@ namespace MyProject.Controllers
             var claims = new List<Claim>
             {
                 new Claim(ClaimsIdentity.DefaultNameClaimType, user.UserName),
-                new Claim(ClaimsIdentity.DefaultRoleClaimType, user.Role?.Name ?? "user")
+                new Claim(ClaimsIdentity.DefaultRoleClaimType, user.Role?.Name ?? "user"),
+                new Claim("PersonName", user.PersonName),
+                new Claim("PersonSurname", user.PersonSurname),
+                new Claim("PersonPatronymic", user.PersonPatronymic)
             };
 
             var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);

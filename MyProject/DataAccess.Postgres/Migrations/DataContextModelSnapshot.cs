@@ -283,6 +283,18 @@ namespace DataAccess.Postgres.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<string>("PersonName")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("PersonPatronymic")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("PersonSurname")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<int>("RoleID")
                         .HasColumnType("integer");
 
