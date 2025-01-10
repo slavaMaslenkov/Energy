@@ -39,8 +39,8 @@
                             <a class="nav-link dropdown-toggle" id="userDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 <i class="bi bi-person" style="font-size: 24px;"></i> @ViewBag.UserName
                             </a>
-                            <ul class="dropdown-menu" aria-labelledby="userDropdown">
-                                <li><a class="dropdown-item" href="#">@ViewBag.PersonSurname @ViewBag.PersonName @ViewBag.PersonPatronymic</a></li>
+                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                                <li class="dropdown-item">@ViewBag.PersonSurname @ViewBag.PersonName @ViewBag.PersonPatronymic</li>
                                 <li><hr class="dropdown-divider"></li>
                                 <li><a class="dropdown-item" href="/logout">Выход</a></li>
                             </ul>

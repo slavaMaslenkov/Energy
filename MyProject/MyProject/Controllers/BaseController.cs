@@ -48,6 +48,23 @@ namespace MyProject.Controllers
         [Authorize]
         public override async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
         {
+            var user = context.HttpContext.User;
+
+            if (user != null && user.Identity.IsAuthenticated)
+            {
+                // Извлекаем данные из claims
+                ViewBag.UserName = user.Identity.Name; // Имя пользователя
+                ViewBag.PersonName = user.FindFirst("PersonName")?.Value;
+                ViewBag.PersonSurname = user.FindFirst("PersonSurname")?.Value;
+                ViewBag.PersonPatronymic = user.FindFirst("PersonPatronymic")?.Value;
+            }
+            else
+            {
+                // Если пользователь не аутентифицирован, перенаправляем на страницу логина
+                context.Result = new RedirectToActionResult("Login", "Auth", null);
+                return;
+            }
+
             var plants = await _plantService.GetAllAsync();
             // Преобразуем данные в список SelectListItem
             var plantList = plants.Select(plant => new SelectListItem
@@ -57,6 +74,7 @@ namespace MyProject.Controllers
             }).ToList();
 
             ViewBag.Plants = plantList;
+
             await next();
         }
 
@@ -98,34 +116,7 @@ namespace MyProject.Controllers
             return Json(result);
         }
 
-        /// <summary>
-        /// Метод для получения характеристик пользователя.
-        /// </summary>
-        /// <returns>Характеристику пользователя.</returns>
-        [HttpGet]
-        public IActionResult UserProperties()
-        {
-            var user = HttpContext.User;
-
-            if (user == null || !user.Identity.IsAuthenticated)
-            {
-                return RedirectToAction("Login", "Auth");
-            }
-
-            // Извлекаем нужные данные из claims
-            var userName = user.Identity.Name; // Имя пользователя
-            var personName = user.FindFirst("PersonName")?.Value;
-            var personSurname = user.FindFirst("PersonSurname")?.Value;
-            var personPatronymic = user.FindFirst("PersonPatronymic")?.Value;
-
-            // Передаем данные в ViewBag
-            ViewBag.UserName = userName;
-            ViewBag.PersonName = personName;
-            ViewBag.PersonSurname = personSurname;
-            ViewBag.PersonPatronymic = personPatronymic;
-
-            return View();
-        }
+       
         /*
         /// <summary>
         /// Метод для получения подсистем, связанных с устройством.
