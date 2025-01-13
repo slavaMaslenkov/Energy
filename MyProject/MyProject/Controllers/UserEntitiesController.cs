@@ -5,6 +5,7 @@ using MyProject.Models.IService;
 using MyProject.Models;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Identity;
+using System.Security.Claims;
 
 namespace MyProject.Controllers
 {
@@ -136,15 +137,22 @@ namespace MyProject.Controllers
         }
 
         [HttpGet]
-        public IActionResult ValidateOldPassword(int userId)
+        public IActionResult ChangePassword()
         {
-            ViewBag.UserId = userId;
-            return View(userId);
+            return View();
         }
 
         [HttpPost]
-        public async Task<IActionResult> ValidateOldPassword(int userId, string oldPassword)
+        public async Task<IActionResult> ChangePassword(string oldPassword, string newPassword)
         {
+            // Получаем текущего пользователя из контекста
+            var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "0");
+
+            if (userId == 0)
+            {
+                return Unauthorized(); // Если пользователь не авторизован
+            }
+
             var user = await _userService.FindById(userId);
             if (user == null)
             {
@@ -152,8 +160,7 @@ namespace MyProject.Controllers
                 return View();
             }
 
-
-
+            // Проверяем старый пароль
             var isValid = await _userService.ValidatePasswordAsync(userId, oldPassword);
             if (!isValid)
             {
@@ -161,37 +168,10 @@ namespace MyProject.Controllers
                 return View();
             }
 
-            // Сохраняем успешное прохождение проверки
-            TempData["PasswordValidated"] = true; // Помечаем, что проверка пройдена
-            TempData["UserId"] = userId; // Сохраняем ID пользователя
-            return RedirectToAction("ChangePassword");
-        }
-
-        [HttpGet]
-        public IActionResult ChangePassword()
-        {
-            // Проверяем, был ли установлен флаг успешной проверки
-            if (TempData["PasswordValidated"] == null || !(bool)TempData["PasswordValidated"])
-            {
-                return RedirectToAction("ValidateOldPassword");
-            }
-
-            // Передаём ID пользователя в представление
-            ViewBag.UserId = TempData["UserId"];
-            return View();
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> ChangePassword(int userId, string newPassword)
-        {
-            var user = await _userService.FindById(userId);
-            if (user == null)
-            {
-                ModelState.AddModelError("", "Пользователь не найден.");
-                return View();
-            }
-
+            // Меняем пароль
             await _userService.ChangePasswordAsync(userId, newPassword);
+
+            // Перенаправляем пользователя
             TempData["SuccessMessage"] = "Пароль успешно изменён.";
             return RedirectToAction("MainPage", "Home");
         }

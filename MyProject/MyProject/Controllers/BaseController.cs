@@ -63,7 +63,6 @@ namespace MyProject.Controllers
                 ViewBag.PersonName = user.FindFirst("PersonName")?.Value;
                 ViewBag.PersonSurname = user.FindFirst("PersonSurname")?.Value;
                 ViewBag.PersonPatronymic = user.FindFirst("PersonPatronymic")?.Value;
-                ViewBag.UserId = user.FindFirst("Id")?.Value;
             }
             else
             {

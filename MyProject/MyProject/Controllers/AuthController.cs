@@ -52,6 +52,7 @@ namespace MyProject.Controllers
 
             var claims = new List<Claim>
             {
+                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
                 new Claim(ClaimsIdentity.DefaultNameClaimType, user.UserName),
                 new Claim(ClaimsIdentity.DefaultRoleClaimType, user.Role?.Name ?? "user"),
                 new Claim("PersonName", user.PersonName),

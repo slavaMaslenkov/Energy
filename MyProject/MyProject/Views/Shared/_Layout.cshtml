@@ -41,7 +41,7 @@
                             </a>
                             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
                                 <li class="dropdown-item">@ViewBag.PersonSurname @ViewBag.PersonName @ViewBag.PersonPatronymic</li>
-                                <li><a class="dropdown-item" asp-area="" asp-controller="UserEntities" asp-action="ValidateOldPassword" asp-route-userId=@ViewBag.UserId>Изменить пароль</a></li>
+                                <li><a class="dropdown-item" asp-area="" asp-controller="UserEntities" asp-action="ChangePassword">Изменить пароль</a></li>
                                 <li><a class="dropdown-item" asp-area="" asp-controller="Auth" asp-action="Logout">Выход</a></li>
                             </ul>
                         </li>
