@@ -19,6 +19,7 @@ namespace DataAccess.Postgres
             serviceCollection.AddScoped<ISystemRepository, SystemRepository>();
             serviceCollection.AddScoped<IUserRepository, UserRepository>();
             serviceCollection.AddScoped<IConnectionRepository, ConnectionRepository>();
+            serviceCollection.AddScoped<IRoleRepository, RoleRepository>();
             serviceCollection.AddDbContext<DataContext>(
             options =>
             {

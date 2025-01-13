@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
+using DataAccess.Postgres.Entity;
+using Microsoft.AspNetCore.Identity;
 
 namespace MyProject.Controllers
 {
@@ -30,9 +32,19 @@ namespace MyProject.Controllers
         public async Task<IActionResult> Login(string username, string password, string? returnUrl = null)
         {
             var user = (await _userRepository.GetAllAsync())
-                .FirstOrDefault(u => u.UserName == username && u.Password == password);
+                .FirstOrDefault(u => u.UserName == username);
 
             if (user == null)
+            {
+                ModelState.AddModelError("", "Неверное имя пользователя или пароль.");
+                return View();
+            }
+
+            // Проверяем хэш пароля
+            var passwordHasher = new PasswordHasher<UserEntity>();
+            var result = passwordHasher.VerifyHashedPassword(user, user.Password, password);
+
+            if (result != PasswordVerificationResult.Success)
             {
                 ModelState.AddModelError("", "Неверное имя пользователя или пароль.");
                 return View();

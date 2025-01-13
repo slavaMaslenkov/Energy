@@ -1,0 +1,61 @@
+﻿@model DataAccess.Postgres.Entity.UserEntity
+
+@{
+    ViewData["Title"] = "Создание пользователя";
+}
+
+<h1>Создание параметра</h1>
+
+<h4>Параметр</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="UserName" class="control-label"></label>
+                <input asp-for="UserName" class="form-control" />
+                <span asp-validation-for="UserName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Password" class="control-label"></label>
+                <input asp-for="Password" class="form-control" />
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PersonName" class="control-label"></label>
+                <input asp-for="PersonName" class="form-control" />
+                <span asp-validation-for="PersonName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PersonSurname" class="control-label"></label>
+                <input asp-for="PersonSurname" class="form-control" />
+                <span asp-validation-for="PersonSurname" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PersonPatronymic" class="control-label"></label>
+                <input asp-for="PersonPatronymic" class="form-control" />
+                <span asp-validation-for="PersonPatronymic" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="RoleID" class="control-label">Роль</label>
+                @Html.DropDownListFor(
+                         model => model.RoleID,
+                         (SelectList)ViewBag.RoleList,
+                         "Выберите роль",
+                         new { @class = "form-control" }
+                         )
+                <span asp-validation-for="RoleID" class="text-danger"></span>
+            </div>
+            <div class="form-group mt-2">
+                <input type="submit" value="Создать" class="btn btn-secondary d-inline-flex align-items-center text-dark" />
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

@@ -20,8 +20,10 @@ namespace MyProject.Controllers
 
         public EquipmentEntitiesController(IEquipmentService equipmentService, 
             IParametersService parametersService, ISampleService sampleService, IUnityService unityService, 
-            IPlantService plantService, ISubsystemService subsystemService, ISystemService systemService, IConnectionService connectionService) 
-            : base(equipmentService, parametersService, sampleService, unityService, plantService, subsystemService, systemService, connectionService) 
+            IPlantService plantService, ISubsystemService subsystemService, ISystemService systemService, 
+            IConnectionService connectionService, IUserService userService, IRoleService roleService) 
+            : base(equipmentService, parametersService, sampleService, unityService, plantService, 
+                  subsystemService, systemService, connectionService, userService, roleService) 
         {
             _equipmentService = equipmentService;
             _plantService = plantService;
@@ -78,7 +80,10 @@ namespace MyProject.Controllers
                 return NotFound();
             }
             var plantList = await _plantService.GetAllAsync();
+            var subsystemList = await _subsystemService.GetAllAsync();
+
             ViewBag.PlantList = new SelectList(plantList, "Id", "Name");
+            ViewBag.SubsystemList = new SelectList(subsystemList, "Id", "Name");
             return View(await _equipmentService.FindById(id));
         }
 
@@ -112,7 +117,10 @@ namespace MyProject.Controllers
                 return RedirectToAction(nameof(Index));
             }
             var plantList = await _plantService.GetAllAsync();
+            var subsystemList = await _subsystemService.GetAllAsync();
+
             ViewBag.PlantList = new SelectList(plantList, "Id", "Name");
+            ViewBag.SubsystemList = new SelectList(subsystemList, "Id", "Name");
             return View(equipmentEntity);
         }
         

@@ -26,6 +26,7 @@ namespace MyProject
             builder.Services.AddScoped<ISystemService, SystemService>();
             builder.Services.AddScoped<IUserService, UserService>();
             builder.Services.AddScoped<IConnectionService, ConnectionService>();
+            builder.Services.AddScoped<IRoleService, RoleService>();
 
 
             builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)

@@ -10,8 +10,10 @@ namespace MyProject.Controllers
     {
         public HomeController(IEquipmentService equipmentService, 
             IParametersService parametersService, ISampleService sampleService, IUnityService unityService, 
-            IPlantService plantService, ISubsystemService subsystemService, ISystemService systemService, IConnectionService connectionService) 
-            : base(equipmentService, parametersService, sampleService, unityService, plantService, subsystemService, systemService, connectionService) { }
+            IPlantService plantService, ISubsystemService subsystemService, ISystemService systemService, 
+            IConnectionService connectionService, IUserService userService, IRoleService roleService) 
+            : base(equipmentService, parametersService, sampleService, unityService, plantService, 
+                  subsystemService, systemService, connectionService, userService, roleService) { }
 
         [Authorize]
         public IActionResult MainPage()

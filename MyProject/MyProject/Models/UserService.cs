@@ -1,4 +1,5 @@
 ﻿using DataAccess.Postgres.Entity;
+using DataAccess.Postgres.Repositories;
 using DataAccess.Postgres.Repositories.IRepository;
 using MyProject.Models.IService;
 
@@ -23,6 +24,66 @@ namespace MyProject.Models
         public async Task<IEnumerable<UserEntity>> GetAllAsync()
         {
             return await userRepository.GetAllAsync();
+        }
+
+        /// <summary>
+        /// Метод удаляет экзмепляр класса ParametersEntity в БД./>.
+        /// <summary>
+        /// <param name="id">Имя объекта.</param>
+        public async Task DeleteConfirmed(int? id)
+        {
+            await userRepository.DeleteConfirmed(id);
+        }
+
+        /// <summary>
+        /// Метод получения возможности редактирования.
+        /// <summary>
+        /// <param name="id">Имя объекта.</param>
+        /// <returns>Экземпляр класса UserEntity/>.</returns>
+        public async Task<UserEntity> FindById(int? id)
+        {
+            return await userRepository.FindById(id);
+        }
+
+        /// <summary>
+        /// Метод редактирования экземпляра UserEntity.
+        /// <summary>
+        /// <param name="userEntity">Имя объекта.</param>
+        public async Task EditPost(UserEntity userEntity)
+        {
+            await userRepository.EditPost(userEntity);
+        }
+
+        /// <summary>
+        /// Метод проверки наличия экземпляра.
+        /// <summary>
+        /// <param name="id">Имя объекта.</param>
+        /// <returns>Булевое значение/>.</returns>
+        public bool UserEntityExists(int id)
+        {
+            return userRepository.UserEntityExists(id);
+        }
+
+        /// <summary>
+        /// Метод проверки пароля.
+        /// <summary>
+        /// <param name="userId">Имя объекта.</param>
+        /// <param name="oldPassword">Имя объекта.</param>
+        /// <returns>Булевое значение/>.</returns>
+        public Task<bool> ValidatePasswordAsync(int userId, string oldPassword)
+        {
+            return userRepository.ValidatePasswordAsync(userId, oldPassword);
+        }
+
+        /// <summary>
+        /// Метод обновления пароля.
+        /// <summary>
+        /// <param name="userId">ID пользователя.</param>
+        /// <param name="newPassword">Новый пароль.</param>
+        /// <returns>Булевое значение/>.</returns>
+        public Task ChangePasswordAsync(int userId, string newPassword)
+        {
+            return userRepository.ChangePasswordAsync(userId, newPassword);
         }
     }
 }

@@ -13,14 +13,18 @@ namespace DataAccess.Postgres.Entity
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
-        public string UserName { get; private set; } = string.Empty;
+        [Display(Name = "Логин")]
+        public string UserName { get; set; } = string.Empty;
 
-        public string Password { get; private set; } = string.Empty;
+        public string Password { get; set; } = string.Empty;
 
+        [Display(Name = "Имя")]
         public string PersonName { get; set; } = string.Empty;
 
+        [Display(Name = "Фамилия")]
         public string PersonSurname { get; set; } = string.Empty;
 
+        [Display(Name = "Отчество")]
         public string PersonPatronymic { get; set; } = string.Empty;
 
         public int RoleID { get; set; }

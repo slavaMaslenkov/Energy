@@ -105,3 +105,9 @@ footer {
     background-color: #029ACF; /* Синий фон при наведении */
     color: white; /* Белый текст при наведении */
 }
+
+/* Стили для элементов dropdown-menu */
+.dropdown-menu li.dropdown-item:hover {
+    background-color: #029ACF; /* Синий фон при наведении */
+    color: white; /* Белый текст при наведении */
+}

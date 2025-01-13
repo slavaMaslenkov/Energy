@@ -1,0 +1,87 @@
+﻿@model IEnumerable<DataAccess.Postgres.Entity.UserEntity>
+
+@{
+    ViewData["Title"] = "Пользователи";
+}
+
+<h1 class="d-flex justify-content-between align-items-center">
+    Параметры
+    <div>
+        <a class="btn btn-secondary d-inline-flex align-items-center text-dark me-2"
+           asp-action="Create" style="text-decoration: none;">
+            <i class="bi bi-plus-square me-2"></i> Добавить
+        </a>
+        <a id="delete-selected"
+           class="btn btn-info d-inline-flex align-items-center text-dark"
+           style="text-decoration: none;"
+           data-delete-action="@Url.Action("DeleteSelected", "UserEntities")">
+            <i class="bi bi-trash me-2"></i> Удалить
+        </a>
+    </div>
+</h1>
+<table class="table text-center">
+    <thead>
+        <tr>
+            <th>
+                <input type="checkbox" id="select-all" /> <!-- Чекбокс для выбора всех -->
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.UserName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PersonSurname)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PersonName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PersonPatronymic)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Role.Name)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    <input type="checkbox" class="select-item" value="@item.Id" /> <!-- Чекбокс для каждого устройства -->
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UserName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PersonName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PersonSurname)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PersonPatronymic)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Role.Name)
+                </td>
+                <td>
+                    <a class="text-dark" asp-controller="UserEntities" asp-action="Edit" asp-route-id="@item.Id" style="text-decoration: none;">
+                        <i class="bi bi-pen me-2" style="cursor: pointer;"></i>
+                    </a>
+                    <i class="bi bi-trash me-2 text-dark"
+                       style="cursor: pointer;"
+                       data-bs-toggle="modal"
+                       data-bs-target="#deleteModal"
+                       data-device-name="@item.UserName"
+                       data-delete-url="@Url.Action("Delete", "UserEntities", new { id = item.Id })">
+                    </i>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@Html.Partial("ModalDelete")
+
+<script src="~/js/ModalDelete.js?v=@DateTime.Now.Ticks"></script>

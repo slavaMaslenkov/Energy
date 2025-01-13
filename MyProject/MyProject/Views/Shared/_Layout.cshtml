@@ -31,18 +31,18 @@
                             <a class="nav-link" asp-area="" asp-controller="SampleEntities" asp-action="Index">Шаблоны</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Privacy">Настройка</a>
+                            <a class="nav-link" asp-area="" asp-controller="UserEntities" asp-action="Index">Пользователи</a>
                         </li>
                     </ul>
                     <ul class="navbar-nav">
                         <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" id="userDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <a class="nav-link dropdown-toggle" style="color:#000000A6" id="userDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 <i class="bi bi-person" style="font-size: 24px;"></i> @ViewBag.UserName
                             </a>
                             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
                                 <li class="dropdown-item">@ViewBag.PersonSurname @ViewBag.PersonName @ViewBag.PersonPatronymic</li>
-                                <li><hr class="dropdown-divider"></li>
-                                <li><a class="dropdown-item" href="/logout">Выход</a></li>
+                                <li><a class="dropdown-item" asp-area="" asp-controller="UserEntities" asp-action="ValidateOldPassword" asp-route-userId=@ViewBag.UserId>Изменить пароль</a></li>
+                                <li><a class="dropdown-item" asp-area="" asp-controller="Auth" asp-action="Logout">Выход</a></li>
                             </ul>
                         </li>
                     </ul>

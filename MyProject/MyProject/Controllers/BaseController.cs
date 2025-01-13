@@ -28,10 +28,14 @@ namespace MyProject.Controllers
 
         private readonly IConnectionService _connectionService;
 
+        private readonly IUserService _userService;
+
+        private readonly IRoleService _roleService;
+
         public BaseController(IEquipmentService equipmentService,
             IParametersService parametersService, ISampleService sampleService, 
             IUnityService unityService, IPlantService plantService, ISubsystemService subsystemService,
-            ISystemService systemService, IConnectionService connectionService)
+            ISystemService systemService, IConnectionService connectionService, IUserService userService, IRoleService roleService)
         {
             _equipmentService = equipmentService;
             _parametersService = parametersService;
@@ -41,6 +45,8 @@ namespace MyProject.Controllers
             _subsystemService = subsystemService;
             _systemService = systemService;
             _connectionService = connectionService;
+            _userService = userService;
+            _roleService = roleService;
         }
 
         /// Метод необходим для выполнения базовой логики базового контроллера./>.
@@ -57,6 +63,7 @@ namespace MyProject.Controllers
                 ViewBag.PersonName = user.FindFirst("PersonName")?.Value;
                 ViewBag.PersonSurname = user.FindFirst("PersonSurname")?.Value;
                 ViewBag.PersonPatronymic = user.FindFirst("PersonPatronymic")?.Value;
+                ViewBag.UserId = user.FindFirst("Id")?.Value;
             }
             else
             {
