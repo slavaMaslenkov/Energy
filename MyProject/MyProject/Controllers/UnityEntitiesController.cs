@@ -66,7 +66,7 @@ namespace MyProject.Controllers
         [HttpGet]
         public async Task<IActionResult> Create(int equipmentId)
         {
-            var roleList = await _roleService.GetAllAsync();
+            var roleList = await _roleService.GetAllAsyncWithoutAdmin();
             var sampleList = await _sampleService.GetByFilter(equipmentId);
             var subsystemList = await _systemService.GetAllByEquipment(equipmentId);
 
@@ -80,7 +80,7 @@ namespace MyProject.Controllers
         // POST: UnityEntities/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(UnityEntity unityEntity, int equipmentId, int subsystemId, int parameterId, List<int> roleIds)
+        public async Task<IActionResult> Create(UnityEntity unityEntity, int equipmentId, int subsystemId, int parameterId, int roleId)
         {
             if (ModelState.IsValid)
             {
@@ -102,7 +102,7 @@ namespace MyProject.Controllers
                 await _unityService.Create(unityEntity);
 
                 // Привязка выбранных ролей к параметру
-                await _rightService.AttachRoleToUnity(unityEntity.Id, roleIds);
+                await _rightService.AttachRoleToUnity(unityEntity.Id, roleId);
 
                 // Перенаправление на другую страницу (например, устройство)
                 return RedirectToAction(nameof(DeviceUnity), new { equipmentId });
@@ -112,7 +112,7 @@ namespace MyProject.Controllers
             var parametersList = await _parametersService.GetAllAsync();
             var sampleList = await _sampleService.GetAvailableAsync();
             var subsystemList = await _subsystemService.GetByEquipmentIdAsync(equipmentId);
-            var roleList = await _roleService.GetAllAsync();
+            var roleList = await _roleService.GetAllAsyncWithoutAdmin();
 
             ViewBag.ParametersList = new SelectList(parametersList, "Id", "Name");
             ViewBag.SampleList = new SelectList(sampleList, "Id", "Name");

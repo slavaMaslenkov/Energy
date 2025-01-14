@@ -12,7 +12,7 @@ namespace MyProject.Models
         ///<param name="unityId">Id объекта.</param>
         ///<param name="roleIds">Ids объекта.</param>
         /// <returns>Лист RightEntity/>.</returns>
-        public async Task AttachRoleToUnity(int unityId, List<int> roleIds)
+        public async Task AttachRoleToUnity(int unityId, int roleIds)
         {
             await rightRepository.AttachRoleToUnity(unityId, roleIds);
         }

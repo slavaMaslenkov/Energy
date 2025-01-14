@@ -14,5 +14,14 @@ namespace MyProject.Models
         {
             return await roleRepository.GetAllAsync();
         }
+
+        /// <summary>
+        /// Метод получает все роли из БД без Admin./>.
+        /// </summary>
+        /// <returns>Лист RoleEntity/>.</returns>
+        public async Task<IEnumerable<RoleEntity>> GetAllAsyncWithoutAdmin()
+        {
+            return await roleRepository.GetAllAsyncWithoutAdmin();
+        }
     }
 }

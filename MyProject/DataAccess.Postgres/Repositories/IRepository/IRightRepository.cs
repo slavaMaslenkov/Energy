@@ -14,6 +14,6 @@ namespace DataAccess.Postgres.Repositories.IRepository
         ///<param name="unityId">Id объекта.</param>
         ///<param name="roleIds">Ids объекта.</param>
         /// <returns>Лист RightEntity/>.</returns>
-        Task AttachRoleToUnity(int unityId, List<int> roleIds);
+        Task AttachRoleToUnity(int unityId, int roleIds);
     }
 }
