@@ -23,11 +23,10 @@ namespace DataAccess.Postgres.Entity
         [Display(Name = "Диапазон изменения")]
         public string? Range { get; set; }
 
-        [Display(Name = "Доступ к изменению")]
-        public string? Access { get; set; }
-
         public ConnectionEntity? Connection { get; set; }
 
         public SampleEntity? Sample { get; set; }
+
+        public ICollection<RightEntity>? Right { get; set; }
     }
 }

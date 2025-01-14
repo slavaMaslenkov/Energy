@@ -201,8 +201,7 @@ namespace DataAccess.Postgres.Migrations
                     ConnectionID = table.Column<int>(type: "integer", nullable: false),
                     SampleID = table.Column<int>(type: "integer", nullable: false),
                     Value = table.Column<string>(type: "text", nullable: true),
-                    Range = table.Column<string>(type: "text", nullable: true),
-                    Access = table.Column<string>(type: "text", nullable: true)
+                    Range = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -221,6 +220,32 @@ namespace DataAccess.Postgres.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Right",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    RoleID = table.Column<int>(type: "integer", nullable: false),
+                    UnityID = table.Column<int>(type: "integer", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Right", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Right_Role_RoleID",
+                        column: x => x.RoleID,
+                        principalTable: "Role",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Right_Unity_UnityID",
+                        column: x => x.UnityID,
+                        principalTable: "Unity",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.InsertData(
                 table: "Role",
                 columns: new[] { "Id", "Name" },
@@ -231,6 +256,11 @@ namespace DataAccess.Postgres.Migrations
                     { 3, "User2" },
                     { 4, "User3" }
                 });
+
+            migrationBuilder.InsertData(
+                table: "User",
+                columns: new[] { "Id", "Password", "PersonName", "PersonPatronymic", "PersonSurname", "RoleID", "UserName" },
+                values: new object[] { 1, "AQAAAAIAAYagAAAAEOL4297lq6jFgYVg203ye/XTsxGFO33lSqtKkYA6bsfzKoqFnVwByGlWTat7e6FZkA==", "", "", "", 1, "admin" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Connection_ParametersID",
@@ -246,6 +276,16 @@ namespace DataAccess.Postgres.Migrations
                 name: "IX_Equipment_PlantID",
                 table: "Equipment",
                 column: "PlantID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Right_RoleID",
+                table: "Right",
+                column: "RoleID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Right_UnityID",
+                table: "Right",
+                column: "UnityID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Sample_EquipmentID",
@@ -282,22 +322,25 @@ namespace DataAccess.Postgres.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "Right");
+
+            migrationBuilder.DropTable(
                 name: "System");
+
+            migrationBuilder.DropTable(
+                name: "User");
 
             migrationBuilder.DropTable(
                 name: "Unity");
 
             migrationBuilder.DropTable(
-                name: "User");
+                name: "Role");
 
             migrationBuilder.DropTable(
                 name: "Connection");
 
             migrationBuilder.DropTable(
                 name: "Sample");
-
-            migrationBuilder.DropTable(
-                name: "Role");
 
             migrationBuilder.DropTable(
                 name: "Parameters");

@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace DataAccess.Postgres.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20250113073906_initial")]
+    [Migration("20250114093817_initial")]
     partial class initial
     {
         /// <inheritdoc />
@@ -125,6 +125,29 @@ namespace DataAccess.Postgres.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Plant");
+                });
+
+            modelBuilder.Entity("DataAccess.Postgres.Entity.RightEntity", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("RoleID")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("UnityID")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("RoleID");
+
+                    b.HasIndex("UnityID");
+
+                    b.ToTable("Right");
                 });
 
             modelBuilder.Entity("DataAccess.Postgres.Entity.RoleEntity", b =>
@@ -250,9 +273,6 @@ namespace DataAccess.Postgres.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("Access")
-                        .HasColumnType("text");
-
                     b.Property<int>("ConnectionID")
                         .HasColumnType("integer");
 
@@ -310,6 +330,18 @@ namespace DataAccess.Postgres.Migrations
                     b.HasIndex("RoleID");
 
                     b.ToTable("User");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Password = "AQAAAAIAAYagAAAAEOL4297lq6jFgYVg203ye/XTsxGFO33lSqtKkYA6bsfzKoqFnVwByGlWTat7e6FZkA==",
+                            PersonName = "",
+                            PersonPatronymic = "",
+                            PersonSurname = "",
+                            RoleID = 1,
+                            UserName = "admin"
+                        });
                 });
 
             modelBuilder.Entity("DataAccess.Postgres.Entity.ConnectionEntity", b =>
@@ -340,6 +372,25 @@ namespace DataAccess.Postgres.Migrations
                         .IsRequired();
 
                     b.Navigation("Plant");
+                });
+
+            modelBuilder.Entity("DataAccess.Postgres.Entity.RightEntity", b =>
+                {
+                    b.HasOne("DataAccess.Postgres.Entity.RoleEntity", "Role")
+                        .WithMany("Right")
+                        .HasForeignKey("RoleID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("DataAccess.Postgres.Entity.UnityEntity", "Unity")
+                        .WithMany("Right")
+                        .HasForeignKey("UnityID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Role");
+
+                    b.Navigation("Unity");
                 });
 
             modelBuilder.Entity("DataAccess.Postgres.Entity.SampleEntity", b =>
@@ -426,6 +477,8 @@ namespace DataAccess.Postgres.Migrations
 
             modelBuilder.Entity("DataAccess.Postgres.Entity.RoleEntity", b =>
                 {
+                    b.Navigation("Right");
+
                     b.Navigation("User");
                 });
 
@@ -439,6 +492,11 @@ namespace DataAccess.Postgres.Migrations
                     b.Navigation("Connection");
 
                     b.Navigation("System");
+                });
+
+            modelBuilder.Entity("DataAccess.Postgres.Entity.UnityEntity", b =>
+                {
+                    b.Navigation("Right");
                 });
 #pragma warning restore 612, 618
         }

@@ -11,9 +11,9 @@ namespace MyProject.Controllers
         public HomeController(IEquipmentService equipmentService, 
             IParametersService parametersService, ISampleService sampleService, IUnityService unityService, 
             IPlantService plantService, ISubsystemService subsystemService, ISystemService systemService, 
-            IConnectionService connectionService, IUserService userService, IRoleService roleService) 
+            IConnectionService connectionService, IUserService userService, IRoleService roleService, IRightService rightService) 
             : base(equipmentService, parametersService, sampleService, unityService, plantService, 
-                  subsystemService, systemService, connectionService, userService, roleService) { }
+                  subsystemService, systemService, connectionService, userService, roleService, rightService) { }
 
         [Authorize]
         public IActionResult MainPage()

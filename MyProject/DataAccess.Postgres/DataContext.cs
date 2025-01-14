@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using DataAccess.Postgres.Entity;
 using DataAccess.Postgres.Configurations;
+using Microsoft.AspNetCore.Identity;
 
 
 namespace DataAccess.Postgres
@@ -29,6 +30,8 @@ namespace DataAccess.Postgres
 
         public DbSet<RoleEntity> Role { get; set; }
 
+        public DbSet<RightEntity> Right { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -42,7 +45,18 @@ namespace DataAccess.Postgres
             modelBuilder.ApplyConfiguration(new ConnectionConfiguration());
             modelBuilder.ApplyConfiguration(new UserConfiguration());
             modelBuilder.ApplyConfiguration(new RoleConfiguration());
+            modelBuilder.ApplyConfiguration(new RightConfiguration());
 
+            var passwordHasher = new PasswordHasher<UserEntity>();
+            var adminPasswordHash = passwordHasher.HashPassword(null, "0000");
+
+            modelBuilder.Entity<UserEntity>().HasData(new UserEntity
+            {
+                Id = 1,
+                UserName = "admin",
+                Password = adminPasswordHash,
+                RoleID = 1
+            });
 
             base.OnModelCreating(modelBuilder);
         }

@@ -32,8 +32,9 @@
                     <th style="width: 15%;">@Html.DisplayNameFor(model => model.Sample.Name)</th>
                     <th style="width: 15%;">@Html.DisplayNameFor(model => model.Connection.Subsystem.Name)</th>
                     <th style="width: 20%;">@Html.DisplayNameFor(model => model.Connection.Parameters.Name)</th>
-                    <th style="width: 30%;">@Html.DisplayNameFor(model => model.Value)</th>
+                    <th style="width: 20%;">@Html.DisplayNameFor(model => model.Value)</th>
                     <th style="width: 5%;">@Html.DisplayNameFor(model => model.Connection.Parameters.Measure)</th>
+                    <th style="width: 10%;">Доступ</th>
                     <th style="width: 10%;"></th>
                 </tr>
             </thead>
@@ -60,6 +61,17 @@
                             }
                         </td>
                         <td>@Html.DisplayFor(modelItem => item.Connection.Parameters.Measure)</td>
+                        <td>
+                            @if (item.Right != null && item.Right.Any())
+                            {
+                                <ul>
+                                    @foreach (var right in item.Right.Where(r => r.Role.Name != "Admin"))
+                                    {
+                                        <li>@right.Role.Name</li>
+                                    }
+                                </ul>
+                            }
+                        </td>
                         <td>
                             <i class="bi bi-trash me-2 text-dark"
                                style="cursor: pointer;"

@@ -25,12 +25,16 @@ namespace MyProject.Controllers
 
         private readonly IConnectionService _connectionService;
 
+        private readonly IRoleService _roleService;
+
+        private readonly IRightService _rightService;
+
         public UnityEntitiesController(IEquipmentService equipmentService,
             IParametersService parametersService, ISampleService sampleService, IUnityService unityService, 
             IPlantService plantService, ISubsystemService subsystemService, ISystemService systemService, 
-            IConnectionService connectionService, IUserService userService, IRoleService roleService)
+            IConnectionService connectionService, IUserService userService, IRoleService roleService, IRightService rightService)
             : base(equipmentService, parametersService, sampleService, unityService, plantService, 
-                  subsystemService, systemService, connectionService, userService, roleService)
+                  subsystemService, systemService, connectionService, userService, roleService, rightService)
         {
             _unityService = unityService;
             _parametersService = parametersService;
@@ -39,6 +43,8 @@ namespace MyProject.Controllers
             _systemService = systemService;
             _equipmentService = equipmentService;
             _connectionService = connectionService;
+            _roleService = roleService;
+            _rightService = rightService;
         }
 
         // GET: UnityEntities
@@ -47,10 +53,12 @@ namespace MyProject.Controllers
             var parametersList = await _parametersService.GetAllAsync();
             var sampleList = await _sampleService.GetAllAsync();
             var subsystemList = await _subsystemService.GetAllAsync();
+            var roleList = await _roleService.GetAllAsync();
 
             ViewBag.ParametersList = new SelectList(parametersList, "Id", "Name");
             ViewBag.SampleList = new SelectList(sampleList, "Id", "Name");
             ViewBag.SubsystemList = new SelectList(subsystemList, "Id", "Name");
+            ViewBag.RoleList = new SelectList(roleList, "Id", "Name");
             return View(await _unityService.GetAllAsync());
         }
 
@@ -58,9 +66,11 @@ namespace MyProject.Controllers
         [HttpGet]
         public async Task<IActionResult> Create(int equipmentId)
         {
+            var roleList = await _roleService.GetAllAsync();
             var sampleList = await _sampleService.GetByFilter(equipmentId);
             var subsystemList = await _systemService.GetAllByEquipment(equipmentId);
 
+            ViewBag.RoleList = new SelectList(roleList, "Id", "Name");
             ViewBag.SampleList = new SelectList(sampleList, "Id", "Name");
             ViewBag.SubsystemList = new SelectList(subsystemList.Select(s => s.Subsystem), "Id", "Name");
             ViewBag.DeviceId = equipmentId;
@@ -70,7 +80,7 @@ namespace MyProject.Controllers
         // POST: UnityEntities/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(UnityEntity unityEntity, int equipmentId, int subsystemId, int parameterId)
+        public async Task<IActionResult> Create(UnityEntity unityEntity, int equipmentId, int subsystemId, int parameterId, List<int> roleIds)
         {
             if (ModelState.IsValid)
             {
@@ -91,6 +101,9 @@ namespace MyProject.Controllers
                 // Создание новой сущности UnityEntity
                 await _unityService.Create(unityEntity);
 
+                // Привязка выбранных ролей к параметру
+                await _rightService.AttachRoleToUnity(unityEntity.Id, roleIds);
+
                 // Перенаправление на другую страницу (например, устройство)
                 return RedirectToAction(nameof(DeviceUnity), new { equipmentId });
             }
@@ -99,10 +112,12 @@ namespace MyProject.Controllers
             var parametersList = await _parametersService.GetAllAsync();
             var sampleList = await _sampleService.GetAvailableAsync();
             var subsystemList = await _subsystemService.GetByEquipmentIdAsync(equipmentId);
+            var roleList = await _roleService.GetAllAsync();
 
             ViewBag.ParametersList = new SelectList(parametersList, "Id", "Name");
             ViewBag.SampleList = new SelectList(sampleList, "Id", "Name");
             ViewBag.SubsystemList = new SelectList(subsystemList, "Id", "Name");
+            ViewBag.RoleList = new SelectList(roleList, "Id", "Name");
             ViewBag.EquipmentId = equipmentId;
 
             return View(unityEntity);

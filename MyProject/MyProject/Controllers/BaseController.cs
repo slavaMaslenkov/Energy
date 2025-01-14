@@ -33,10 +33,14 @@ namespace MyProject.Controllers
 
         private readonly IRoleService _roleService;
 
+        private readonly IRightService _rightService;
+
+
+
         public BaseController(IEquipmentService equipmentService,
             IParametersService parametersService, ISampleService sampleService, 
             IUnityService unityService, IPlantService plantService, ISubsystemService subsystemService,
-            ISystemService systemService, IConnectionService connectionService, IUserService userService, IRoleService roleService)
+            ISystemService systemService, IConnectionService connectionService, IUserService userService, IRoleService roleService, IRightService rightService)
         {
             _equipmentService = equipmentService;
             _parametersService = parametersService;
@@ -48,6 +52,7 @@ namespace MyProject.Controllers
             _connectionService = connectionService;
             _userService = userService;
             _roleService = roleService;
+            _rightService = rightService;
         }
 
         /// Метод необходим для выполнения базовой логики базового контроллера./>.

@@ -15,7 +15,9 @@ namespace DataAccess.Postgres.Repositories
         {
             return await dbContext.Unity
                .Include(u => u.Connection)                        // Связь с Connection
-               .ThenInclude(c => c.Subsystem)                    // Связь Connection -> Subsystem
+               .ThenInclude(c => c.Subsystem)
+               .Include(u => u.Right)
+               .ThenInclude(s => s.Role)
                .Include(u => u.Connection.Parameters)            // Связь Connection -> Parameters
                .Include(u => u.Sample)                           // Связь Unity -> Sample
                .ToListAsync();
@@ -31,36 +33,6 @@ namespace DataAccess.Postgres.Repositories
             await dbContext.Unity.AddAsync(unityEntity);
             await dbContext.SaveChangesAsync();
             return unityEntity;
-        }
-
-        ///////////////////////////////////////////////////////////////////////////////
-        /// <summary>
-        /// Метод добавляет экзмепляр класса UnityEntity в БД с привязкой с Subsystem./>.
-        /// <summary>
-        /// <param name="unityEntity">Имя объекта.</param>
-        /// <param name="subsystemId">Имя объекта.</param>
-        /// <returns>Лист шаблонов устройства/>.</returns>
-        public async Task CreateWithSubsystem(UnityEntity unityEntity, int subsystemId)
-        {
-            // Находим связь между системой и подсистемой, которая привязана к оборудованию
-            var systemEntity = await dbContext.System
-                .FirstOrDefaultAsync(system => system.SubsystemID == subsystemId &&
-                                                system.EquipmentID == unityEntity.Sample.EquipmentID);
-
-            if (systemEntity == null)
-            {
-                throw new Exception("Система для указанной подсистемы не найдена.");
-            }
-
-            // Привязываем unityEntity к найденной системе
-            // Записываем ID системы в сущность UnityEntity
-            unityEntity.ConnectionID = systemEntity.Id; // Устанавливаем правильную связь через ConnectionEntity (если необходимо)
-
-            // Также, если нужно, можно установить другие связи через `Sample` или `Connection`, если это требуется.
-
-            // Добавление unityEntity в контекст базы данных
-            dbContext.Unity.Add(unityEntity);
-            await dbContext.SaveChangesAsync();
         }
 
         /// <summary>
@@ -103,6 +75,8 @@ namespace DataAccess.Postgres.Repositories
 
             var query = dbContext.Unity
                   .AsNoTracking() // Не отслеживаем изменения
+                  .Include(u => u.Right) // 
+                  .ThenInclude(s => s.Role)
                   .Include(u => u.Sample) // Включаем данные из Sample
                   .ThenInclude(s => s.Equipment) // Включаем данные из Equipment через Sample
                   .Include(u => u.Connection)
