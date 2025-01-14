@@ -85,15 +85,20 @@ namespace DataAccess.Postgres.Repositories
         /// <summary>
         /// Метод проверки пароля.
         /// <summary>
-        /// <param name="userId">Имя объекта.</param>
-        /// <param name="oldPassword">Имя объекта.</param>
+        /// <param name="userId">ID пользователя.</param>
+        /// <param name="oldPassword">Старый пароль.</param>
+        /// <param name="newPassword">Новый пароль.</param>
         /// <returns>Булевое значение/>.</returns>
-        public async Task<bool> ValidatePasswordAsync(int userId, string oldPassword)
+        public async Task<bool> ValidatePasswordAsync(int userId, string oldPassword, string newPassword)
         {
             var passwordHasher = new PasswordHasher<UserEntity>();
             var userEntity = await dbContext.User.FindAsync(userId);
             // Проверяем хэш пароля
             var verificationResult = passwordHasher.VerifyHashedPassword(userEntity, userEntity.Password, oldPassword);
+            if (passwordHasher.VerifyHashedPassword(userEntity, userEntity.Password, newPassword) == PasswordVerificationResult.Success)
+            {
+                return verificationResult == PasswordVerificationResult.Failed;
+            }
 
             return verificationResult == PasswordVerificationResult.Success;
         }

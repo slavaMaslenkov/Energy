@@ -67,12 +67,13 @@ namespace MyProject.Models
         /// <summary>
         /// Метод проверки пароля.
         /// <summary>
-        /// <param name="userId">Имя объекта.</param>
-        /// <param name="oldPassword">Имя объекта.</param>
+        /// <param name="userId">ID пользователя.</param>
+        /// <param name="oldPassword">Старый пароль.</param>
+        /// <param name="newPassword">Новый пароль.</param>
         /// <returns>Булевое значение/>.</returns>
-        public Task<bool> ValidatePasswordAsync(int userId, string oldPassword)
+        public Task<bool> ValidatePasswordAsync(int userId, string oldPassword, string newPassword)
         {
-            return userRepository.ValidatePasswordAsync(userId, oldPassword);
+            return userRepository.ValidatePasswordAsync(userId, oldPassword, newPassword);
         }
 
         /// <summary>

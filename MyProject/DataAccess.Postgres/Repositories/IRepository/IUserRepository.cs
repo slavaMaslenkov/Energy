@@ -49,8 +49,9 @@ namespace DataAccess.Postgres.Repositories.IRepository
         /// <summary>
         /// <param name="userId">ID пользователя.</param>
         /// <param name="oldPassword">Старый пароль.</param>
+        /// <param name="newPassword">Новый пароль.</param>
         /// <returns>Булевое значение/>.</returns>
-        Task<bool> ValidatePasswordAsync(int userId, string oldPassword);
+        Task<bool> ValidatePasswordAsync(int userId, string oldPassword, string newPassword);
 
         /// <summary>
         /// Метод обновления пароля.

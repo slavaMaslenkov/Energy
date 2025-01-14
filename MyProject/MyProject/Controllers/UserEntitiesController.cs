@@ -137,16 +137,17 @@ namespace MyProject.Controllers
         }
 
         [HttpGet]
-        public IActionResult ChangePassword()
+        public IActionResult ChangePassword(int userId)
         {
+            ViewBag.UserId = userId;
+
             return View();
         }
 
         [HttpPost]
-        public async Task<IActionResult> ChangePassword(string oldPassword, string newPassword)
+        public async Task<IActionResult> ChangePassword(int userId, string oldPassword, string newPassword)
         {
             // Получаем текущего пользователя из контекста
-            var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "0");
 
             if (userId == 0)
             {
@@ -161,19 +162,19 @@ namespace MyProject.Controllers
             }
 
             // Проверяем старый пароль
-            var isValid = await _userService.ValidatePasswordAsync(userId, oldPassword);
+            var isValid = await _userService.ValidatePasswordAsync(userId, oldPassword, newPassword);
             if (!isValid)
             {
-                ModelState.AddModelError("", "Старый пароль неверен.");
+                ViewBag.PasswordChanged = false;
                 return View();
             }
 
             // Меняем пароль
             await _userService.ChangePasswordAsync(userId, newPassword);
 
-            // Перенаправляем пользователя
-            TempData["SuccessMessage"] = "Пароль успешно изменён.";
-            return RedirectToAction("MainPage", "Home");
+            ViewBag.PasswordChanged = true;
+
+            return View();
         }
     }
 }

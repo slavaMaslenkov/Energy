@@ -7,6 +7,7 @@ using MyProject.Models;
 using MyProject.Models.IService;
 using System.Drawing;
 using System.Numerics;
+using System.Security.Claims;
 
 namespace MyProject.Controllers
 {
@@ -63,6 +64,7 @@ namespace MyProject.Controllers
                 ViewBag.PersonName = user.FindFirst("PersonName")?.Value;
                 ViewBag.PersonSurname = user.FindFirst("PersonSurname")?.Value;
                 ViewBag.PersonPatronymic = user.FindFirst("PersonPatronymic")?.Value;
+                ViewBag.UserId = int.Parse(user.FindFirst(ClaimTypes.NameIdentifier)?.Value);
             }
             else
             {
