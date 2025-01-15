@@ -53,10 +53,10 @@ document.addEventListener('DOMContentLoaded', function () {
         const modalDeviceName = deleteModal.querySelector('#data');
         modalDeviceName.textContent = data;
 
-        let globalDeviceName = document.querySelector('input[name="DeviceName"]') ? document.querySelector('input[name="DeviceName"]').value : null;
+        let globalDeviceName = document.querySelector('input[name="equipmentId"]') ? document.querySelector('input[name="equipmentId"]').value : null;
         if (globalDeviceName) {
             const deleteForm = deleteModal.querySelector('#deleteForm');
-            deleteForm.action = `${deleteUrl}&deviceName=${encodeURIComponent(globalDeviceName)}`;
+            deleteForm.action = `${deleteUrl}&equipmentId=${encodeURIComponent(globalDeviceName)}`;
         } else {
             const deleteForm = deleteModal.querySelector('#deleteForm');
             deleteForm.action = `${deleteUrl}`;

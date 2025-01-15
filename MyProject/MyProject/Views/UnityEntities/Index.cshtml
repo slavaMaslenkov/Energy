@@ -1,4 +1,5 @@
-﻿@model IEnumerable<DataAccess.Postgres.Entity.UnityEntity>
+﻿@using System.Security.Claims
+@model IEnumerable<DataAccess.Postgres.Entity.UnityEntity>
 
 @{
     ViewData["Title"] = "Параметры устройства";
@@ -22,7 +23,7 @@
     </h1>
 </div>
 
-<form asp-action="UpdateValues" method="post">
+<form asp-action="UpdateValues" asp-route-id=@ViewBag.DeviceId method="post">
     <input type="hidden" name="DeviceId" value="@ViewBag.DeviceId" />
     <div class="table-container">
         <table class="table text-center" style="width: 100%; table-layout: fixed;">
@@ -47,11 +48,16 @@
                         <td>@Html.DisplayFor(modelItem => item.Connection.Subsystem.Name)</td>
                         <td>@Html.DisplayFor(modelItem => item.Connection.Parameters.Name)</td>
                         <td>
-                            @if (item.Sample.Status)
-                            {
-                                @Html.DisplayFor(modelItem => item.Value)
+                            @{
+                                // Проверяем, является ли текущий пользователь администратором
+                                var isAdmin = User.Claims.Any(c => c.Type == ClaimTypes.Role && c.Value == "Admin");
+
+                                // Проверяем, может ли текущий пользователь (не администратор) изменять значение
+                                var userRoles = User.Claims.Where(c => c.Type == ClaimTypes.Role).Select(c => c.Value);
+                                var allowedRoles = item.Right?.Where(r => r.Role.Name != "Admin").Select(r => r.Role.Name) ?? Enumerable.Empty<string>();
+                                bool canEdit = (isAdmin && !item.Sample.Status) || (!item.Sample.Status && userRoles.Any(role => allowedRoles.Contains(role)));
                             }
-                            else
+                            @if (canEdit)
                             {
                                 <input type="text"
                                        name="Values[@item.Id]"
@@ -59,17 +65,19 @@
                                        class="form-control text-center mx-auto"
                                        style="width: 200px;" />
                             }
+                            else
+                            {
+                                @Html.DisplayFor(modelItem => item.Value)
+                            }
                         </td>
                         <td>@Html.DisplayFor(modelItem => item.Connection.Parameters.Measure)</td>
                         <td>
                             @if (item.Right != null && item.Right.Any())
                             {
-                                <ul>
-                                    @foreach (var right in item.Right.Where(r => r.Role.Name != "Admin"))
-                                    {
-                                        <li>@right.Role.Name</li>
-                                    }
-                                </ul>
+                                @foreach (var right in item.Right.Where(r => r.Role.Name != "Admin"))
+                                {
+                                    @right.Role.Name
+                                }
                             }
                         </td>
                         <td>
@@ -78,7 +86,7 @@
                                data-bs-toggle="modal"
                                data-bs-target="#deleteModal"
                                data-device-name="@item.Connection.Parameters.Name"
-                               data-delete-url="@Url.Action("Delete", "UnityEntities", new { id = item.Id, deviceName = ViewBag.DeviceId })">
+                               data-delete-url="@Url.Action("Delete", "UnityEntities", new { id = item.Id, equipmentId = ViewBag.DeviceId })">
                             </i>
                         </td>
                     </tr>

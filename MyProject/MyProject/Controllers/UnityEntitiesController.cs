@@ -134,10 +134,10 @@ namespace MyProject.Controllers
         // POST: UnityEntities/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirmed(int id, int equipmentId)
         {
             await _unityService.DeleteConfirmed(id);
-            return RedirectToAction(nameof(DeviceUnity), new { id });
+            return RedirectToAction(nameof(DeviceUnity), new { equipmentId });
         }
 
         [HttpPost]
@@ -204,8 +204,8 @@ namespace MyProject.Controllers
         {
             await _unityService.UpdateValues(values);
             var unityData = await _unityService.GetByFilter(id);
-            ViewBag.DeviceId = id;
-            return View("Index", unityData);
+            ///ViewBag.DeviceId = id;
+            return RedirectToAction(nameof(DeviceUnity), new { id });
         }
 
     }
