@@ -6,6 +6,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const massDeleteModal = document.getElementById('massDeleteModal');
     const deleteModal = document.getElementById('deleteModal');
     const selectAllCheckbox = document.getElementById('select-all');
+    
 
     selectAllCheckbox.addEventListener('change', function () {
         const checkboxes = document.querySelectorAll('.select-item');
@@ -24,11 +25,12 @@ document.addEventListener('DOMContentLoaded', function () {
 
         if (selectedIds.length > 0) {
             const deleteAction = deleteSelectedButton.getAttribute('data-delete-action');
-            const deviceNameElement = document.querySelector('input[name="DeviceName"]');
-            let deviceName = deviceNameElement ? deviceNameElement.value : null;
+            const deviceNameElement = document.getElementById('delete-selected').getAttribute('data-equipmentId');
+            
+            let deviceName = deviceNameElement ? deviceNameElement : null;
             // Обновляем action формы с передачей выбранных ID и DeviceName
             if (deviceName) {
-                deleteSelectedForm.action = `${deleteAction}?ids=${selectedIds.join(',')}&deviceName=${encodeURIComponent(deviceName)}`;
+                deleteSelectedForm.action = `${deleteAction}?ids=${selectedIds.join(',')}&equipmentId=${encodeURIComponent(deviceName)}`;
             } else {
                 deleteSelectedForm.action = `${deleteAction}?ids=${selectedIds.join(',')}`;
             }

@@ -141,11 +141,11 @@ namespace MyProject.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> DeleteSelected(string ids, int deviceId)
+        public async Task<IActionResult> DeleteSelected(string ids, int equipmentId)
         {
             if (string.IsNullOrEmpty(ids))
             {
-                return RedirectToAction(nameof(DeviceUnity), new { deviceId });
+                return RedirectToAction(nameof(DeviceUnity), new { equipmentId });
             }
 
             try
@@ -165,7 +165,7 @@ namespace MyProject.Controllers
                     }
                 }
 
-                return RedirectToAction(nameof(DeviceUnity), new { deviceId });
+                return RedirectToAction(nameof(DeviceUnity), new { equipmentId });
             }
             catch (Exception ex)
             {

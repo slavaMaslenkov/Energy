@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace DataAccess.Postgres.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20250114093817_initial")]
-    partial class initial
+    [Migration("20250115134740_001")]
+    partial class _001
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -335,7 +335,7 @@ namespace DataAccess.Postgres.Migrations
                         new
                         {
                             Id = 1,
-                            Password = "AQAAAAIAAYagAAAAEOL4297lq6jFgYVg203ye/XTsxGFO33lSqtKkYA6bsfzKoqFnVwByGlWTat7e6FZkA==",
+                            Password = "AQAAAAIAAYagAAAAEP0Cx5CF3cdklGhGeFRxl4UEj5J6HPj6f5uqbUoQDLXt9Cs54DeKyRUOJf5ZqOM6+g==",
                             PersonName = "",
                             PersonPatronymic = "",
                             PersonSurname = "",

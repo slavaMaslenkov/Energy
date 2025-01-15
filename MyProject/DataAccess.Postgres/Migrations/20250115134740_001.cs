@@ -9,7 +9,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace DataAccess.Postgres.Migrations
 {
     /// <inheritdoc />
-    public partial class initial : Migration
+    public partial class _001 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -260,7 +260,7 @@ namespace DataAccess.Postgres.Migrations
             migrationBuilder.InsertData(
                 table: "User",
                 columns: new[] { "Id", "Password", "PersonName", "PersonPatronymic", "PersonSurname", "RoleID", "UserName" },
-                values: new object[] { 1, "AQAAAAIAAYagAAAAEOL4297lq6jFgYVg203ye/XTsxGFO33lSqtKkYA6bsfzKoqFnVwByGlWTat7e6FZkA==", "", "", "", 1, "admin" });
+                values: new object[] { 1, "AQAAAAIAAYagAAAAEP0Cx5CF3cdklGhGeFRxl4UEj5J6HPj6f5uqbUoQDLXt9Cs54DeKyRUOJf5ZqOM6+g==", "", "", "", 1, "admin" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Connection_ParametersID",
