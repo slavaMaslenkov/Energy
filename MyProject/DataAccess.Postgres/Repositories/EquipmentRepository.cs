@@ -26,10 +26,24 @@ namespace DataAccess.Postgres.Repositories
         /// <returns>Лист EquipmentEntity/>.</returns>
         public async Task<List<EquipmentEntity>> GetEquipmentByPlant(int plantId)
         {
-            return await dbContext.Equipment
+            var equipmentWithLatestSample = await dbContext.Equipment
                 .AsNoTracking()
                 .Where(e => e.PlantID == plantId)
+                .Select(e => new
+                {
+                    Equipment = e,
+                    LatestSample = e.Sample
+                        .OrderByDescending(s => s.DateCreated) // Сортировка по дате
+                        .FirstOrDefault() // Берём первый (самый новый) Sample
+                })
                 .ToListAsync();
+
+            // Преобразуем результат в список EquipmentEntity с добавлением LatestSample
+            return equipmentWithLatestSample.Select(x =>
+            {
+                x.Equipment.Sample = new List<SampleEntity> { x.LatestSample }; // Устанавливаем только последний Sample
+                return x.Equipment;
+            }).ToList();
         }
 
         /// <summary>

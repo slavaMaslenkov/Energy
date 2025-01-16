@@ -19,7 +19,7 @@ namespace DataAccess.Postgres.Repositories
         {
             return await dbContext.Sample
                 .Include(s => s.Equipment)
-                .OrderByDescending(s => s.DateCreated)
+                .OrderBy(s => s.DateCreated)
                 .ToListAsync();
         }
 
@@ -60,7 +60,7 @@ namespace DataAccess.Postgres.Repositories
                 .AsNoTracking()
                 .Where(s => s.Equipment != null &&
                        s.Equipment.Id == equipmentID)
-                .OrderByDescending(s => s.DateCreated)
+                .OrderBy(s => s.DateCreated)
                 .FirstOrDefault();
 
             //добавляем новый шаблон на основе старого пока без параметров
@@ -100,15 +100,11 @@ namespace DataAccess.Postgres.Repositories
         /// <returns>Возвращает таблицу Sample по опрделенному шаблону./>.</returns>
         public async Task<List<SampleEntity>> GetByFilter(int id)
         {
-            if (string.IsNullOrEmpty(id.ToString()))
-            {
-                return new List<SampleEntity>();
-            }
-
             var query = dbContext.Sample
                           .AsNoTracking()
                           .Include(s => s.Equipment)
-                          .Where(s => s.Equipment.Id == id);
+                          .Where(s => s.Equipment.Id == id)
+                          .OrderByDescending(s => s.DateCreated);
 
             return await query.ToListAsync();
         }

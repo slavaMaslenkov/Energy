@@ -56,22 +56,12 @@ namespace MyProject.Controllers
             var subsystemList = await _subsystemService.GetAllAsync();
             var roleList = await _roleService.GetAllAsync();
 
-            ViewBag.Samples = sampleList.Select(sampleList => new SelectListItem
-            {
-                Value = sampleList.Id.ToString(),
-                Text = $"{sampleList.Name} - {sampleList.DateCreated:dd.MM.yy}"
-            }).ToList();
-
-            var selectedSampleId = sampleId ?? sampleList.FirstOrDefault()?.Id;
-            ViewBag.SelectedTemplateId = selectedSampleId;
-
             ViewBag.ParametersList = new SelectList(parametersList, "Id", "Name");
             ///ViewBag.SampleList = new SelectList(sampleList, "Id", "Name");
             ViewBag.SubsystemList = new SelectList(subsystemList, "Id", "Name");
             ViewBag.RoleList = new SelectList(roleList, "Id", "Name");
 
-            var data = await _unityService.GetBySampleIdAsync(selectedSampleId);
-            return View(data);
+            return View();
         }
 
         // GET: UnityEntities/Create
@@ -209,7 +199,7 @@ namespace MyProject.Controllers
 
             ViewBag.DeviceId = equipmentId;
             /////////////////////////////
-            var sampleList = await _sampleService.GetAllAsync();
+            var sampleList = await _sampleService.GetByFilter(equipmentId);
 
             ViewBag.Samples = sampleList.Select(sampleList => new SelectListItem
             {
@@ -217,9 +207,12 @@ namespace MyProject.Controllers
                 Text = $"{sampleList.Name} - {sampleList.DateCreated:dd.MM.yy}"
             }).ToList();
 
-            var selectedSampleId = sampleId ?? sampleList.FirstOrDefault()?.Id;
-            ViewBag.SelectedTemplateId = selectedSampleId;
-
+            var selectedSampleId = sampleId ?? null;
+            ViewBag.SelectedSampleId = selectedSampleId;
+            if (selectedSampleId != null)
+            {
+                unityData = await _unityService.GetBySampleIdAsync(selectedSampleId);
+            }
 
             return View("Index", unityData);
         }
@@ -231,17 +224,6 @@ namespace MyProject.Controllers
             var unityData = await _unityService.GetByFilter(id);
             ///ViewBag.DeviceId = id;
             return RedirectToAction(nameof(DeviceUnity), new { id });
-        }
-
-        [HttpGet]
-        public async Task<IActionResult> GetSamples()
-        {
-            var samples = await _sampleService.GetAllAsync();
-            return Json(samples.Select(t => new
-            {
-                t.Id,
-                DisplayName = $"{t.Name} - {t.DateCreated:dd.MM.yy}"
-            }));
         }
 
     }

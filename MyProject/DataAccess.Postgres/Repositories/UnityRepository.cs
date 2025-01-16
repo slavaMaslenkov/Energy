@@ -149,19 +149,43 @@ namespace DataAccess.Postgres.Repositories
         /// </summary>
         /// <param name="sampleId">ID шаблонаа.</param>
         /// <returns>Возвращает параметры по опрделенному шаблону.</returns>
-        public async Task<IEnumerable<UnityEntity>> GetBySampleIdAsync(int? sampleId)
+        public async Task<List<UnityEntity>> GetBySampleIdAsync(int? sampleId)
         {
-            if (sampleId == null)
+            if (string.IsNullOrEmpty(sampleId.ToString()))
             {
-                return Enumerable.Empty<UnityEntity>();
+                return new List<UnityEntity>();
             }
 
-            return await dbContext.Unity
-                .Where(u => u.SampleID == sampleId)
-                .Include(u => u.Connection)
-                .Include(u => u.Right)
-                .Include(u => u.Sample)
-                .ToListAsync();
+            var query = await dbContext.Unity
+                  .AsNoTracking() // Не отслеживаем изменения
+                  .Include(u => u.Right) // 
+                  .ThenInclude(s => s.Role)
+                  .Include(u => u.Sample) // Включаем данные из Sample
+                  .ThenInclude(s => s.Equipment) // Включаем данные из Equipment через Sample
+                  .Include(u => u.Connection)
+                  .ThenInclude(c => c.Subsystem)
+                  .Include(u => u.Connection)// Включаем данные из Connection (если необходимо)
+                  .ThenInclude(c => c.Parameters) // Включаем параметры через Connection
+                  .Where(u => u.Sample != null &&
+                              u.Sample.Id == sampleId) // Фильтруем по имени оборудования
+                  .OrderBy(u => u.Connection.Parameters.Name)
+                  .ToListAsync(); ;
+
+            foreach (var unity in query)
+            {
+                if (unity.Right != null && unity.Right.Any())
+                {
+                    foreach (var right in unity.Right)
+                    {
+                        if (Enum.IsDefined(typeof(Role), right.Role.Id))
+                        {
+                            right.Role.Name = ((Role)right.Role.Id).GetDescription();
+                        }
+                    }
+                }
+            }
+
+            return query;
         }
     }
 }

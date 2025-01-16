@@ -10,14 +10,16 @@
         Параметры устройства @ViewBag.nameDevice
         <div>
             <label for="sampleFilter" class="me-2">Шаблон:</label>
-            <select id="sampleFilter" data-equipmentId="@ViewBag.DeviceId" class="form-select me-3" style="width: 250px;">
-                @foreach (var sample in (List<SelectListItem>)ViewBag.Samples)
-                {
-                    <!option value="@int.Parse(sample.Value)" @(int.Parse(sample.Value) == ViewBag.SelectedSampleId ? "selected" : "") >
-                        @sample.Text
-                    </!option>
-                }
-            </select>
+            @Html.DropDownList(
+                     "sampleFilter",
+                     new SelectList(ViewBag.Samples, "Value", "Text", ViewBag.SelectedSampleId),
+                     new
+                     {
+                         @class = "form-select me-3",
+                         style = "width: 250px;",
+                         id = "sampleFilter",
+                         data_equipmentId = ViewBag.DeviceId
+                     })
             <input type="hidden" name="DeviceId" value="@ViewBag.DeviceId" />
             <a class="btn btn-secondary d-inline-flex align-items-center text-dark me-2"
                asp-action="Create" asp-route-equipmentId=@ViewBag.DeviceId style="text-decoration: none;">

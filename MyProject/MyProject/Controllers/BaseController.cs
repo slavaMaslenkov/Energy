@@ -101,13 +101,7 @@ namespace MyProject.Controllers
         {
             var equipment = await _equipmentService.GetEquipmentByPlant(plantId);
 
-            var result = equipment.Select(e => new
-            {
-                e.Id,
-                e.Name
-            });
-
-            return Json(result);
+            return Json(equipment);
         }
 
         /// <summary>

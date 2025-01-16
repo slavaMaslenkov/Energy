@@ -53,6 +53,6 @@ namespace DataAccess.Postgres.Repositories
         /// </summary>
         /// <param name="sampleId">ID шаблонаа.</param>
         /// <returns>Возвращает параметры по опрделенному шаблону.</returns>
-        Task<IEnumerable<UnityEntity>> GetBySampleIdAsync(int? sampleId);
+        Task<List<UnityEntity>> GetBySampleIdAsync(int? sampleId);
     }
 }
