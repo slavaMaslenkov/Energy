@@ -13,10 +13,21 @@ namespace DataAccess.Postgres.Repositories
         /// <returns>Лист RoleEntity/>.</returns>
         public async Task<IEnumerable<RoleEntity>> GetAllAsync()
         {
-            return await dbContext.Role
+            var roles = await dbContext.Role
                 .AsNoTracking()
                 .OrderBy(e => e.Name)
                 .ToListAsync();
+
+            // Добавляем описания для ролей
+            foreach (var role in roles)
+            {
+                if (Enum.IsDefined(typeof(Role), role.Id))
+                {
+                    role.Name = ((Role)role.Id).GetDescription();
+                }
+            }
+
+            return roles;
         }
 
         /// <summary>
@@ -25,11 +36,22 @@ namespace DataAccess.Postgres.Repositories
         /// <returns>Лист RoleEntity/>.</returns>
         public async Task<IEnumerable<RoleEntity>> GetAllAsyncWithoutAdmin()
         {
-            return await dbContext.Role
+            var roles = await dbContext.Role
                 .AsNoTracking()
                 .Where(u => u.Id != (int)Role.Admin)
                 .OrderBy(e => e.Name)
                 .ToListAsync();
+
+            // Добавляем описания для ролей
+            foreach (var role in roles)
+            {
+                if (Enum.IsDefined(typeof(Role), role.Id))
+                {
+                    role.Name = ((Role)role.Id).GetDescription();
+                }
+            }
+
+            return roles;
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using DataAccess.Postgres.Entity;
+using DataAccess.Postgres.Enums;
 using Microsoft.EntityFrameworkCore;
 using System.Xml.Linq;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
@@ -13,7 +14,7 @@ namespace DataAccess.Postgres.Repositories
         /// <returns>Лист шаблонов устройства/>.</returns>
         public async Task<IEnumerable<UnityEntity>> GetAllAsync()
         {
-            return await dbContext.Unity
+            var unities = await dbContext.Unity
                .Include(u => u.Connection)                        // Связь с Connection
                .ThenInclude(c => c.Subsystem)
                .Include(u => u.Right)
@@ -21,6 +22,22 @@ namespace DataAccess.Postgres.Repositories
                .Include(u => u.Connection.Parameters)            // Связь Connection -> Parameters
                .Include(u => u.Sample)                           // Связь Unity -> Sample
                .ToListAsync();
+
+            foreach (var unity in unities)
+            {
+                if (unity.Right != null && unity.Right.Any())
+                {
+                    foreach (var right in unity.Right)
+                    {
+                        if (Enum.IsDefined(typeof(Role), right.Role.Id))
+                        {
+                            right.Role.Name = ((Role)right.Role.Id).GetDescription();
+                        }
+                    }
+                }
+            }
+
+            return unities;
         }
 
         /// <summary>
@@ -73,7 +90,7 @@ namespace DataAccess.Postgres.Repositories
                 return new List<UnityEntity>();
             }
 
-            var query = dbContext.Unity
+            var query = await dbContext.Unity
                   .AsNoTracking() // Не отслеживаем изменения
                   .Include(u => u.Right) // 
                   .ThenInclude(s => s.Role)
@@ -86,9 +103,24 @@ namespace DataAccess.Postgres.Repositories
                   .Where(u => u.Sample != null &&
                               u.Sample.Equipment != null && // Проверяем, что Sample и Equipment не null
                               u.Sample.Equipment.Id == id) // Фильтруем по имени оборудования
-                  .OrderBy(u => u.Connection.Parameters.Name);
+                  .OrderBy(u => u.Connection.Parameters.Name)
+                  .ToListAsync(); ;
 
-            return await query.ToListAsync();
+            foreach (var unity in query)
+            {
+                if (unity.Right != null && unity.Right.Any())
+                {
+                    foreach (var right in unity.Right)
+                    {
+                        if (Enum.IsDefined(typeof(Role), right.Role.Id))
+                        {
+                            right.Role.Name = ((Role)right.Role.Id).GetDescription();
+                        }
+                    }
+                }
+            }
+
+            return query;
         }
 
         public async Task UpdateValues(Dictionary<int, string> values)

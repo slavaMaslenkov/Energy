@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using DataAccess.Postgres.Repositories.IRepository;
 using Microsoft.AspNetCore.Identity;
+using DataAccess.Postgres.Enums;
 
 namespace DataAccess.Postgres.Repositories
 {
@@ -13,11 +14,21 @@ namespace DataAccess.Postgres.Repositories
         /// <returns>Лист UserEntity/>.</returns>
         public async Task<IEnumerable<UserEntity>> GetAllAsync()
         {
-            return await dbContext.User
+            var users = await dbContext.User
                 .AsNoTracking()
                 .Include(e => e.Role)
                 .OrderBy(e => e.UserName)
                 .ToListAsync();
+
+            foreach (var user in users)
+            {
+                if (Enum.IsDefined(typeof(Role), user.Role.Id))
+                {
+                    user.Role.Name = ((Role)user.Role.Id).GetDescription();
+                }
+            }
+
+            return users;
         }
 
         /// <summary>
