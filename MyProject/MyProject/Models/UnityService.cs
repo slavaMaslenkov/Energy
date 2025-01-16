@@ -62,5 +62,15 @@ namespace MyProject.Models
         {
             return await unityRepository.FindById(id);
         }
+
+        /// <summary>
+        /// Метод возвращает параметры для по определенному шаблону./>.
+        /// </summary>
+        /// <param name="sampleId">ID шаблонаа.</param>
+        /// <returns>Возвращает параметры по опрделенному шаблону.</returns>
+        public async Task<IEnumerable<UnityEntity>> GetBySampleIdAsync(int? sampleId)
+        {
+            return await unityRepository.GetBySampleIdAsync(sampleId);
+        }
     }
 }

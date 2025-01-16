@@ -78,11 +78,11 @@ namespace DataAccess.Postgres.Repositories
             return unityEntity;
         }
 
-        /// </summary>
+        /// <summary>
         /// Метод получает параметры определенного шаблона устройства./>.
         /// </summary>
-        /// <param name="name">Имя объекта.</param>
-        /// <returns>Возвращает таблицу Unity по опрделенному шаблону./>.</returns>
+        /// <param name="id">Имя объекта.</param>
+        /// <returns>Возвращает таблицу Unity по опрделенному шаблону.</returns>
         public async Task<List<UnityEntity>> GetByFilter(int id)
         {
             if (string.IsNullOrEmpty(id.ToString()))
@@ -123,6 +123,10 @@ namespace DataAccess.Postgres.Repositories
             return query;
         }
 
+        /// <summary>
+        /// Метод обновляет значения параметров в БД./>.
+        /// </summary>
+        /// <param name="values">Словарь парарметров и значений.</param>
         public async Task UpdateValues(Dictionary<int, string> values)
         {
             foreach (var kvp in values)
@@ -138,6 +142,26 @@ namespace DataAccess.Postgres.Repositories
             }
 
             await dbContext.SaveChangesAsync();
+        }
+
+        /// <summary>
+        /// Метод возвращает параметры для по определенному шаблону./>.
+        /// </summary>
+        /// <param name="sampleId">ID шаблонаа.</param>
+        /// <returns>Возвращает параметры по опрделенному шаблону.</returns>
+        public async Task<IEnumerable<UnityEntity>> GetBySampleIdAsync(int? sampleId)
+        {
+            if (sampleId == null)
+            {
+                return Enumerable.Empty<UnityEntity>();
+            }
+
+            return await dbContext.Unity
+                .Where(u => u.SampleID == sampleId)
+                .Include(u => u.Connection)
+                .Include(u => u.Right)
+                .Include(u => u.Sample)
+                .ToListAsync();
         }
     }
 }

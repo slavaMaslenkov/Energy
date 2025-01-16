@@ -43,5 +43,12 @@ namespace MyProject.Models
         /// <returns>Экземпляр класса UnityEntity/>.</returns>
         Task<UnityEntity> FindById(int? id);
 
+        /// <summary>
+        /// Метод возвращает параметры для по определенному шаблону./>.
+        /// </summary>
+        /// <param name="sampleId">ID шаблонаа.</param>
+        /// <returns>Возвращает параметры по опрделенному шаблону.</returns>
+        Task<IEnumerable<UnityEntity>> GetBySampleIdAsync(int? sampleId);
+
     }
 }

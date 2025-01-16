@@ -19,6 +19,7 @@ namespace DataAccess.Postgres.Repositories
         {
             return await dbContext.Sample
                 .Include(s => s.Equipment)
+                .OrderByDescending(s => s.DateCreated)
                 .ToListAsync();
         }
 

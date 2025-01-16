@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using MyProject.Models;
 using MyProject.Models.IService;
+using System.Numerics;
 using System.Reflection.Metadata;
 using System.Reflection.PortableExecutable;
 
@@ -48,18 +49,29 @@ namespace MyProject.Controllers
         }
 
         // GET: UnityEntities
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int? sampleId = null)
         {
             var parametersList = await _parametersService.GetAllAsync();
             var sampleList = await _sampleService.GetAllAsync();
             var subsystemList = await _subsystemService.GetAllAsync();
             var roleList = await _roleService.GetAllAsync();
 
+            ViewBag.Samples = sampleList.Select(sampleList => new SelectListItem
+            {
+                Value = sampleList.Id.ToString(),
+                Text = $"{sampleList.Name} - {sampleList.DateCreated:dd.MM.yy}"
+            }).ToList();
+
+            var selectedSampleId = sampleId ?? sampleList.FirstOrDefault()?.Id;
+            ViewBag.SelectedTemplateId = selectedSampleId;
+
             ViewBag.ParametersList = new SelectList(parametersList, "Id", "Name");
-            ViewBag.SampleList = new SelectList(sampleList, "Id", "Name");
+            ///ViewBag.SampleList = new SelectList(sampleList, "Id", "Name");
             ViewBag.SubsystemList = new SelectList(subsystemList, "Id", "Name");
             ViewBag.RoleList = new SelectList(roleList, "Id", "Name");
-            return View(await _unityService.GetAllAsync());
+
+            var data = await _unityService.GetBySampleIdAsync(selectedSampleId);
+            return View(data);
         }
 
         // GET: UnityEntities/Create
@@ -173,7 +185,7 @@ namespace MyProject.Controllers
             }
         }
 
-        public async Task<IActionResult> DeviceUnity(int equipmentId)
+        public async Task<IActionResult> DeviceUnity(int equipmentId, int? sampleId = null)
         {
             if (string.IsNullOrEmpty(equipmentId.ToString()))
             {
@@ -196,6 +208,19 @@ namespace MyProject.Controllers
             ViewBag.nameDevice = nameDevice.Name;
 
             ViewBag.DeviceId = equipmentId;
+            /////////////////////////////
+            var sampleList = await _sampleService.GetAllAsync();
+
+            ViewBag.Samples = sampleList.Select(sampleList => new SelectListItem
+            {
+                Value = sampleList.Id.ToString(),
+                Text = $"{sampleList.Name} - {sampleList.DateCreated:dd.MM.yy}"
+            }).ToList();
+
+            var selectedSampleId = sampleId ?? sampleList.FirstOrDefault()?.Id;
+            ViewBag.SelectedTemplateId = selectedSampleId;
+
+
             return View("Index", unityData);
         }
 
@@ -206,6 +231,17 @@ namespace MyProject.Controllers
             var unityData = await _unityService.GetByFilter(id);
             ///ViewBag.DeviceId = id;
             return RedirectToAction(nameof(DeviceUnity), new { id });
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetSamples()
+        {
+            var samples = await _sampleService.GetAllAsync();
+            return Json(samples.Select(t => new
+            {
+                t.Id,
+                DisplayName = $"{t.Name} - {t.DateCreated:dd.MM.yy}"
+            }));
         }
 
     }
