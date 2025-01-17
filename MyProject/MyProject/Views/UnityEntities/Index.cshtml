@@ -47,12 +47,11 @@
             <thead class="sticky-header">
                 <tr>
                     <th style="width: 5%;"><input type="checkbox" id="select-all" /></th>
-                    <th style="width: 15%;">@Html.DisplayNameFor(model => model.Sample.Name)</th>
-                    <th style="width: 15%;">@Html.DisplayNameFor(model => model.Connection.Subsystem.Name)</th>
-                    <th style="width: 20%;">@Html.DisplayNameFor(model => model.Connection.Parameters.Name)</th>
+                    <th style="width: 20%;">Подсистема</th>
+                    <th style="width: 20%;">Параметр</th>
                     <th style="width: 20%;">@Html.DisplayNameFor(model => model.Value)</th>
-                    <th style="width: 5%;">@Html.DisplayNameFor(model => model.Connection.Parameters.Measure)</th>
-                    <th style="width: 10%;">Доступ</th>
+                    <th style="width: 10%;">@Html.DisplayNameFor(model => model.Connection.Parameters.Measure)</th>
+                    <th style="width: 15%;">Доступ</th>
                     <th style="width: 10%;"></th>
                 </tr>
             </thead>
@@ -61,7 +60,6 @@
                 {
                     <tr>
                         <td><input type="checkbox" class="select-item" value="@item.Id" /></td>
-                        <td>@Html.DisplayFor(modelItem => item.Sample.Name)</td>
                         <td>@Html.DisplayFor(modelItem => item.Connection.Subsystem.Name)</td>
                         <td>@Html.DisplayFor(modelItem => item.Connection.Parameters.Name)</td>
                         <td>
