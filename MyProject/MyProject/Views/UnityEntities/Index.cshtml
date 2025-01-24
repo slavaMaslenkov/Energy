@@ -24,11 +24,15 @@
                      })
         </div>
         <div>
-            <input type="hidden" name="DeviceId" value="@ViewBag.DeviceId" />
-            <a class="btn btn-secondary d-inline-flex align-items-center text-dark me-2"
-               asp-action="Create" asp-route-equipmentId=@ViewBag.DeviceId style="text-decoration: none;">
-                <i class="bi bi-plus-square me-2"></i> Добавить
-            </a>
+            @if (!ViewBag.sampleStatus && ViewBag.SampleId != null)
+            {
+                <input type="hidden" name="DeviceId" value="@ViewBag.DeviceId" />
+                <input type="hidden" name="SampleId" value="@ViewBag.SampleId" />
+                <a class="btn btn-secondary d-inline-flex align-items-center text-dark me-2"
+                   asp-action="Create"  asp-route-sampleId=@ViewBag.SampleId asp-route-equipmentId=@ViewBag.DeviceId style="text-decoration: none;">
+                    <i class="bi bi-plus-square me-2"></i> Добавить
+                </a>
+            }
             <a id="delete-selected"
                class="btn btn-info d-inline-flex align-items-center text-dark"
                style="text-decoration: none;"
@@ -47,10 +51,11 @@
             <thead class="sticky-header">
                 <tr>
                     <th style="width: 5%;"><input type="checkbox" id="select-all" /></th>
-                    <th style="width: 20%;">Подсистема</th>
+                    <th style="width: 15%;">Подсистема</th>
                     <th style="width: 20%;">Параметр</th>
-                    <th style="width: 20%;">@Html.DisplayNameFor(model => model.Value)</th>
+                    <th style="width: 15%;">@Html.DisplayNameFor(model => model.Value)</th>
                     <th style="width: 10%;">@Html.DisplayNameFor(model => model.Connection.Parameters.Measure)</th>
+                    <th style="width: 10%;">@Html.DisplayNameFor(model => model.Range)</th>
                     <th style="width: 15%;">Доступ</th>
                     <th style="width: 10%;"></th>
                 </tr>
@@ -86,6 +91,7 @@
                             }
                         </td>
                         <td>@Html.DisplayFor(modelItem => item.Connection.Parameters.Measure)</td>
+                        <td>@Html.DisplayFor(modelItem => item.Range)</td>
                         <td>
                             @if (item.Right != null && item.Right.Any())
                             {

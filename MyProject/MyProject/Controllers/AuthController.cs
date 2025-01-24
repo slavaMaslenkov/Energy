@@ -36,7 +36,7 @@ namespace MyProject.Controllers
 
             if (user == null)
             {
-                ModelState.AddModelError("", "Неверное имя пользователя или пароль.");
+                TempData["Error"] = "Неверное имя пользователя или пароль.";
                 return View();
             }
 
@@ -46,7 +46,7 @@ namespace MyProject.Controllers
 
             if (result != PasswordVerificationResult.Success)
             {
-                ModelState.AddModelError("", "Неверное имя пользователя или пароль.");
+                TempData["Error"] = "Неверное имя пользователя или пароль.";
                 return View();
             }
 
@@ -63,7 +63,8 @@ namespace MyProject.Controllers
             var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
             await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
 
-            return RedirectToAction("MainPage", "Home"); 
+            TempData["Success"] = "Вы успешно вошли в систему!";
+            return RedirectToAction("MainPage", "Home");
         }
 
         // Выход

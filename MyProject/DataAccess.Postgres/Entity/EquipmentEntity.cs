@@ -13,15 +13,19 @@ namespace DataAccess.Postgres.Entity
         [Key,DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
+        [Required(ErrorMessage = "Поле {0} обязательно для заполнения.")]
         [Display(Name = "Название")]
         public string Name { get; set; } = string.Empty;
 
+        [Required(ErrorMessage = "Поле {0} обязательно для заполнения.")]
         [Display(Name = "Тип")]
         public string Type { get; set; } = string.Empty;
 
         [Display(Name = "Описание")]
         public string? Description { get; set; } = string.Empty;
 
+        [Required(ErrorMessage = "Поле {0} обязательно для заполнения.")]
+        [Display(Name = "Станция")]
         public int PlantID { get; set; }
 
         public ICollection<SystemEntity>? System { get; set; }

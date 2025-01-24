@@ -66,7 +66,7 @@ namespace MyProject.Controllers
 
         // GET: UnityEntities/Create
         [HttpGet]
-        public async Task<IActionResult> Create(int equipmentId)
+        public async Task<IActionResult> Create(int equipmentId, int sampleId)
         {
             var roleList = await _roleService.GetAllAsyncWithoutAdmin();
             var sampleList = await _sampleService.GetByFilter(equipmentId);
@@ -76,17 +76,19 @@ namespace MyProject.Controllers
             ViewBag.SampleList = new SelectList(sampleList, "Id", "Name");
             ViewBag.SubsystemList = new SelectList(subsystemList.Select(s => s.Subsystem), "Id", "Name");
             ViewBag.DeviceId = equipmentId;
+            ViewBag.SampleId = sampleId;
             return View();
         }
 
         // POST: UnityEntities/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(UnityEntity unityEntity, int equipmentId, int subsystemId, int parameterId, int roleId)
+        public async Task<IActionResult> Create(UnityEntity unityEntity, int equipmentId, int subsystemId, int parameterId, int roleId, int sampleId)
         {
             if (ModelState.IsValid)
             {
                 ViewBag.DeviceId = equipmentId;
+                ViewBag.SampleId = sampleId;
                 // Получаем ConnectionID из таблицы Connection на основе выбранных параметров
                 var connection = await _connectionService.GetConnectionBySubsystemAndParameterAsync(subsystemId, parameterId);
 
@@ -107,7 +109,7 @@ namespace MyProject.Controllers
                 await _rightService.AttachRoleToUnity(unityEntity.Id, roleId);
 
                 // Перенаправление на другую страницу (например, устройство)
-                return RedirectToAction(nameof(DeviceUnity), new { equipmentId });
+                return RedirectToAction(nameof(DeviceUnity), new { equipmentId, sampleId });
             }
 
             // Повторная загрузка списка при ошибке валидации
@@ -191,11 +193,16 @@ namespace MyProject.Controllers
             }
             if (!unityData.Any())
             {
-                return RedirectToAction("Create", "UnityEntities", new { equipmentId });
+                return RedirectToAction("Create", "UnityEntities", new { equipmentId, sampleId });
             }
 
             var nameDevice = await _equipmentService.FindById(equipmentId);
             ViewBag.nameDevice = nameDevice.Name;
+
+            ViewBag.SampleId = sampleId;
+
+            var sampleAdd = await _sampleService.FindById(sampleId);
+            ViewBag.sampleStatus = sampleAdd.Status;
 
             ViewBag.DeviceId = equipmentId;
             /////////////////////////////
