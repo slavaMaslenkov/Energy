@@ -233,5 +233,92 @@ namespace MyProject.Controllers
             return RedirectToAction(nameof(DeviceUnity), new { id });
         }
 
+        /// <summary>
+        /// Экспорт таблицы в Excel файл.
+        /// </summary>
+        /// <param name="equipmentId"></param>
+        /// <param name="sampleId"></param>
+        /// <returns>Возвращает созданный файл.</returns>
+        public async Task<IActionResult> ExportToExcel(int equipmentId, int sampleId)
+        {
+            // Получаем данные для экспорта
+            var unityData = await _unityService.GetBySampleIdAsync(sampleId);
+            var sample = await _sampleService.FindById(sampleId);
+            var equipment = await _equipmentService.FindById(equipmentId);
+
+            if (unityData == null || sample == null || equipment == null)
+            {
+                return NotFound("Данные для экспорта не найдены.");
+            }
+
+            using (var package = new OfficeOpenXml.ExcelPackage())
+            {
+                // Создаем новый лист в Excel
+                var worksheet = package.Workbook.Worksheets.Add("Параметры устройства");
+
+                // Устанавливаем заголовок
+                worksheet.Cells["A1"].Value = "Название станции:";
+                worksheet.Cells["B1"].Value = equipment.Plant?.Name ?? "N/A";
+
+                worksheet.Cells["A2"].Value = "Название устройства:";
+                worksheet.Cells["B2"].Value = equipment.Name;
+
+                worksheet.Cells["A3"].Value = "Название шаблона:";
+                worksheet.Cells["B3"].Value = sample.Name;
+
+                worksheet.Cells["A4"].Value = "Дата создания шаблона:";
+                worksheet.Cells["B4"].Value = sample.DateCreated.ToString("dd.MM.yyyy");
+
+                // Заголовки для таблицы
+                worksheet.Cells["A6"].Value = "Подсистема";
+                worksheet.Cells["B6"].Value = "Параметр";
+                worksheet.Cells["C6"].Value = "Значение";
+                worksheet.Cells["D6"].Value = "Единица измерения";
+                worksheet.Cells["E6"].Value = "Диапазон";
+                worksheet.Cells["F6"].Value = "Доступ";
+
+                // Применяем стиль для заголовков
+                using (var range = worksheet.Cells["A6:F6"])
+                {
+                    range.Style.Font.Bold = true;
+                    range.Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
+                }
+
+                // Заполняем данные таблицы
+                int row = 7;
+                foreach (var item in unityData)
+                {
+                    worksheet.Cells[row, 1].Value = item.Connection?.Subsystem?.Name ?? "-";
+                    worksheet.Cells[row, 2].Value = item.Connection?.Parameters?.Name ?? "-";
+                    worksheet.Cells[row, 3].Value = item.Value ?? "-";
+                    worksheet.Cells[row, 4].Value = item.Connection?.Parameters?.Measure ?? "-";
+                    worksheet.Cells[row, 5].Value = item.Range ?? "-";
+
+                    if (item.Right != null && item.Right.Any())
+                    {
+                        worksheet.Cells[row, 6].Value = string.Join(", ", item.Right.Where(r => r.Role.Name != "Admin").Select(r => r.Role.Name));
+                    }
+                    else
+                    {
+                        worksheet.Cells[row, 6].Value = "-";
+                    }
+
+                    row++;
+                }
+
+                // Автоматическое выравнивание колонок
+                worksheet.Cells[worksheet.Dimension.Address].AutoFitColumns();
+
+                // Генерация файла Excel
+                var stream = new MemoryStream();
+                package.SaveAs(stream);
+                stream.Position = 0;
+
+                // Возвращаем файл как результат
+                string excelName = $"Параметры_устройства_{equipment.Name}_{sample.Name}_{DateTime.Now:yyyyMMdd}.xlsx";
+                return File(stream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", excelName);
+            }
+        }
+
     }
 }

@@ -109,7 +109,9 @@ namespace DataAccess.Postgres.Repositories
         /// <returns>Экземпляр класса EquipmentEntity/>.</returns>
         public async Task<EquipmentEntity> FindById(int? id)
         {
-            var equipmentEntity = await dbContext.Equipment.FindAsync(id);
+            var equipmentEntity = await dbContext.Equipment
+                    .Include(e => e.Plant) 
+                    .FirstOrDefaultAsync(e => e.Id == id);
             return equipmentEntity;
         }
 
