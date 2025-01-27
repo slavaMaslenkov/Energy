@@ -116,6 +116,16 @@ namespace MyProject.Controllers
             {
                 try
                 {
+                    var existingUser = await _userService.FindById(id);
+                    if (existingUser == null)
+                    {
+                        return NotFound();
+                    }
+
+                    // Копируем пароль из существующего объекта в редактируемый объект
+                    userEntities.Password = existingUser.Password;
+
+                    // Передаем объект в метод обновления
                     await _userService.EditPost(userEntities);
                 }
                 catch (DbUpdateConcurrencyException)

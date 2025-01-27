@@ -69,7 +69,9 @@ namespace DataAccess.Postgres.Repositories
         /// <returns>Экземпляр класса UserEntity/>.</returns>
         public async Task<UserEntity> FindById(int? id)
         {
-            var userEntity = await dbContext.User.FindAsync(id);
+            var userEntity = await dbContext.User
+                .AsNoTracking()
+                .FirstOrDefaultAsync(e => e.Id == id);
             return userEntity;
         }
 
